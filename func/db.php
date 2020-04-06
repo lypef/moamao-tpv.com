@@ -3,9 +3,9 @@
 	function db_conectar ()
 	{
 		$host = "localhost";
-		$user = "root";
-		$password = "";
-		$db = "promarco";
+		$user = "moamaotp_user";
+		$password = ";kdT#AD=wjNT";
+		$db = "moamaotp_store";
 		$coneccion = new mysqli($host,$user,$password,$db);
 		mysqli_query($coneccion, "SET NAMES 'utf8'");
 		return $coneccion;
