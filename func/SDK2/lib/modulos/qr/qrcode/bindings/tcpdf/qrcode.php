@@ -4,7 +4,7 @@
 // Begin       : 2010-03-22
 // Last Update : 2010-03-29
 // Version     : 1.0.002
-// License     : GNU LGPL v.3 (http://www.gnu.org/copyleft/lesser.html)
+// License     : GNU LGPL v.3 (https://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //
 // 	This library is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
 // 	You should have received a copy of the GNU Lesser General Public
 // 	License along with this library; if not, write to the Free Software
 // 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-//  or browse http://www.gnu.org/copyleft/lesser.html
+//  or browse https://www.gnu.org/copyleft/lesser.html
 //
 //  ----------------------------------------------------------------------------
 //
@@ -43,20 +43,20 @@
 // "PHP QR Code encoder"
 // License: GNU-LGPLv3
 // Copyright (C) 2010 by Dominik Dzienia <deltalab at poczta dot fm>
-// http://phpqrcode.sourceforge.net/
+// https://phpqrcode.sourceforge.net/
 // https://sourceforge.net/projects/phpqrcode/
 //
 // The "PHP QR Code encoder" is based on
 // "C libqrencode library" (ver. 3.1.1)
 // License: GNU-LGPL 2.1
 // Copyright (C) 2006-2010 by Kentaro Fukuchi
-// http://megaui.net/fukuchi/works/qrencode/index.en.html
+// https://megaui.net/fukuchi/works/qrencode/index.en.html
 //
 // Reed-Solomon code encoder is written by Phil Karn, KA9Q.
 // Copyright (C) 2002-2006 Phil Karn, KA9Q
 //
 // QR Code is registered trademark of DENSO WAVE INCORPORATED
-// http://www.denso-wave.com/qrcode/index-e.html
+// https://www.denso-wave.com/qrcode/index-e.html
 // ---------------------------------------------------------
 //
 // Author: Nicola Asuni
@@ -78,15 +78,15 @@
  * This class supports QR Code model 2, described in JIS (Japanese Industrial Standards) X0510:2004 or ISO/IEC 18004.
  * Currently the following features are not supported: ECI and FNC1 mode, Micro QR Code, QR Code model 1, Structured mode.
  *
- * This class is derived from "PHP QR Code encoder" by Dominik Dzienia (http://phpqrcode.sourceforge.net/) based on "libqrencode C library 3.1.1." by Kentaro Fukuchi (http://megaui.net/fukuchi/works/qrencode/index.en.html), contains Reed-Solomon code written by Phil Karn, KA9Q. QR Code is registered trademark of DENSO WAVE INCORPORATED (http://www.denso-wave.com/qrcode/index-e.html).
+ * This class is derived from "PHP QR Code encoder" by Dominik Dzienia (https://phpqrcode.sourceforge.net/) based on "libqrencode C library 3.1.1." by Kentaro Fukuchi (https://megaui.net/fukuchi/works/qrencode/index.en.html), contains Reed-Solomon code written by Phil Karn, KA9Q. QR Code is registered trademark of DENSO WAVE INCORPORATED (https://www.denso-wave.com/qrcode/index-e.html).
  * Please read comments on this class source file for full copyright and license information.
  *
  * @package com.tecnick.tcpdf
  * @abstract Class for generating QR-code array for TCPDF.
  * @author Nicola Asuni
  * @copyright 2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://www.tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @link https://www.tcpdf.org
+ * @license https://www.gnu.org/copyleft/lesser.html LGPL
  * @version 1.0.002
  */
 
@@ -293,7 +293,7 @@ if (!class_exists('QRcode', false)) {
 	 * This class supports QR Code model 2, described in JIS (Japanese Industrial Standards) X0510:2004 or ISO/IEC 18004.
 	 * Currently the following features are not supported: ECI and FNC1 mode, Micro QR Code, QR Code model 1, Structured mode.
 	 *
-	 * This class is derived from "PHP QR Code encoder" by Dominik Dzienia (http://phpqrcode.sourceforge.net/) based on "libqrencode C library 3.1.1." by Kentaro Fukuchi (http://megaui.net/fukuchi/works/qrencode/index.en.html), contains Reed-Solomon code written by Phil Karn, KA9Q. QR Code is registered trademark of DENSO WAVE INCORPORATED (http://www.denso-wave.com/qrcode/index-e.html).
+	 * This class is derived from "PHP QR Code encoder" by Dominik Dzienia (https://phpqrcode.sourceforge.net/) based on "libqrencode C library 3.1.1." by Kentaro Fukuchi (https://megaui.net/fukuchi/works/qrencode/index.en.html), contains Reed-Solomon code written by Phil Karn, KA9Q. QR Code is registered trademark of DENSO WAVE INCORPORATED (https://www.denso-wave.com/qrcode/index-e.html).
 	 * Please read comments on this class source file for full copyright and license information.
 	 *
 	 * @name QRcode
@@ -301,8 +301,8 @@ if (!class_exists('QRcode', false)) {
 	 * @abstract Class for generating QR-code array for TCPDF.
 	 * @author Nicola Asuni
 	 * @copyright 2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
-	 * @link http://www.tcpdf.org
-	 * @license http://www.gnu.org/copyleft/lesser.html LGPL
+	 * @link https://www.tcpdf.org
+	 * @license https://www.gnu.org/copyleft/lesser.html LGPL
 	 * @version 1.0.002
 	 */
 	class QRcode {

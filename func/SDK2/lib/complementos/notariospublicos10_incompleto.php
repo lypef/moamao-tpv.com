@@ -4,8 +4,8 @@ function mf_complemento_notariospublicos10($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['notariospublicos']['uri'] = 'http://www.sat.gob.mx/notariospublicos';
-    $__mf_namespaces__['notariospublicos']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/notariospublicos/notariospublicos.xsd';
+    $__mf_namespaces__['notariospublicos']['uri'] = 'https://www.sat.gob.mx/notariospublicos';
+    $__mf_namespaces__['notariospublicos']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/notariospublicos/notariospublicos.xsd';
 
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<notariospublicos:NotariosPublicos Version='1.0' $atrs>";

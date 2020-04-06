@@ -24,9 +24,9 @@ function _inim_imprime()
     
     
         //
-        // http://thecodeabode.blogspot.com
+        // https://thecodeabode.blogspot.com
         // @author: Ben Kitzelman
-        // @license: FreeBSD: (http://opensource.org/licenses/BSD-2-Clause) Do whatever you like with it
+        // @license: FreeBSD: (https://opensource.org/licenses/BSD-2-Clause) Do whatever you like with it
         // @updated: 03-03-2013
         //
         var getAcrobatInfo = function() {

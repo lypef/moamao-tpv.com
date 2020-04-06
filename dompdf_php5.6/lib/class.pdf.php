@@ -11,9 +11,9 @@
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @author  Ryan H. Masten <ryan.masten@gmail.com>
  * @author  Brian Sweeney <eclecticgeek@gmail.com>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
  * @version $Id: class.pdf.php 469 2012-02-05 22:25:30Z fabien.menager $
- * @license Public Domain http://creativecommons.org/licenses/publicdomain/
+ * @license Public Domain https://creativecommons.org/licenses/publicdomain/
  * @package Cpdf
  */
 class Cpdf {
@@ -715,7 +715,7 @@ class Cpdf {
         // for more informaiton.
         //
         // All of this code is adapted from the excellent changes made to
-        // transform FPDF to TCPDF (http://tcpdf.sourceforge.net/)
+        // transform FPDF to TCPDF (https://tcpdf.sourceforge.net/)
 
         $toUnicodeId = ++$this->numObj;
         $this->o_contents($toUnicodeId, 'new', 'raw');
@@ -789,7 +789,7 @@ EOT;
         // for more informaiton.
         //
         // All of this code is adapted from the excellent changes made to
-        // transform FPDF to TCPDF (http://tcpdf.sourceforge.net/)
+        // transform FPDF to TCPDF (https://tcpdf.sourceforge.net/)
 
         $res =  "\n$id 0 obj\n<</Type /Font\n/Subtype /Type0\n";
         $res.=  "/BaseFont /".$o['info']['name']."\n";
@@ -1119,7 +1119,7 @@ EOT;
     case  'new':
       $this->infoObject = $id;
       $date = 'D:'.@date('Ymd');
-      $this->objects[$id] = array('t'=>'info', 'info'=>array('Creator'=>'R and OS php pdf writer, http://www.ros.co.nz', 'CreationDate'=>$date));
+      $this->objects[$id] = array('t'=>'info', 'info'=>array('Creator'=>'R and OS php pdf writer, https://www.ros.co.nz', 'CreationDate'=>$date));
       break;
     case  'Title':
     case  'Author':
@@ -3187,7 +3187,7 @@ EOT;
    * string passed in.
    *
    * based on the excellent TCPDF code by Nicola Asuni and the
-   * RFC for UTF-8 at http://www.faqs.org/rfcs/rfc3629.html
+   * RFC for UTF-8 at https://www.faqs.org/rfcs/rfc3629.html
    *
    * @access private
    * @author Orion Richardson
@@ -3196,7 +3196,7 @@ EOT;
    * @return array UTF-8 codepoints array for the string
    */
   function utf8toCodePointsArray(&$text) {
-    $length = mb_strlen($text, '8bit'); // http://www.php.net/manual/en/function.mb-strlen.php#77040
+    $length = mb_strlen($text, '8bit'); // https://www.php.net/manual/en/function.mb-strlen.php#77040
     $unicode = array(); // array containing unicode values
     $bytes = array(); // array containing single character byte sequences
     $numbytes = 1; // number of octetc needed to represent the UTF-8 character
@@ -3258,7 +3258,7 @@ EOT;
    * at the front if required.
    *
    * based on the excellent TCPDF code by Nicola Asuni and the
-   * RFC for UTF-8 at http://www.faqs.org/rfcs/rfc3629.html
+   * RFC for UTF-8 at https://www.faqs.org/rfcs/rfc3629.html
    *
    * @access private
    * @author Orion Richardson
@@ -4423,7 +4423,7 @@ EOT;
       $bit_depth = $meta["bitDepth"];
       $color_type = $meta["colorType"];
       
-      // http://www.w3.org/TR/PNG/#11IHDR
+      // https://www.w3.org/TR/PNG/#11IHDR
       // 3 => indexed
       // 4 => greyscale with alpha
       // 6 => fullcolor with alpha

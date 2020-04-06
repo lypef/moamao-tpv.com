@@ -25,11 +25,11 @@ if(!function_exists('mf_timbrar_retencion'))
         // URL Web Service retenciones
         if($__mf_modo_local__ == true)
         {
-            $urlws = "http://$__mf_servidor_local__/pac/timbrar_retenciones.php?wsdl";
+            $urlws = "https://$__mf_servidor_local__/pac/timbrar_retenciones.php?wsdl";
         }
         else
         {
-            $urlws = "http://pac$pac.multifacturas.com/pac/timbrar_retenciones.php?wsdl";
+            $urlws = "https://pac$pac.multifacturas.com/pac/timbrar_retenciones.php?wsdl";
         }
 
         mf_carga_libreria($__mf_constantes__['__MF_LIBS_DIR__'] . 'nusoap/nusoap.php');

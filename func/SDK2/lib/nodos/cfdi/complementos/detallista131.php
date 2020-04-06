@@ -4,8 +4,8 @@ function mf_complemento_detallista131($datos)
 {
 	// Variable para los namespaces xml
 	global $__mf_namespaces__;
-	$__mf_namespaces__['detallista']['uri'] = 'http://www.sat.gob.mx/detallista';
-	$__mf_namespaces__['detallista']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/detallista/detallista.xsd';
+	$__mf_namespaces__['detallista']['uri'] = 'https://www.sat.gob.mx/detallista';
+	$__mf_namespaces__['detallista']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/detallista/detallista.xsd';
 
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<detallista:detallista type='SimpleInvoiceType' contentVersion='1.3.1' documentStructureVersion='AMC8.1' $atrs>";

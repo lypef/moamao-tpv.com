@@ -10,14 +10,14 @@ function mf_init_nodo_cfdi(array &$datos = array())
     global $__mf_namespaces__;
 
     // Se indican los namespaces para CFDi 3.3
-    $__mf_namespaces__['cfdi']['uri'] = 'http://www.sat.gob.mx/cfd/3';
+    $__mf_namespaces__['cfdi']['uri'] = 'https://www.sat.gob.mx/cfd/3';
     if($__mf_constantes__['__MF_VERSION_CFDI__'] == '3.3')
     {
-        $__mf_namespaces__['cfdi']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd';
+        $__mf_namespaces__['cfdi']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd';
     }
     else
     {
-        $__mf_namespaces__['cfdi']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd';
+        $__mf_namespaces__['cfdi']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd';
     }
 /*
     // Se agregan los alias

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:notariospublicos="http://www.sat.gob.mx/notariospublicos" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/notariospublicos" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:notariospublicos="https://www.sat.gob.mx/notariospublicos" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/notariospublicos" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="NotariosPublicos">
 		<xs:annotation>
 			<xs:documentation>Complemento al Comprobante Fiscal Digital a través de Internet (CFDI) para el manejo de la enajenación de bienes inmuebles o servidumbres de paso con indemnización o contraprestación en una sola exhibición.</xs:documentation>

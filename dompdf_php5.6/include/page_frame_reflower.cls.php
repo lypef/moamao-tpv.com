@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: page_frame_reflower.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
@@ -50,7 +50,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
     $style = $frame->get_style();
     $page_styles = $style->get_stylesheet()->get_page_styles();
     
-    // http://www.w3.org/TR/CSS21/page.html#page-selectors
+    // https://www.w3.org/TR/CSS21/page.html#page-selectors
     if ( count($page_styles) > 1 ) {
       $odd   = $page_number % 2 == 1;
       $first = $page_number == 1;
@@ -87,7 +87,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
 
   /**
    * Paged layout:
-   * http://www.w3.org/TR/CSS21/page.html
+   * https://www.w3.org/TR/CSS21/page.html
    */
   function reflow(Frame_Decorator $block = null) {
     $fixed_children = array();
@@ -148,7 +148,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
       
       Renderer::$stacking_first_pass = false;
       
-      // http://www.w3.org/TR/CSS21/visuren.html#z-index
+      // https://www.w3.org/TR/CSS21/visuren.html#z-index
       ksort($this->_stacking_context);
       
       foreach( $this->_stacking_context as $_frames ) {

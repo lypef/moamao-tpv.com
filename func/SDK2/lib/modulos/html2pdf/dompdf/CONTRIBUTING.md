@@ -7,21 +7,21 @@
 ## Getting help
 
 Community discussion, questions, and informal bug reporting is done on the
-[dompdf Google group](http://groups.google.com/group/dompdf). You may also 
+[dompdf Google group](https://groups.google.com/group/dompdf). You may also 
 seek help on
-[StackOverflow](http://stackoverflow.com/questions/tagged/dompdf).
+[StackOverflow](https://stackoverflow.com/questions/tagged/dompdf).
 
 ## Submitting bug reports
 
 The preferred way to report bugs is to use the
-[GitHub issue tracker](http://github.com/dompdf/dompdf/issues). Before 
+[GitHub issue tracker](https://github.com/dompdf/dompdf/issues). Before 
 reporting a bug, read these pointers.
 
 **Please search inside the bug tracker to see if the bug you found is not already reported.**
 
 **Note:** The issue tracker is for *bugs* and *feature requests*, not requests for help.
 Questions should be asked on the
-[dompdf Google group](http://groups.google.com/group/dompdf) instead.
+[dompdf Google group](https://groups.google.com/group/dompdf) instead.
 
 ### Reporting bugs effectively
 
@@ -47,8 +47,8 @@ Questions should be asked on the
 - If the problem can not be reproduced in any of the demos included in the
   dompdf distribution, please provide an HTML document that demonstrates
   the problem. There are a few options to show us your code:
-   - [JS Fiddle](http://jsfiddle.net/)
-   - [dompdf debug helper](http://eclecticgeek.com/dompdf/debug.php) (provided by @bsweeney)
+   - [JS Fiddle](https://jsfiddle.net/)
+   - [dompdf debug helper](https://eclecticgeek.com/dompdf/debug.php) (provided by @bsweeney)
    - Include the HTML/CSS inside the bug report, with
    [code highlighting](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code).
 

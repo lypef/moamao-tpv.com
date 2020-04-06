@@ -12,7 +12,7 @@
  *
  * For full version, documentation, examples of use please visit:
  *
- *    http://phpqrcode.sourceforge.net/
+ *    https://phpqrcode.sourceforge.net/
  *    https://sourceforge.net/projects/phpqrcode/
  *
  * PHP QR Code is distributed under LGPL 3

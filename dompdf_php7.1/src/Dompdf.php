@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf;
 
@@ -38,7 +38,7 @@ use Dompdf\Helpers;
  *
  * {@link Frame}s are then decorated (in the design pattern sense of the
  * word) based on their CSS display property ({@link
- * http://www.w3.org/TR/CSS21/visuren.html#propdef-display}).
+ * https://www.w3.org/TR/CSS21/visuren.html#propdef-display}).
  * Frame_Decorators augment the basic {@link Frame} class by adding
  * additional properties and methods specific to the particular type of
  * {@link Frame}.  For example, in the CSS layout model, block frames
@@ -59,7 +59,7 @@ use Dompdf\Helpers;
  *
  * Rendering is relatively straightforward once layout is complete. {@link
  * Frame}s are rendered using an adapted {@link Cpdf} class, originally
- * written by Wayne Munro, http://www.ros.co.nz/pdf/.  (Some performance
+ * written by Wayne Munro, https://www.ros.co.nz/pdf/.  (Some performance
  * related changes have been made to the original {@link Cpdf} class, and
  * the {@link Dompdf\Adapter\CPDF} class provides a simple, stateless interface to
  * PDF generation.)  PDFLib support has now also been added, via the {@link
@@ -150,7 +150,7 @@ class Dompdf
     private $basePath = "";
 
     /**
-     * Protcol used to request file (file://, http://, etc)
+     * Protcol used to request file (file://, https://, etc)
      *
      * @var string
      */
@@ -214,7 +214,7 @@ class Dompdf
     *
     * @var array
     */
-    private $allowedProtocols = [null, "", "file://", "http://", "https://"];
+    private $allowedProtocols = [null, "", "file://", "https://", "https://"];
 
     /**
     * Local file extension whitelist
@@ -390,7 +390,7 @@ class Dompdf
             throw new Exception("File '$file' not found.");
         }
 
-        // See http://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
+        // See https://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
         if (isset($http_response_header)) {
             foreach ($http_response_header as $_header) {
                 if (preg_match("@Content-Type:\s*[\w/]+;\s*?charset=([^\s]+)@i", $_header, $matches)) {
@@ -465,7 +465,7 @@ class Dompdf
         }
 
         // remove BOM mark from UTF-8, it's treated as document text by DOMDocument
-        // FIXME: roll this into the encoding detection using UTF-8/16/32 BOM (http://us2.php.net/manual/en/function.mb-detect-encoding.php#91051)?
+        // FIXME: roll this into the encoding detection using UTF-8/16/32 BOM (https://us2.php.net/manual/en/function.mb-detect-encoding.php#91051)?
         if (substr($str, 0, 3) == chr(0xEF) . chr(0xBB) . chr(0xBF)) {
             $str = substr($str, 3);
         }
@@ -475,7 +475,7 @@ class Dompdf
 
         try {
             // @todo Take the quirksmode into account
-            // http://hsivonen.iki.fi/doctype/
+            // https://hsivonen.iki.fi/doctype/
             // https://developer.mozilla.org/en/mozilla's_quirks_mode
             $quirksmode = false;
 
@@ -497,8 +497,8 @@ class Dompdf
                 $quirksmode = ($tokenizer->getTree()->getQuirksMode() > HTML5_TreeBuilder::NO_QUIRKS);
             } else {
                 // loadHTML assumes ISO-8859-1 unless otherwise specified on the HTML document header.
-                // http://devzone.zend.com/1538/php-dom-xml-extension-encoding-processing/ (see #4)
-                // http://stackoverflow.com/a/11310258/264628
+                // https://devzone.zend.com/1538/php-dom-xml-extension-encoding-processing/ (see #4)
+                // https://stackoverflow.com/a/11310258/264628
                 $doc = new DOMDocument("1.0", $encoding);
                 $doc->preserveWhiteSpace = true;
                 $doc->loadHTML($str);
@@ -636,7 +636,7 @@ class Dompdf
                 case "style":
                     // Accept all <style> tags by default (note this is contrary to W3C
                     // HTML 4.0 spec:
-                    // http://www.w3.org/TR/REC-html40/present/styles.html#adef-media
+                    // https://www.w3.org/TR/REC-html40/present/styles.html#adef-media
                     // which states that the default media type is 'screen'
                     if ($tag->hasAttributes() &&
                         ($media = $tag->getAttribute("media")) &&

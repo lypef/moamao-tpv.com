@@ -15,7 +15,7 @@
     $url = str_replace("?nosendmail=true","",$url);
 
     
-    $message = 'SE REENVIA PDF Y XML DE SU FACTURA VALIDA ANTE EL SAT. <br><br>Fichero XML: <a href="http://www.ascgar.com/func/SDK2/timbrados/' . $folio . '.xml" target="_blank">Factura XML</a><br><br>Fichero PDF: <a href="http://www.ascgar.com/func/SDK2/timbrados/' . $folio . '.pdf" target="_blank">Factura PDF</a>';
+    $message = 'SE REENVIA PDF Y XML DE SU FACTURA VALIDA ANTE EL SAT. <br><br>Fichero XML: <a href="https://www.ascgar.com/func/SDK2/timbrados/' . $folio . '.xml" target="_blank">Factura XML</a><br><br>Fichero PDF: <a href="https://www.ascgar.com/func/SDK2/timbrados/' . $folio . '.pdf" target="_blank">Factura PDF</a>';
     
     //$message = $message . '<br><br><b>Si no puede acceder a el enlace, ingrese manualmente aqui.</b><br>' . $current_url.'/sale_finaly_report_cotizacion.php?folio_sale='.$folio;
 

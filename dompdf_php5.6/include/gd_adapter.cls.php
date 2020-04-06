@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: gd_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 

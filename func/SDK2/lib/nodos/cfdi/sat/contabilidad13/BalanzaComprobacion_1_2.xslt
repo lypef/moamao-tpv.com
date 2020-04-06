@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:BCE="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion">
+<xsl:stylesheet version="2.0" xmlns:xsl="https://www.w3.org/1999/XSL/Transform" xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:fn="https://www.w3.org/2005/xpath-functions" xmlns:BCE="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion">
 	<!--En esta sección se define la inclusión de las plantillas de utilerías para colapsar espacios -->
 	<xsl:include href="utilerias.xslt"/>
 	<!-- Con el siguiente método se establece que la salida deberá ser en texto -->

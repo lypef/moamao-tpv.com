@@ -4,8 +4,8 @@ function mf_complemento_pagos10($datos)
 {
 	// Variable para los namespaces xml
 	global $__mf_namespaces__;
-	$__mf_namespaces__['pago10']['uri'] = 'http://www.sat.gob.mx/Pagos';
-	$__mf_namespaces__['pago10']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd';
+	$__mf_namespaces__['pago10']['uri'] = 'https://www.sat.gob.mx/Pagos';
+	$__mf_namespaces__['pago10']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd';
 
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<pago10:Pagos Version='1.0' $atrs>";

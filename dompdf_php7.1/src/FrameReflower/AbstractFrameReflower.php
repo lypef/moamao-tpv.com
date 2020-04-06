@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\FrameReflower;
 
@@ -64,7 +64,7 @@ abstract class AbstractFrameReflower
 
     /**
      * Collapse frames margins
-     * http://www.w3.org/TR/CSS2/box.html#collapsing-margins
+     * https://www.w3.org/TR/CSS2/box.html#collapsing-margins
      */
     protected function _collapse_margins()
     {
@@ -173,7 +173,7 @@ abstract class AbstractFrameReflower
     /**
      * Get the combined (collapsed) length of two adjoining margins.
      * 
-     * See http://www.w3.org/TR/CSS2/box.html#collapsing-margins.
+     * See https://www.w3.org/TR/CSS2/box.html#collapsing-margins.
      * 
      * @param number $length1
      * @param number $length2
@@ -391,7 +391,7 @@ abstract class AbstractFrameReflower
                 $match[1] = mb_strtolower(trim($match[1]));
 
                 // Handle counter() references:
-                // http://www.w3.org/TR/CSS21/generate.html#content
+                // https://www.w3.org/TR/CSS21/generate.html#content
 
                 $i = mb_strpos($match[1], ")");
                 if ($i === false) {

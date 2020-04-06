@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:BCE="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:BCE="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="Balanza">
 		<xs:annotation>
 			<xs:documentation>Estándar de balanza de comprobación que se entrega como parte de la contabilidad electrónica.</xs:documentation>

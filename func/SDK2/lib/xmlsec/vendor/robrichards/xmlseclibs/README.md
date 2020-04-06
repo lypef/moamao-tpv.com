@@ -17,7 +17,7 @@ xmlseclibs requires PHP version 5.4 or greater. **5.6.24+ recommended for securi
 
 ## How to Install
 
-Install with [`composer.phar`](http://getcomposer.org).
+Install with [`composer.phar`](https://getcomposer.org).
 
 ```sh
 php composer.phar require "robrichards/xmlseclibs"
@@ -52,7 +52,7 @@ $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
 $objDSig->addReference(
     $doc, 
     XMLSecurityDSig::SHA256, 
-    array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
+    array('https://www.w3.org/2000/09/xmldsig#enveloped-signature')
 );
 
 // Create a new (private) Security key

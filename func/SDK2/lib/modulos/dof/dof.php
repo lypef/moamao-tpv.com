@@ -5,7 +5,7 @@
  */
 function ___dof($datos)
 {
-    $url='http://dof.gob.mx/indicadores.php';
+    $url='https://dof.gob.mx/indicadores.php';
     $html= file_get_contents($url);
     list($tmp1,$tmp2)=explode('DOLAR</span> <br />',$html);
     list($dolar,$tmp2)=explode('</p>',$tmp2,2);

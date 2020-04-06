@@ -2,7 +2,7 @@
     include 'db.php';
     db_sessionValidarNO();
     
-    $url = 'http://' .$_POST['url_web'] . $_POST['url'];
+    $url = 'https://' .$_POST['url_web'] . $_POST['url'];
     $url = remove_url_query_args($url,array("client_add_noadd","client_add_noadd"));
     
     $nombre = strtoupper($_POST['nombre']);

@@ -11,7 +11,7 @@ function ___codigopostal($datos)
     
     // Se procesa la informacion recibida y/o ejecutan las operaciones pertinentes
     $cp=intval($cp);
-    $url="http://facturacion.mashter.com/cp/cp.php?cp=$cp";
+    $url="https://facturacion.mashter.com/cp/cp.php?cp=$cp";
     $txt= file_get_contents($url);
     
     /*

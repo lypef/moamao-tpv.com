@@ -4,8 +4,8 @@ function mf_complemento_implocal10($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['implocal']['uri'] = 'http://www.sat.gob.mx/implocal';
-    $__mf_namespaces__['implocal']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd';
+    $__mf_namespaces__['implocal']['uri'] = 'https://www.sat.gob.mx/implocal';
+    $__mf_namespaces__['implocal']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd';
 
     $atrs = mf_atributos_nodo($datos);
 

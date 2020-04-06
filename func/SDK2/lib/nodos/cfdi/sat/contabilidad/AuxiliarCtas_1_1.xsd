@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:AuxiliarCtas="www.sat.gob.mx/esquemas/ContabilidadE/1_1/AuxiliarCtas" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="www.sat.gob.mx/esquemas/ContabilidadE/1_1/AuxiliarCtas" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:AuxiliarCtas="www.sat.gob.mx/esquemas/ContabilidadE/1_1/AuxiliarCtas" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="www.sat.gob.mx/esquemas/ContabilidadE/1_1/AuxiliarCtas" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="AuxiliarCtas">
 		<xs:annotation>
 			<xs:documentation>Estándar de auxiliar de la cuenta o subcuenta del periodo que se entrega como parte de la contabilidad electrónica</xs:documentation>

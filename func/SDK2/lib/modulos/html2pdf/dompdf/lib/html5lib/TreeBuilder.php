@@ -2,7 +2,7 @@
 
 /*
 
-Copyright 2007 Jeroen van der Meer <http://jero.net/>
+Copyright 2007 Jeroen van der Meer <https://jero.net/>
 Copyright 2009 Edward Z. Yang <edwardzyang@thewritingpot.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a
@@ -134,11 +134,11 @@ class HTML5_TreeBuilder {
 
     // Namespaces for foreign content
     const NS_HTML   = null; // to prevent DOM from requiring NS on everything
-    const NS_MATHML = 'http://www.w3.org/1998/Math/MathML';
-    const NS_SVG    = 'http://www.w3.org/2000/svg';
-    const NS_XLINK  = 'http://www.w3.org/1999/xlink';
-    const NS_XML    = 'http://www.w3.org/XML/1998/namespace';
-    const NS_XMLNS  = 'http://www.w3.org/2000/xmlns/';
+    const NS_MATHML = 'https://www.w3.org/1998/Math/MathML';
+    const NS_SVG    = 'https://www.w3.org/2000/svg';
+    const NS_XLINK  = 'https://www.w3.org/1999/xlink';
+    const NS_XML    = 'https://www.w3.org/XML/1998/namespace';
+    const NS_XMLNS  = 'https://www.w3.org/2000/xmlns/';
 
     // Different types of scopes to test for elements
     const SCOPE = 0;
@@ -343,7 +343,7 @@ class HTML5_TreeBuilder {
                         }
                     }
                     if (!is_null($this->quirks_mode)) break;
-                    if ($system === "http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd") {
+                    if ($system === "https://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd") {
                         $this->quirks_mode = self::QUIRKS_MODE;
                         break;
                     }

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:retenciones="http://www.sat.gob.mx/esquemas/retencionpago/1" xmlns:arrendamientoenfideicomiso="http://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso" xmlns:dividendos="http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos" xmlns:enajenaciondeacciones="http://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones" xmlns:fideicomisonoempresarial="http://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial" xmlns:intereses="http://www.sat.gob.mx/esquemas/retencionpago/1/intereses" xmlns:intereseshipotecarios="http://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios" xmlns:operacionesderivados="http://www.sat.gob.mx/esquemas/retencionpago/1/operacionesderivados" xmlns:pagosaextranjeros="http://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros" xmlns:planesderetiro="http://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro" xmlns:premios="http://www.sat.gob.mx/esquemas/retencionpago/1/premios" xmlns:sectorfinanciero="http://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero">
+<xsl:stylesheet version="2.0" xmlns:xsl="https://www.w3.org/1999/XSL/Transform" xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:fn="https://www.w3.org/2005/xpath-functions" xmlns:retenciones="https://www.sat.gob.mx/esquemas/retencionpago/1" xmlns:arrendamientoenfideicomiso="https://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso" xmlns:dividendos="https://www.sat.gob.mx/esquemas/retencionpago/1/dividendos" xmlns:enajenaciondeacciones="https://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones" xmlns:fideicomisonoempresarial="https://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial" xmlns:intereses="https://www.sat.gob.mx/esquemas/retencionpago/1/intereses" xmlns:intereseshipotecarios="https://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios" xmlns:operacionesderivados="https://www.sat.gob.mx/esquemas/retencionpago/1/operacionesderivados" xmlns:pagosaextranjeros="https://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros" xmlns:planesderetiro="https://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro" xmlns:premios="https://www.sat.gob.mx/esquemas/retencionpago/1/premios" xmlns:sectorfinanciero="https://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero">
 
   <!-- Con el siguiente método se establece que la salida deberá ser en texto -->
   <xsl:output method="text" version="1.0" encoding="UTF-8" indent="no"/>  
   <!-- 
 	En esta sección se define la inclusión de las plantillas de utilerías para colapsar espacios
 	-->
-  <xsl:include href="http://www.sat.gob.mx/sitio_internet/cfd/2/cadenaoriginal_2_0/utilerias.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/sitio_internet/cfd/2/cadenaoriginal_2_0/utilerias.xslt"/>
   <!-- 
 		En esta sección se define la inclusión de las demás plantillas de transformación para 
 		la generación de las cadenas originales de los complementos fiscales 
 	-->
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso/arrendamientoenfideicomiso.xslt"/>  
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones/enajenaciondeacciones.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial/fideicomisonoempresarial.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/intereses/intereses.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios/intereseshipotecarios.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros/pagosaextranjeros.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro/planesderetiro.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/premios/premios.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/operacionesconderivados/operacionesconderivados.xslt"/>
-  <xsl:include href="http://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero/sectorfinanciero.xslt"/>  
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso/arrendamientoenfideicomiso.xslt"/>  
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones/enajenaciondeacciones.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial/fideicomisonoempresarial.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/intereses/intereses.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios/intereseshipotecarios.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros/pagosaextranjeros.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro/planesderetiro.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/premios/premios.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/operacionesconderivados/operacionesconderivados.xslt"/>
+  <xsl:include href="https://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero/sectorfinanciero.xslt"/>  
 
   <!-- Aquí iniciamos el procesamiento de la cadena original con su | inicial y el terminador || -->
   <xsl:template match="/">|<xsl:apply-templates select="/retenciones:Retenciones"/>||</xsl:template>

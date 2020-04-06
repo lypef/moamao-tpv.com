@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\Css;
 
@@ -48,7 +48,7 @@ class Style
 
     /**
      * Default "absolute" font sizes relative to the default font-size
-     * http://www.w3.org/TR/css3-fonts/#font-size-the-font-size-property
+     * https://www.w3.org/TR/css3-fonts/#font-size-the-font-size-property
      * @var array<float>
      */
     static $font_size_keywords = array(
@@ -100,7 +100,7 @@ class Style
     /**
      * Default style values.
      *
-     * @link http://www.w3.org/TR/CSS21/propidx.html
+     * @link https://www.w3.org/TR/CSS21/propidx.html
      *
      * @var array
      */
@@ -109,7 +109,7 @@ class Style
     /**
      * List of inherited properties
      *
-     * @link http://www.w3.org/TR/CSS21/propidx.html
+     * @link https://www.w3.org/TR/CSS21/propidx.html
      *
      * @var array
      */
@@ -787,7 +787,7 @@ class Style
      * Uses the {@link FontMetrics} class to resolve the font family into an
      * actual font file.
      *
-     * @link http://www.w3.org/TR/CSS21/fonts.html#propdef-font-family
+     * @link https://www.w3.org/TR/CSS21/fonts.html#propdef-font-family
      * @throws Exception
      *
      * @return string
@@ -873,7 +873,7 @@ class Style
     /**
      * Returns the resolved font size, in points
      *
-     * @link http://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
+     * @link https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
      * @return float
      */
     function get_font_size()
@@ -934,7 +934,7 @@ class Style
     }
 
     /**
-     * @link http://www.w3.org/TR/CSS21/text.html#propdef-word-spacing
+     * @link https://www.w3.org/TR/CSS21/text.html#propdef-word-spacing
      * @return float
      */
     function get_word_spacing()
@@ -947,7 +947,7 @@ class Style
     }
 
     /**
-     * @link http://www.w3.org/TR/CSS21/text.html#propdef-letter-spacing
+     * @link https://www.w3.org/TR/CSS21/text.html#propdef-letter-spacing
      * @return float
      */
     function get_letter_spacing()
@@ -960,7 +960,7 @@ class Style
     }
 
     /**
-     * @link http://www.w3.org/TR/CSS21/visudet.html#propdef-line-height
+     * @link https://www.w3.org/TR/CSS21/visudet.html#propdef-line-height
      * @return float
      */
     function get_line_height()
@@ -984,7 +984,7 @@ class Style
      * The array has the following format:
      * <code>array(r,g,b, "r" => r, "g" => g, "b" => b, "hex" => "#rrggbb")</code>
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-color
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-color
      * @return array
      */
     function get_color()
@@ -997,7 +997,7 @@ class Style
      *
      * The returned array has the same format as {@link Style::get_color()}
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-color
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-color
      * @return array
      */
     function get_background_color()
@@ -1011,7 +1011,7 @@ class Style
      * The returned array has the following format:
      * <code>array(x,y, "x" => x, "y" => y)</code>
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-position
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-position
      * @return array
      */
     function get_background_position()
@@ -1102,7 +1102,7 @@ class Style
      * (currently anyway only for completeness.
      * not used for further processing)
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-attachment
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-attachment
      * @return string
      */
     function get_background_attachment()
@@ -1117,7 +1117,7 @@ class Style
      * (currently anyway only for completeness.
      * not used for further processing)
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-repeat
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-repeat
      * @return string
      */
     function get_background_repeat()
@@ -1132,7 +1132,7 @@ class Style
      * (currently anyway only for completeness.
      * not used for further processing, but the individual get_background_xxx)
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background
      * @return string
      */
     function get_background()
@@ -1146,7 +1146,7 @@ class Style
      *
      * See {@link Style::get_color()}
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-color-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-color-properties
      * @return array
      */
     function get_border_top_color()
@@ -1198,7 +1198,7 @@ class Style
     /**#@+
      * Returns the border width, as it is currently stored
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-width-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-width-properties
      * @return float|string
      */
     function get_border_top_width()
@@ -1287,7 +1287,7 @@ class Style
      * <pre>[width] [style] [color]</pre>
      * e.g. "1px solid blue"
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
      * @return string
      */
     function get_border_top()
@@ -1359,7 +1359,7 @@ class Style
      *
      * See {@link Style::get_color()}
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-color-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-color-properties
      * @return array
      */
     function get_outline_color()
@@ -1390,7 +1390,7 @@ class Style
      * <pre>[width] [style] [color]</pre>
      * e.g. "1px solid blue"
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
      * @return string
      */
     function get_outline()
@@ -1408,7 +1408,7 @@ class Style
      *
      * The array has the format (h_space,v_space)
      *
-     * @link http://www.w3.org/TR/CSS21/tables.html#propdef-border-spacing
+     * @link https://www.w3.org/TR/CSS21/tables.html#propdef-border-spacing
      * @return array
      */
     function get_border_spacing()
@@ -1591,7 +1591,7 @@ class Style
      *
      * The color parameter can be any valid CSS color value
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-color
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-color
      * @param string $color
      */
     function set_color($color)
@@ -1612,7 +1612,7 @@ class Style
     /**
      * Sets the background color
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-color
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-color
      * @param string $color
      */
     function set_background_color($color)
@@ -1631,7 +1631,7 @@ class Style
 
     /**
      * Set the background image url
-     * @link     http://www.w3.org/TR/CSS21/colors.html#background-properties
+     * @link     https://www.w3.org/TR/CSS21/colors.html#background-properties
      *
      * @param string $val
      */
@@ -1645,7 +1645,7 @@ class Style
     /**
      * Sets the background repeat
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-repeat
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-repeat
      * @param string $val
      */
     function set_background_repeat($val)
@@ -1662,7 +1662,7 @@ class Style
     /**
      * Sets the background attachment
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-attachment
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-attachment
      * @param string $val
      */
     function set_background_attachment($val)
@@ -1679,7 +1679,7 @@ class Style
     /**
      * Sets the background position
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-position
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background-position
      * @param string $val
      */
     function set_background_position($val)
@@ -1696,7 +1696,7 @@ class Style
     /**
      * Sets the background - combined options
      *
-     * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background
+     * @link https://www.w3.org/TR/CSS21/colors.html#propdef-background
      * @param string $val
      */
     function set_background($val)
@@ -1741,7 +1741,7 @@ class Style
      *
      * $size can be any acceptable CSS size
      *
-     * @link http://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
+     * @link https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
      * @param string|float $size
      */
     function set_font_size($size)
@@ -1773,7 +1773,7 @@ class Style
      * missing font-size and font-family might be not allowed, but accept it here and
      * use default (medium size, enpty font name)
      *
-     * @link http://www.w3.org/TR/CSS21/generate.html#propdef-list-style
+     * @link https://www.w3.org/TR/CSS21/generate.html#propdef-list-style
      * @param $val
      */
     function set_font($val)
@@ -1833,7 +1833,7 @@ class Style
     /**#@+
      * Sets page break properties
      *
-     * @link http://www.w3.org/TR/CSS21/page.html#page-breaks
+     * @link https://www.w3.org/TR/CSS21/page.html#page-breaks
      * @param string $break
      */
     function set_page_break_before($break)
@@ -1864,7 +1864,7 @@ class Style
     /**#@+
      * Sets the margin size
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#margin-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#margin-properties
      * @param $val
      */
     function set_margin_top($val)
@@ -1897,7 +1897,7 @@ class Style
     /**#@+
      * Sets the padding size
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#padding-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#padding-properties
      * @param $val
      */
     function set_padding_top($val)
@@ -1968,7 +1968,7 @@ class Style
     /**
      * Sets the border styles
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-properties
      * @param string $val
      */
     function set_border_top($val)
@@ -2021,7 +2021,7 @@ class Style
     /**
      * Sets the border radius size
      *
-     * http://www.w3.org/TR/css3-background/#corners
+     * https://www.w3.org/TR/css3-background/#corners
      */
     function set_border_top_left_radius($val)
     {
@@ -2085,7 +2085,7 @@ class Style
     /**
      * Sets the outline styles
      *
-     * @link http://www.w3.org/TR/CSS21/ui.html#dynamic-outlines
+     * @link https://www.w3.org/TR/CSS21/ui.html#dynamic-outlines
      * @param string $val
      */
     function set_outline($val)
@@ -2149,7 +2149,7 @@ class Style
     /**
      * Sets the border spacing
      *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-properties
+     * @link https://www.w3.org/TR/CSS21/box.html#border-properties
      * @param float $val
      */
     function set_border_spacing($val)
@@ -2168,7 +2168,7 @@ class Style
     /**
      * Sets the list style image
      *
-     * @link http://www.w3.org/TR/CSS21/generate.html#propdef-list-style-image
+     * @link https://www.w3.org/TR/CSS21/generate.html#propdef-list-style-image
      * @param $val
      */
     function set_list_style_image($val)
@@ -2181,7 +2181,7 @@ class Style
     /**
      * Sets the list style
      *
-     * @link http://www.w3.org/TR/CSS21/generate.html#propdef-list-style
+     * @link https://www.w3.org/TR/CSS21/generate.html#propdef-list-style
      * @param $val
      */
     function set_list_style($val)
@@ -2204,7 +2204,7 @@ class Style
         static $positions = array("inside", "outside");
 
         foreach ($arr as $value) {
-            /* http://www.w3.org/TR/CSS21/generate.html#list-style
+            /* https://www.w3.org/TR/CSS21/generate.html#list-style
              * A value of 'none' for the 'list-style' property sets both 'list-style-type' and 'list-style-image' to 'none'
              */
             if ($value === "none") {
@@ -2271,7 +2271,7 @@ class Style
     /**
      * Gets the CSS3 transform property
      *
-     * @link http://www.w3.org/TR/css3-2d-transforms/#transform-property
+     * @link https://www.w3.org/TR/css3-2d-transforms/#transform-property
      * @param string $val
      */
     function get_transform()
@@ -2413,7 +2413,7 @@ class Style
     /**
      * Sets the CSS3 transform-origin property
      *
-     * @link http://www.w3.org/TR/css3-2d-transforms/#transform-origin
+     * @link https://www.w3.org/TR/css3-2d-transforms/#transform-origin
      * @param string $val
      */
     function set_transform_origin($val)
@@ -2426,7 +2426,7 @@ class Style
     /**
      * Gets the CSS3 transform-origin property
      *
-     * @link http://www.w3.org/TR/css3-2d-transforms/#transform-origin
+     * @link https://www.w3.org/TR/css3-2d-transforms/#transform-origin
      * @return mixed[]
      */
     function get_transform_origin() {

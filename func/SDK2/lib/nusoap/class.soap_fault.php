@@ -67,7 +67,7 @@ if(!class_exists('nusoap_fault')) {
             }
             $return_msg =
                 '<?xml version="1.0" encoding="'.$this->soap_defencoding.'"?>'.
-                '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"'.$ns_string.">\n".
+                '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="https://schemas.xmlsoap.org/soap/encoding/"'.$ns_string.">\n".
                 '<SOAP-ENV:Body>'.
                 '<SOAP-ENV:Fault>'.
                 $this->serialize_val($this->faultcode, 'faultcode').

@@ -12,9 +12,9 @@ use Dompdf\FrameDecorator\Page;
 
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
 /**
@@ -52,7 +52,7 @@ class FrameTree
     /**
      * The main DomDocument
      *
-     * @see http://ca2.php.net/manual/en/ref.dom.php
+     * @see https://ca2.php.net/manual/en/ref.dom.php
      * @var DOMDocument
      */
     protected $_dom;

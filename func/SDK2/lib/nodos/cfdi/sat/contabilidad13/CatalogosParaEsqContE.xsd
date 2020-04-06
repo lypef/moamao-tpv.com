@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:contelec_td="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" targetNamespace="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:contelec_td="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" targetNamespace="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" elementFormDefault="qualified" attributeFormDefault="unqualified">
   <xs:simpleType name="c_CodAgrup">
     <xs:annotation>
       <xs:documentation>CatÃ¡logo de CÃ³digos Agrupadores</xs:documentation>

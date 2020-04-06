@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: page_frame_decorator.cls.php 457 2012-01-22 11:48:20Z fabien.menager $
  */
 
@@ -143,7 +143,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
    * frame's page_break_before property as well as the preceeding frame's
    * page_break_after property.
    *
-   * @link http://www.w3.org/TR/CSS21/page.html#forced
+   * @link https://www.w3.org/TR/CSS21/page.html#forced
    *
    * @param Frame $frame the frame to check
    * @return bool true if a page break occured
@@ -205,7 +205,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
 
   /**
    * Determine if a page break is allowed before $frame
-   * http://www.w3.org/TR/CSS21/page.html#allowed-page-breaks
+   * https://www.w3.org/TR/CSS21/page.html#allowed-page-breaks
    * 
    * In the normal flow, page breaks can occur at the following places:
    * 

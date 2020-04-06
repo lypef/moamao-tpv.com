@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Brian Sweeney <eclecticgeek@gmail.com>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: text_frame_decorator.cls.php 459 2012-01-25 21:38:50Z fabien.menager $
  */
 
@@ -65,7 +65,7 @@ class Text_Frame_Decorator extends Frame_Decorator {
 
   // Vertical margins & padding do not apply to text frames
 
-  // http://www.w3.org/TR/CSS21/visudet.html#inline-non-replaced:
+  // https://www.w3.org/TR/CSS21/visudet.html#inline-non-replaced:
   //
   // The vertical padding, border and margin of an inline, non-replaced box
   // start at the top and bottom of the content area, not the

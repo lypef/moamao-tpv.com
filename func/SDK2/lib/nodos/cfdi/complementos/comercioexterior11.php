@@ -4,8 +4,8 @@ function mf_complemento_comercioexterior11($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['cce11']['uri'] = 'http://www.sat.gob.mx/ComercioExterior11';
-    $__mf_namespaces__['cce11']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd';
+    $__mf_namespaces__['cce11']['uri'] = 'https://www.sat.gob.mx/ComercioExterior11';
+    $__mf_namespaces__['cce11']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<cce11:ComercioExterior Version='1.1' $atrs>";

@@ -11,14 +11,14 @@
  * Written by: Zoltan Hawryluk. Version 1.0 beta 1 completed on March 8, 2010.
  *
  * Some routines are based on code from CSS Gradients via Canvas v1.2
- * by Weston Ruter <http://weston.ruter.net/projects/css-gradients-via-canvas/>
+ * by Weston Ruter <https://weston.ruter.net/projects/css-gradients-via-canvas/>
  *
- * Requires sylvester.js by James Coglan http://sylvester.jcoglan.com/
+ * Requires sylvester.js by James Coglan https://sylvester.jcoglan.com/
  *
- * cssSandpaper.js v.1.0 beta 1 available at http://www.useragentman.com/
+ * cssSandpaper.js v.1.0 beta 1 available at https://www.useragentman.com/
  *
  * released under the MIT License:
- *   http://www.opensource.org/licenses/mit-license.php
+ *   https://www.opensource.org/licenses/mit-license.php
  *
  ******************************************************************************/
 if (!document.querySelectorAll) {
@@ -37,7 +37,7 @@ var cssSandpaper = new function(){
     var reHSL = /hsl\([\s\S]*\)/g;
     
     // This regexp from the article 
-    // http://james.padolsey.com/javascript/javascript-comment-removal-revisted/
+    // https://james.padolsey.com/javascript/javascript-comment-removal-revisted/
     var reMultiLineComment = /\/\/.+?(?=\n|\r|$)|\/\*[\s\S]+?\*\//g;
     
     var reAtRule = /@[^\{\};]*;|@[^\{\};]*\{[^\}]*\}/g;
@@ -84,7 +84,7 @@ var cssSandpaper = new function(){
         
         if (property == "filter") {
             // IE must have layout, see 
-            // http://jszen.blogspot.com/2005/04/ie6-opacity-filter-caveat.html
+            // https://jszen.blogspot.com/2005/04/ie6-opacity-filter-caveat.html
             // for details.
             obj.style.zoom = "100%";
             
@@ -1546,7 +1546,7 @@ StringHelpers = new function(){
      * due to language restrictions)
      *
      * Copyright 2003 K&L Productions. All rights reserved
-     * http://www.klproductions.com
+     * https://www.klproductions.com
      *
      * Terms of use: This function can be used free of charge IF this header is not
      * modified and remains with the function code.
@@ -1722,8 +1722,8 @@ XMLHelpers = new function(){
      * Wrapper for XMLHttpRequest Object.  Grabbing data (XML and/or text) from a URL.
      * Grabbing data from a URL. Input is one parameter, url. It returns a request
      * object. Based on code from
-     * http://www.xml.com/pub/a/2005/02/09/xml-http-request.html.  IE caching problem
-     * fix from Wikipedia article http://en.wikipedia.org/wiki/XMLHttpRequest
+     * https://www.xml.com/pub/a/2005/02/09/xml-http-request.html.  IE caching problem
+     * fix from Wikipedia article https://en.wikipedia.org/wiki/XMLHttpRequest
      *
      * @param {String} url - the URL to retrieve
      * @param {Function} processReqChange - the function/method to call at key events of the URL retrieval.
@@ -1785,7 +1785,7 @@ CSSHelpers = new function(){
     var blankRe = new RegExp('\\s');
     
 	/*
-	 * getComputedStyle: code from http://blog.stchur.com/2006/06/21/css-computed-style/
+	 * getComputedStyle: code from https://blog.stchur.com/2006/06/21/css-computed-style/
 	 */
 	me.getComputedStyle = function(elem, style)
 	{
@@ -1866,7 +1866,7 @@ CSSHelpers = new function(){
 	 * Given an HTML element, find all child nodes of a specific class.
 	 * 
 	 * With ideas from Jonathan Snook 
-	 * (http://snook.ca/archives/javascript/your_favourite_1/)
+	 * (https://snook.ca/archives/javascript/your_favourite_1/)
 	 * Since this was presented within a post on this site, it is for the 
 	 * public domain according to the site's copyright statement.
 	 * 
@@ -1912,8 +1912,8 @@ CSSHelpers = new function(){
 
 /* 
  * Adding trim method to String Object.  Ideas from
- * http://www.faqts.com/knowledge_base/view.phtml/aid/1678/fid/1 and
- * http://blog.stevenlevithan.com/archives/faster-trim-javascript
+ * https://www.faqts.com/knowledge_base/view.phtml/aid/1678/fid/1 and
+ * https://blog.stevenlevithan.com/archives/faster-trim-javascript
  */
 String.prototype.trim = function(){
     var str = this;
@@ -1969,7 +1969,7 @@ DOMHelpers = new function () {
 }
 
 //+ Jonas Raoni Soares Silva
-//@ http://jsfromhell.com/string/capitalize [v1.0]
+//@ https://jsfromhell.com/string/capitalize [v1.0]
 
 String.prototype.capitalize = function(){ //v1.0
     return this.charAt(0).toUpperCase() + this.substr(1);
@@ -1979,7 +1979,7 @@ String.prototype.capitalize = function(){ //v1.0
 
 /*
  *  stringBuffer.js - ideas from
- *  http://www.multitask.com.au/people/dion/archives/000354.html
+ *  https://www.multitask.com.au/people/dion/archives/000354.html
  */
 function StringBuffer(){
     var me = this;
@@ -2013,7 +2013,7 @@ function StringBuffer(){
 /**
  * A class to parse color values
  * @author Stoyan Stefanov <sstoo@gmail.com> (with modifications)
- * @link   http://www.phpied.com/rgb-color-parser-in-javascript/
+ * @link   https://www.phpied.com/rgb-color-parser-in-javascript/
  * @license Use it if you like it
  */
 function RGBColor(color_string){
@@ -2270,12 +2270,12 @@ function RGBColor(color_string){
     
     /**
      * Converts an RGB color value to HSV. Conversion formula
-     * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+     * adapted from https://en.wikipedia.org/wiki/HSV_color_space.
      * Assumes r, g, and b are contained in the set [0, 255] and
      * returns h, s, and v in the set [0, 1].
      *
      * This routine by Michael Jackson (not *that* one),
-     * from http://www.mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+     * from https://www.mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
      *
      * @param   Number  r       The red color value
      * @param   Number  g       The green color value
@@ -2315,8 +2315,8 @@ function RGBColor(color_string){
     }
     
     /*
-     * hsl2rgb from http://codingforums.com/showthread.php?t=11156 
-     * code by Jason Karl Davis (http://www.jasonkarldavis.com)
+     * hsl2rgb from https://codingforums.com/showthread.php?t=11156 
+     * code by Jason Karl Davis (https://www.jasonkarldavis.com)
      */
     function hsl2rgb(h, s, l) {
 		var m1, m2, hue;

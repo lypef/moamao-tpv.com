@@ -15,9 +15,9 @@ function ___servicios($conf) {
             ));
         global $modo_pruebas;
         if($modo_pruebas != 'produccion')
-            $url_test = "http://192.168.1.111/isaac/ws_recargas/distribuidores/" . $conf['distribuidor'] . '.txt';
+            $url_test = "https://192.168.1.111/isaac/ws_recargas/distribuidores/" . $conf['distribuidor'] . '.txt';
         else
-            $url_test = "http://ta.multifacturas.com/wsta/distribuidores/" . $conf['distribuidor'] . '.txt';
+            $url_test = "https://ta.multifacturas.com/wsta/distribuidores/" . $conf['distribuidor'] . '.txt';
         
         $valor = file_get_contents($url_test, false, $Context);
         if($valor !== false) {
@@ -28,7 +28,7 @@ function ___servicios($conf) {
                 // Se agrega el SDK de CEDIX
                 require_once 'lib/modulos/servicios/Cedix.php';
                 
-                $cedix = new Cedix($conf['clientId'], $conf['storeId'], $conf['posId'], $conf['clerkCode'], ($conf['PAC']['PRODUCCION'] == 'SI') ? $conf['urlWS'] : 'http://wspruebas.cedixvirtual.mx/redmas_plat/WebService/Service.asmx?wsdl');
+                $cedix = new Cedix($conf['clientId'], $conf['storeId'], $conf['posId'], $conf['clerkCode'], ($conf['PAC']['PRODUCCION'] == 'SI') ? $conf['urlWS'] : 'https://wspruebas.cedixvirtual.mx/redmas_plat/WebService/Service.asmx?wsdl');
                 //======= numeros de respuesta apartir del 200 ====
                 $idCase = 0;
                 try {
@@ -608,9 +608,9 @@ function ___servicios($conf) {
 //                        echo "Modo: $modo_pruebas\r\n";
                         
                         if($modo_pruebas != 'produccion')
-                            $url_wsdl = 'http://192.168.1.111/isaac/ws_recargas/index.php?wsdl';
+                            $url_wsdl = 'https://192.168.1.111/isaac/ws_recargas/index.php?wsdl';
                         else
-                            $url_wsdl = "http://ta.multifacturas.com/wsta/index.php?wsdl";
+                            $url_wsdl = "https://ta.multifacturas.com/wsta/index.php?wsdl";
                         
 //                        echo "URL Web Service: $url_wsdl\r\n";
                         

@@ -10,9 +10,9 @@ inline style tags, and the style attributes of individual HTML elements.  It
 also supports most presentational HTML attributes.</p>
 
 <p>PDF rendering is currently provided either by PDFLib (<a
-href="http://www.pdflib.com">www.pdflib.com</a>) or by a bundled
+href="https://www.pdflib.com">www.pdflib.com</a>) or by a bundled
 version the R&amp;OS CPDF class written by Wayne Munro (<a
-href="http://www.ros.co.nz/pdf/">www.ros.co.nz/pdf</a>).  (Some
+href="https://www.ros.co.nz/pdf/">www.ros.co.nz/pdf</a>).  (Some
 performance related changes have been made to the R&amp;OS class,
 however).  In order to use PDFLib with dompdf, the PDFLib PECL
 extension is required.  Using PDFLib improves performance and reduces

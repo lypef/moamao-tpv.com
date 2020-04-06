@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-                <cfdi:Comprobante xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                <cfdi:Comprobante xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
                                 
-                                  xmlns:cfdi="http://www.sat.gob.mx/cfd/3"         xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/TimbreFiscalDigital/TimbreFiscalDigital.xsd       "
+                                  xmlns:cfdi="https://www.sat.gob.mx/cfd/3"         xmlns:tfd="https://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="https://www.sat.gob.mx/cfd/3 https://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd https://www.sat.gob.mx/TimbreFiscalDigital https://www.sat.gob.mx/sitio_internet/TimbreFiscalDigital/TimbreFiscalDigital.xsd       "
                                   version="3.2"
                                   sello="gyr6H0qSQhC59UX1vhMdgK+Gare28yzxJ1KGABVNVshH1DfVKutIUeM7G1oDPVTPFJuZtp2pFHKZtRPmO9E06jPgykNbmnhSExjRVcLv6XM1R34hSpnvkRqJdQxepn4ASTjVhKyr+GVs9hXsrA2oqyUvHuu6wV48mvuIeXY1KpE="
                                     serie="A"            

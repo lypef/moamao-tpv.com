@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: text_renderer.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
  */
 
@@ -100,7 +100,7 @@ class Text_Renderer extends Abstract_Renderer {
     }
     
     // Handle text decoration:
-    // http://www.w3.org/TR/CSS21/text.html#propdef-text-decoration
+    // https://www.w3.org/TR/CSS21/text.html#propdef-text-decoration
     
     // Draw all applicable text-decorations.  Start with the root and work our way down.
     $p = $frame;

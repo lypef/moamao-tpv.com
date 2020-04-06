@@ -5,7 +5,7 @@ function mf_ini_complemento_nomina12(&$datos)
     global $__mf_alias__;
 	global $__mf_constantes__;
     // Lista de alias para Nomina v1.2
-    //$alias_nomina12['nomina12']['Receptor']['Antiguedad'] = 'Antig�edad';
+    //$alias_nomina12['nomina12']['Receptor']['Antiguedad'] = 'Antig�edad';
     $alias_nomina12['nomina12']['Receptor']['Antiguedad'] = utf8_decode('Antigüedad');
 	$alias_nomina12['nomina12']['SeparacionIndemnizacion']['NumAnosServicio'] = utf8_decode('NumAñosServicio');
     mf_agrega_alias($alias_nomina12);
@@ -15,8 +15,8 @@ function mf_complemento_nomina12($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['nomina12']['uri'] = 'http://www.sat.gob.mx/nomina12';
-    $__mf_namespaces__['nomina12']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd';
+    $__mf_namespaces__['nomina12']['uri'] = 'https://www.sat.gob.mx/nomina12';
+    $__mf_namespaces__['nomina12']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd';
 
     $atrs = mf_atributos_nodo($datos, 'nomina12');
     $xml = "<nomina12:Nomina Version='1.2' $atrs>";

@@ -4,8 +4,8 @@ function mf_complemento_valesdedespensa10($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['valesdedespensa']['uri'] = 'http://www.sat.gob.mx/valesdedespensa';
-    $__mf_namespaces__['valesdedespensa']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/valesdedespensa/valesdedespensa.xsd';
+    $__mf_namespaces__['valesdedespensa']['uri'] = 'https://www.sat.gob.mx/valesdedespensa';
+    $__mf_namespaces__['valesdedespensa']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/valesdedespensa/valesdedespensa.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<valesdedespensa:ValesDeDespensa version='1.0' $atrs>";

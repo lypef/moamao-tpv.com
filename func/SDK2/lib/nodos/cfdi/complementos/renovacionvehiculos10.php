@@ -4,8 +4,8 @@ function mf_complemento_renovacionvehiculos10($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['decreto']['uri'] = 'http://www.sat.gob.mx/renovacionysustitucionvehiculos';
-    $__mf_namespaces__['decreto']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/renovacionysustitucionvehiculos/renovacionysustitucionvehiculos.xsd';
+    $__mf_namespaces__['decreto']['uri'] = 'https://www.sat.gob.mx/renovacionysustitucionvehiculos';
+    $__mf_namespaces__['decreto']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/renovacionysustitucionvehiculos/renovacionysustitucionvehiculos.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<decreto:renovacionysustitucionvehiculos Version='1.0' $atrs>";

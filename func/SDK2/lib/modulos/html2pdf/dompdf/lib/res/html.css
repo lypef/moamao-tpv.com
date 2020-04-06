@@ -8,11 +8,11 @@
  * All Rights Reserved.
  * 
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Blake Ross <BlakeR1234@aol.com>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id$
  */
 
@@ -336,7 +336,7 @@ dir ol dir,   dir ul dir,   dir menu dir,   dir dir dir {
 }
 
 /* forms */
-/* From http://dev.w3.org/csswg/css3-ui/#appearance */
+/* From https://dev.w3.org/csswg/css3-ui/#appearance */
 form {
   display: block;
 }

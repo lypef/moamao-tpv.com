@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:divisas="http://www.sat.gob.mx/divisas" targetNamespace="http://www.sat.gob.mx/divisas" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:divisas="https://www.sat.gob.mx/divisas" targetNamespace="https://www.sat.gob.mx/divisas" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="Divisas">
 		<xs:annotation>
 			<xs:documentation>Complemento al Comprobante Fiscal Digital (CFD) y Comprobante Fiscal Digital por Internet (CFDI) para identificar las operaciones de compra y  venta de divisas que realizan los centros cambiarios y las casa de cambio; haciendo mención expresa de que los comprobantes se expiden por la “compra”, o bien, por la “venta” de divisas.</xs:documentation>

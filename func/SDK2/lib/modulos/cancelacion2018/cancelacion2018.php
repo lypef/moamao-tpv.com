@@ -10,7 +10,7 @@ function ___cancelacion2018($datos)
     $certificado = base64_encode(file_get_contents($datos["b64Cer"]));
     $key = base64_encode(file_get_contents($datos["b64Key"]));
     
-    $url_webservice="http://ws.facturacionmexico.com.mx/cancelacion2018/?wsdl";
+    $url_webservice="https://ws.facturacionmexico.com.mx/cancelacion2018/?wsdl";
     $SOAP_CLIENT=$url_webservice;
     $soapclient = new nusoap_client($SOAP_CLIENT,$esWSDL = true);
     

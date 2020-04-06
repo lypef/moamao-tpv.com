@@ -9,17 +9,17 @@
 
   * Limited support for CSS float (disabled by default). See
     DOMPDF_ENABLE_CSS_FLOAT
-    <http://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#301>(r407,
+    <https://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#301>(r407,
     r408, r415, r438, r457, r459, r471)
   * Support for nth-child selectors (r407, r419)
   * Support for @font-face (r407, r413)
   * Font sub-setting now available (disabled by default). See
     DOMPDF_ENABLE_FONTSUBSETTING
-    <http://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#134>
+    <https://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#134>
     (r466, r468, r469)
   * Added an HTML5 Parser to enable improved document parsing/correction
     (disabled by default). See DOMPDF_ENABLE_HTML5PARSER
-    <http://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#316>
+    <https://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#316>
     (r429, r430, r431, r441)
   * Added support for ID in anchors tags (r373)
   * Added a message for broken images and updated the broken_image.png
@@ -56,7 +56,7 @@
     that use a URL with domain component (r407)
   * Added a ready-to-use web-based font installer to the sample website
     (www/fonts.php) (r417, r418)
-  * Added the Unicode-compatible DejaVu Fonts <http://dejavu-fonts.org>
+  * Added the Unicode-compatible DejaVu Fonts <https://dejavu-fonts.org>
     as part of the base installation (r388)
 
 
@@ -64,7 +64,7 @@
 
   * Fixes compatibility with the Symfony framework autoloader (disabled
     by default). See DOMPDF_AUTOLOAD_PREPEND
-    <http://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#310>
+    <https://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#310>
     (r374)
   * Fixes errors in how margins were collapsed between siblings (r375)
   * Improves the way lines are aligned vertically (see the
@@ -85,7 +85,7 @@
 
 For a full list of modifications since DOMPDF 0.6.0 beta 2 see the
 changes listed on this page of the repository changelog
-<http://code.google.com/p/dompdf/source/list?num=88&start=472&path=/trunk>.
+<https://code.google.com/p/dompdf/source/list?num=88&start=472&path=/trunk>.
 
 
       Known Issues
@@ -94,7 +94,7 @@ changes listed on this page of the repository changelog
   * CSS float support is not yet perfected
 
 For a full list of known issues, see the issue tracker
-<http://code.google.com/p/dompdf/issues/list>.
+<https://code.google.com/p/dompdf/issues/list>.
 
 
       Installation Notes
@@ -102,7 +102,7 @@ For a full list of known issues, see the issue tracker
   * Starting with DOMPDF 0.6.0 the dompdf.php script will no longer
     allow conversion of HTML document on the local file system that are
     located outside of the path specified by DOMPDF_CHROOT
-    <http://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#109>
+    <https://code.google.com/p/dompdf/source/browse/tags/dompdf_0-6-0_beta3/dompdf/dompdf_config.inc.php#109>
   * If you are installing DOMPDF on top of an existing installation you
     should remove any existing font metrics. This can be done manually
     or through the sample website (www/fonts.php).
@@ -155,7 +155,7 @@ For a full list of known issues, see the issue tracker
     time, warning, and debug messages
   * Adds examples showing new features
   * Moves ttf2ufm out of the DOMPDF code repository and into an external
-    project <http://code.google.com/p/ttf2ufm/>
+    project <https://code.google.com/p/ttf2ufm/>
   * Disables inline PHP support by default
   * Disables direct input in the examples page for non-localhost access
   * Adds configuration option to help debugging (see DEBUG_LAYOUT) which
@@ -169,7 +169,7 @@ For a full list of known issues, see the issue tracker
     the Cpdf backend)
   * Updates text wrapping to prevent splitting text into more lines than
     needed (issue 198
-    <http://code.google.com/p/dompdf/issues/detail?id=198>)
+    <https://code.google.com/p/dompdf/issues/detail?id=198>)
   * Implements a check against an infinite loop caused by table cells
     larger than a page
   * Improves text height and width calculations as well as placement
@@ -184,7 +184,7 @@ For a full list of known issues, see the issue tracker
 
 For a full list of modifications since DOMPDF 0.6.0 beta 1 see the
 repository changelog
-<http://code.google.com/p/dompdf/source/list?path=/tags/dompdf_0-6-0_beta2&num=104>
+<https://code.google.com/p/dompdf/source/list?path=/tags/dompdf_0-6-0_beta2&num=104>
 
 
         Known Issues

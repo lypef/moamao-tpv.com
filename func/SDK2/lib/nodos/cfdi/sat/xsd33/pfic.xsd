@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by SAT (SAT) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pfic="http://www.sat.gob.mx/pfic" targetNamespace="http://www.sat.gob.mx/pfic" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2010 rel. 3 (https://www.altova.com) by SAT (SAT) -->
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:pfic="https://www.sat.gob.mx/pfic" targetNamespace="https://www.sat.gob.mx/pfic" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="PFintegranteCoordinado">
 		<xs:annotation>
 			<xs:documentation> Este complemento permite incorporar a un Comprobante Fiscal Digital (CFD) o a un Comprobante Fiscal Digital a través de Internet (CFDI) los datos de identificación del vehículo que corresponda a personas físicas integrantes de coordinados, que opten por pagar el impuesto individualmente de conformidad con lo establecido por el artículo 83, séptimo párrafo de la Ley del Impuesto sobre la Renta.</xs:documentation>

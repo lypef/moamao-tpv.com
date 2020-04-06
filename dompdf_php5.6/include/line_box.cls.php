@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @link    https://www.dompdf.com/
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: line_box.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
  */
 
@@ -11,7 +11,7 @@
  * The line box class
  *
  * This class represents a line box
- * http://www.w3.org/TR/CSS2/visuren.html#line-box
+ * https://www.w3.org/TR/CSS2/visuren.html#line-box
  *
  * @access protected
  * @package dompdf

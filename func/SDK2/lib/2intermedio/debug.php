@@ -7,7 +7,7 @@ function mf_debug($datos=null)
     global $__mf_respuesta_modulos__;
 
     // URL Web Service
-	$urlDebug = 'http://panel.multifacturas.com/panel/debug/wsdebug.php?wsdl';
+	$urlDebug = 'https://panel.multifacturas.com/panel/debug/wsdebug.php?wsdl';
 
     // Se convierte el arreglo a JSON
     $json = json_encode($__mf_debug_trace__);

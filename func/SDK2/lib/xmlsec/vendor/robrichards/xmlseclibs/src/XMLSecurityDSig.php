@@ -44,29 +44,29 @@ use Exception;
  *
  * @author    Robert Richards <rrichards@cdatazone.org>
  * @copyright 2007-2017 Robert Richards <rrichards@cdatazone.org>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license   https://www.opensource.org/licenses/bsd-license.php  BSD License
  */
 class XMLSecurityDSig
 {
-    const XMLDSIGNS = 'http://www.w3.org/2000/09/xmldsig#';
-    const SHA1 = 'http://www.w3.org/2000/09/xmldsig#sha1';
-    const SHA256 = 'http://www.w3.org/2001/04/xmlenc#sha256';
-    const SHA384 = 'http://www.w3.org/2001/04/xmldsig-more#sha384';
-    const SHA512 = 'http://www.w3.org/2001/04/xmlenc#sha512';
-    const RIPEMD160 = 'http://www.w3.org/2001/04/xmlenc#ripemd160';
+    const XMLDSIGNS = 'https://www.w3.org/2000/09/xmldsig#';
+    const SHA1 = 'https://www.w3.org/2000/09/xmldsig#sha1';
+    const SHA256 = 'https://www.w3.org/2001/04/xmlenc#sha256';
+    const SHA384 = 'https://www.w3.org/2001/04/xmldsig-more#sha384';
+    const SHA512 = 'https://www.w3.org/2001/04/xmlenc#sha512';
+    const RIPEMD160 = 'https://www.w3.org/2001/04/xmlenc#ripemd160';
 
-    const C14N = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
-    const C14N_COMMENTS = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments';
-    const EXC_C14N = 'http://www.w3.org/2001/10/xml-exc-c14n#';
-    const EXC_C14N_COMMENTS = 'http://www.w3.org/2001/10/xml-exc-c14n#WithComments';
+    const C14N = 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315';
+    const C14N_COMMENTS = 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments';
+    const EXC_C14N = 'https://www.w3.org/2001/10/xml-exc-c14n#';
+    const EXC_C14N_COMMENTS = 'https://www.w3.org/2001/10/xml-exc-c14n#WithComments';
 
-    const template = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    const template = '<ds:Signature xmlns:ds="https://www.w3.org/2000/09/xmldsig#">
   <ds:SignedInfo>
     <ds:SignatureMethod />
   </ds:SignedInfo>
 </ds:Signature>';
 
-    const BASE_TEMPLATE = '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    const BASE_TEMPLATE = '<Signature xmlns="https://www.w3.org/2000/09/xmldsig#">
   <SignedInfo>
     <SignatureMethod />
   </SignedInfo>
@@ -244,10 +244,10 @@ class XMLSecurityDSig
     {
         switch ($method)
         {
-            case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315':
-            case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
-            case 'http://www.w3.org/2001/10/xml-exc-c14n#':
-            case 'http://www.w3.org/2001/10/xml-exc-c14n#WithComments':
+            case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315':
+            case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
+            case 'https://www.w3.org/2001/10/xml-exc-c14n#':
+            case 'https://www.w3.org/2001/10/xml-exc-c14n#WithComments':
                 $this->canonicalMethod = $method;
                 break;
             default:
@@ -347,17 +347,17 @@ class XMLSecurityDSig
         $withComments = false;
         switch ($canonicalmethod)
         {
-            case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315':
+            case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315':
                 $exclusive = false;
                 $withComments = false;
                 break;
-            case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
+            case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
                 $withComments = true;
                 break;
-            case 'http://www.w3.org/2001/10/xml-exc-c14n#':
+            case 'https://www.w3.org/2001/10/xml-exc-c14n#':
                 $exclusive = true;
                 break;
-            case 'http://www.w3.org/2001/10/xml-exc-c14n#WithComments':
+            case 'https://www.w3.org/2001/10/xml-exc-c14n#WithComments':
                 $exclusive = true;
                 $withComments = true;
                 break;
@@ -473,7 +473,7 @@ class XMLSecurityDSig
 
         /*
          * Depending on the URI, we may not want to include comments in the result
-         * See: http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel
+         * See: https://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel
          */
         $includeCommentNodes = true;
 
@@ -563,7 +563,7 @@ class XMLSecurityDSig
         $xpath->registerNamespace('secdsig', self::XMLDSIGNS);
         $query = './secdsig:Transforms/secdsig:Transform';
         $nodelist = $xpath->query($query, $refNode);
-        $canonicalMethod = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
+        $canonicalMethod = 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315';
         $arXPath = null;
         $prefixList = null;
         foreach ($nodelist AS $transform)
@@ -571,15 +571,15 @@ class XMLSecurityDSig
             $algorithm = $transform->getAttribute("Algorithm");
             switch ($algorithm)
             {
-                case 'http://www.w3.org/2001/10/xml-exc-c14n#':
-                case 'http://www.w3.org/2001/10/xml-exc-c14n#WithComments':
+                case 'https://www.w3.org/2001/10/xml-exc-c14n#':
+                case 'https://www.w3.org/2001/10/xml-exc-c14n#WithComments':
 
                     if (!$includeCommentNodes)
                     {
                         /* We remove comment nodes by forcing it to use a canonicalization
                          * without comments.
                          */
-                        $canonicalMethod = 'http://www.w3.org/2001/10/xml-exc-c14n#';
+                        $canonicalMethod = 'https://www.w3.org/2001/10/xml-exc-c14n#';
                     }
                     else
                     {
@@ -613,14 +613,14 @@ class XMLSecurityDSig
                         $node = $node->nextSibling;
                     }
                     break;
-                case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315':
-                case 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
+                case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315':
+                case 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments':
                     if (!$includeCommentNodes)
                     {
                         /* We remove comment nodes by forcing it to use a canonicalization
                          * without comments.
                          */
-                        $canonicalMethod = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
+                        $canonicalMethod = 'https://www.w3.org/TR/2001/REC-xml-c14n-20010315';
                     }
                     else
                     {
@@ -628,7 +628,7 @@ class XMLSecurityDSig
                     }
 
                     break;
-                case 'http://www.w3.org/TR/1999/REC-xpath-19991116':
+                case 'https://www.w3.org/TR/1999/REC-xpath-19991116':
                     $node = $transform->firstChild;
                     while ($node)
                     {
@@ -796,17 +796,17 @@ class XMLSecurityDSig
                 $transNode = $this->createNewSignNode('Transform');
                 $transNodes->appendChild($transNode);
                 if (is_array($transform) &&
-                    (!empty($transform['http://www.w3.org/TR/1999/REC-xpath-19991116'])) &&
-                    (!empty($transform['http://www.w3.org/TR/1999/REC-xpath-19991116']['query']))
+                    (!empty($transform['https://www.w3.org/TR/1999/REC-xpath-19991116'])) &&
+                    (!empty($transform['https://www.w3.org/TR/1999/REC-xpath-19991116']['query']))
                 ) {
-                    $transNode->setAttribute('Algorithm', 'http://www.w3.org/TR/1999/REC-xpath-19991116');
-                    $XPathNode = $this->createNewSignNode('XPath', $transform['http://www.w3.org/TR/1999/REC-xpath-19991116']['query']);
+                    $transNode->setAttribute('Algorithm', 'https://www.w3.org/TR/1999/REC-xpath-19991116');
+                    $XPathNode = $this->createNewSignNode('XPath', $transform['https://www.w3.org/TR/1999/REC-xpath-19991116']['query']);
                     $transNode->appendChild($XPathNode);
-                    if (!empty($transform['http://www.w3.org/TR/1999/REC-xpath-19991116']['namespaces']))
+                    if (!empty($transform['https://www.w3.org/TR/1999/REC-xpath-19991116']['namespaces']))
                     {
-                        foreach ($transform['http://www.w3.org/TR/1999/REC-xpath-19991116']['namespaces'] AS $prefix => $namespace)
+                        foreach ($transform['https://www.w3.org/TR/1999/REC-xpath-19991116']['namespaces'] AS $prefix => $namespace)
                         {
-                            $XPathNode->setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:$prefix", $namespace);
+                            $XPathNode->setAttributeNS("https://www.w3.org/2000/xmlns/", "xmlns:$prefix", $namespace);
                         }
                     }
                 }

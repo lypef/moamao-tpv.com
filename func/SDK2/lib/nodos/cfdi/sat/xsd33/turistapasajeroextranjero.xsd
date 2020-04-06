@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:tpe="http://www.sat.gob.mx/TuristaPasajeroExtranjero" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/TuristaPasajeroExtranjero" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:tpe="https://www.sat.gob.mx/TuristaPasajeroExtranjero" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/TuristaPasajeroExtranjero" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="TuristaPasajeroExtranjero">
 		<xs:annotation>
 			<xs:documentation>Complemento opcional al Comprobante Fiscal Digital (CFD) y Comprobante Fiscal Digital a través de Internet (CFDI) para el manejo de datos de TuristaPasajeroExtranjero.</xs:documentation>

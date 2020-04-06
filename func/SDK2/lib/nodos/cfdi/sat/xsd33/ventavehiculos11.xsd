@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ventavehiculos="http://www.sat.gob.mx/ventavehiculos" targetNamespace="http://www.sat.gob.mx/ventavehiculos" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:ventavehiculos="https://www.sat.gob.mx/ventavehiculos" targetNamespace="https://www.sat.gob.mx/ventavehiculos" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="VentaVehiculos">
 		<xs:annotation>
 			<xs:documentation>Complemento concepto que permite incorporar a los fabricantes, ensambladores o distribuidores autorizados de automóviles nuevos, así como aquéllos que importen automóviles para permanecer en forma definitiva en la franja fronteriza norte del país y en los Estados de Baja California, Baja California Sur y la región parcial del Estado de Sonora, a un Comprobante Fiscal Digital a través de Internet (CFDI) la clave vehicular que corresponda a la versión enajenada y el número de identificación vehicular que corresponda al vehículo enajenado.</xs:documentation>

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package php-font-lib
- * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @link    https://php-font-lib.googlecode.com/
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: font_woff_header.cls.php 34 2011-10-23 13:53:25Z fabien.menager $
  */
 

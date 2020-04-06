@@ -176,7 +176,7 @@ function poliza($datos)
 	}
 	
 	$atrs_polizas = mf_atributos_nodo($datos['Polizas'], '');
-	$xml_polizas = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<PLZ:Polizas xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:PLZ=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo\" xsi:schemaLocation=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd\" Version='1.3' $atrs_polizas Sello='{SELLO}'>$nodos_poliza</PLZ:Polizas>";
+	$xml_polizas = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<PLZ:Polizas xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\" xmlns:PLZ=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo\" xsi:schemaLocation=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd\" Version='1.3' $atrs_polizas Sello='{SELLO}'>$nodos_poliza</PLZ:Polizas>";
 	return $xml_polizas;
 }
 
@@ -199,7 +199,7 @@ function catalogo($datos)
 	}
 	
 	// XML de Catalogo completo
-	$xml_balanza = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<catalogocuentas:Catalogo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:catalogocuentas=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas\" xsi:schemaLocation=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas/CatalogoCuentas_1_3.xsd\" Version='1.3' $atrs_catalogo Sello='{SELLO}'>$xml_ctas</catalogocuentas:Catalogo>";
+	$xml_balanza = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<catalogocuentas:Catalogo xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\" xmlns:catalogocuentas=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas\" xsi:schemaLocation=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas/CatalogoCuentas_1_3.xsd\" Version='1.3' $atrs_catalogo Sello='{SELLO}'>$xml_ctas</catalogocuentas:Catalogo>";
 	return $xml_balanza;
 }
 
@@ -222,6 +222,6 @@ function balanza($datos)
 	}
 	
 	// XML de Balanza completo
-	$xml_balanza = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<BCE:Balanza xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:BCE=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion\" xsi:schemaLocation=\"http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion/BalanzaComprobacion_1_3.xsd\" Version='1.3' $atrs_balanza Sello='{SELLO}'>$xml_ctas</BCE:Balanza>";
+	$xml_balanza = '<?xml version="1.0" encoding="UTF-8" ?>'."\n<BCE:Balanza xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\" xmlns:BCE=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion\" xsi:schemaLocation=\"https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion/BalanzaComprobacion_1_3.xsd\" Version='1.3' $atrs_balanza Sello='{SELLO}'>$xml_ctas</BCE:Balanza>";
 	return $xml_balanza;
 }

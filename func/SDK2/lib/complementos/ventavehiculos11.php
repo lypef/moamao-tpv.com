@@ -4,8 +4,8 @@ function mf_complemento_ventavehiculos11($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['ventavehiculos']['uri'] = 'http://www.sat.gob.mx/ventavehiculos';
-    $__mf_namespaces__['ventavehiculos']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/ventavehiculos/ventavehiculos11.xsd';
+    $__mf_namespaces__['ventavehiculos']['uri'] = 'https://www.sat.gob.mx/ventavehiculos';
+    $__mf_namespaces__['ventavehiculos']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/ventavehiculos/ventavehiculos11.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<ventavehiculos:VentaVehiculos version='1.1' $atrs>";

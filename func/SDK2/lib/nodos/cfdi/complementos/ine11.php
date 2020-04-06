@@ -3,8 +3,8 @@ function mf_complemento_ine11($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['ine']['uri'] = 'http://www.sat.gob.mx/ine';
-    $__mf_namespaces__['ine']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/ine/INE11.xsd';
+    $__mf_namespaces__['ine']['uri'] = 'https://www.sat.gob.mx/ine';
+    $__mf_namespaces__['ine']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/ine/INE11.xsd';
 
     $atrs = mf_atributos_nodo($datos);
 

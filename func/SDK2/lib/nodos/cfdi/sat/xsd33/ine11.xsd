@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:ine="http://www.sat.gob.mx/ine" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/ine" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:ine="https://www.sat.gob.mx/ine" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/ine" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="INE">
 		<xs:annotation>
 			<xs:documentation>Complemento al Comprobante Fiscal Digital por Internet (CFDI) para incluir los datos que identifiquen el tipo de proceso al que van dirigidos los gastos que realizan los partidos o las Asociaciones Civiles.</xs:documentation>

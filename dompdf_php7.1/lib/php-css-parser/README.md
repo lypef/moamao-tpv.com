@@ -1,7 +1,7 @@
 PHP CSS Parser
 --------------
 
-[![build status](https://api.travis-ci.org/sabberworm/PHP-CSS-Parser.svg)](https://travis-ci.org/sabberworm/PHP-CSS-Parser) [![HHVM Status](http://hhvm.h4cc.de/badge/sabberworm/php-css-parser.svg)](http://hhvm.h4cc.de/package/sabberworm/php-css-parser)
+[![build status](https://api.travis-ci.org/sabberworm/PHP-CSS-Parser.svg)](https://travis-ci.org/sabberworm/PHP-CSS-Parser) [![HHVM Status](https://hhvm.h4cc.de/badge/sabberworm/php-css-parser.svg)](https://hhvm.h4cc.de/package/sabberworm/php-css-parser)
 
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
@@ -617,7 +617,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 * [Lullabot](https://github.com/Lullabot) for a patch that allows to know the line number for each parsed token.
 * [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
 * [ossinkine](https://github.com/ossinkine) for a 150 time performance boost.
-* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
+* [GaryJones](https://github.com/GaryJones) for lots of input and [https://css-specificity.info/](https://css-specificity.info/).
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
@@ -633,7 +633,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 
 PHP-CSS-Parser is freely distributable under the terms of an MIT-style license.
 
-Copyright (c) 2011 Raphael Schweikert, http://sabberworm.com/
+Copyright (c) 2011 Raphael Schweikert, https://sabberworm.com/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

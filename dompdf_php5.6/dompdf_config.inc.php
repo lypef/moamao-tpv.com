@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: dompdf_config.inc.php 468 2012-02-05 10:51:40Z fabien.menager $
  */
 
@@ -31,7 +31,7 @@ define("DOMPDF_LIB_DIR", DOMPDF_DIR . "/lib");
 
 /**
  * Some installations don't have $_SERVER['DOCUMENT_ROOT']
- * http://fyneworks.blogspot.com/2007/08/php-documentroot-in-iis-windows-servers.html
+ * https://fyneworks.blogspot.com/2007/08/php-documentroot-in-iis-windows-servers.html
  */
 if( !isset($_SERVER['DOCUMENT_ROOT']) ) {
   $path = "";
@@ -160,9 +160,9 @@ def("DOMPDF_ENABLE_FONTSUBSETTING", false);
  * look at {@link GD_Adapter} for more information.  GD support is new
  * and experimental, so use it at your own risk.
  *
- * @link http://www.pdflib.com
- * @link http://www.ros.co.nz/pdf
- * @link http://www.php.net/image
+ * @link https://www.pdflib.com
+ * @link https://www.ros.co.nz/pdf
+ * @link https://www.php.net/image
  */
 def("DOMPDF_PDF_BACKEND", "CPDF");
 
@@ -173,7 +173,7 @@ def("DOMPDF_PDF_BACKEND", "CPDF");
  * your license key here.  If you are using PDFlib-Lite or are evaluating
  * the commercial version of PDFlib, comment out this setting.
  *
- * @link http://www.pdflib.com
+ * @link https://www.pdflib.com
  *
  * If pdflib present in web server and auto or selected explicitely above,
  * a real license code must exist!
@@ -183,7 +183,7 @@ def("DOMPDF_PDF_BACKEND", "CPDF");
 /**
  * html target media view which should be rendered into pdf.
  * List of types and parsing rules for future extensions:
- * http://www.w3.org/TR/REC-html40/types.html
+ * https://www.w3.org/TR/REC-html40/types.html
  *   screen, tty, tv, projection, handheld, print, braille, aural, all
  * Note: aural is deprecated in CSS 2.1 because it is replaced by speech in CSS 3.
  * Note, even though the generated pdf file is intended for print output,

@@ -2,7 +2,7 @@
     
     require_once 'db.php';
     
-    $url = 'http://' .$_POST['url_web'] . $_POST['url'];
+    $url = 'https://' .$_POST['url_web'] . $_POST['url'];
     $url = remove_url_query_args($url,array("Cont_MailSend","Cont_MailNoSend"));
     
     $asunto = $_POST['header'];
@@ -187,13 +187,13 @@
 							</div>
 							<div class="opps-reference">
 							<h4>FOLIO</h4>
-					<h3><a href="http://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
+					<h3><a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
 								</div>
 						</div>
                   		<span>
                   		    <center>
                   		        <br>
-                          		APRECIABLE <b>'.$cliente.'</b>. SE ADJUNTA COTIZACION VIGENTE, <a href="http://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>
+                          		APRECIABLE <b>'.$cliente.'</b>. SE ADJUNTA COTIZACION VIGENTE, <a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>
                           		<br><br>
                       		</center>
                   		</span>
@@ -209,7 +209,7 @@
 							<div class="opps-footnote">Al completar estos pasos recibiras un correo de <strong>CLTA D & D</strong> confirmando tu pago e iniciando logistica.</div>
 						</div>
 					</div>	
-					<p style="text-align: right;"><a title="Eliminar cot" href="http://www.ascgar.com/sale_finaly_report_cotizacion_delete.php?folio_sale='.$folio.'"><span style="color: #800000;"><strong>Eliminar cotizacion</strong></span></a></p>
+					<p style="text-align: right;"><a title="Eliminar cot" href="https://www.ascgar.com/sale_finaly_report_cotizacion_delete.php?folio_sale='.$folio.'"><span style="color: #800000;"><strong>Eliminar cotizacion</strong></span></a></p>
 				</body>
 			</html>
         ';

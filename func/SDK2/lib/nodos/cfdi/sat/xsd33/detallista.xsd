@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2009 (http://www.altova.com) by SAT (.) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:detallista="http://www.sat.gob.mx/detallista" targetNamespace="http://www.sat.gob.mx/detallista" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2009 (https://www.altova.com) by SAT (.) -->
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:detallista="https://www.sat.gob.mx/detallista" targetNamespace="https://www.sat.gob.mx/detallista" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="detallista">
 		<xs:annotation>
 			<xs:documentation>Complemento requerido para la emision y recepcion de comprobantes fiscales digitales en el sector Retail</xs:documentation>

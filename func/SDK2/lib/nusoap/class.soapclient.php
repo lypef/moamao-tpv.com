@@ -155,7 +155,7 @@ if(!class_exists('nusoap_client')) {
          * @return	mixed	response from SOAP call, normally an associative array mirroring the structure of the XML response, false for certain fatal errors
          * @access   public
          */
-        function call($operation,$params=array(),$namespace='http://tempuri.org',$soapAction='',$headers=false,$rpcParams=null,$style='rpc',$use='encoded'){
+        function call($operation,$params=array(),$namespace='https://tempuri.org',$soapAction='',$headers=false,$rpcParams=null,$style='rpc',$use='encoded'){
             $this->operation = $operation;
             $this->fault = false;
             $this->setError('');
@@ -253,7 +253,7 @@ if(!class_exists('nusoap_client')) {
                 }
                 $usedNamespaces = array();
                 if ($use == 'encoded') {
-                    $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
+                    $encodingStyle = 'https://schemas.xmlsoap.org/soap/encoding/';
                 } else {
                     $encodingStyle = '';
                 }
@@ -263,7 +263,7 @@ if(!class_exists('nusoap_client')) {
                 if ($use == 'literal') {
                     $this->debug("wrapping RPC request with literal method element");
                     if ($namespace) {
-                        // http://www.ws-i.org/Profiles/BasicProfile-1.1-2004-08-24.html R2735 says rpc/literal accessor elements should not be in a namespace
+                        // https://www.ws-i.org/Profiles/BasicProfile-1.1-2004-08-24.html R2735 says rpc/literal accessor elements should not be in a namespace
                         $payload = "<$nsPrefix:$operation xmlns:$nsPrefix=\"$namespace\">" .
                             $payload .
                             "</$nsPrefix:$operation>";
@@ -784,7 +784,7 @@ if(!class_exists('nusoap_client')) {
                         $paramArrayStr = '';
                         $paramCommentStr = 'void';
                     }
-                    $opData['namespace'] = !isset($opData['namespace']) ? 'http://testuri.com' : $opData['namespace'];
+                    $opData['namespace'] = !isset($opData['namespace']) ? 'https://testuri.com' : $opData['namespace'];
                     $evalStr .= "// $paramCommentStr
 	function " . str_replace('.', '__', $operation) . "($paramStr) {
 		\$params = array($paramArrayStr);

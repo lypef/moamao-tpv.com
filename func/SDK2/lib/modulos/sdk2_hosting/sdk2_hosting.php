@@ -183,7 +183,7 @@ else
 		$pruebas['lib_domdocument'] = 'RECOMENDACION : Requiere libreria DOMDocument en PHP para mejorar la velocidad de timbrado';
 }
 
-$res= file_get_contents("http://pac1.multifacturas.com/pac?wsdl");
+$res= file_get_contents("https://pac1.multifacturas.com/pac?wsdl");
 if(strlen($res)>5000)
 {
 		$pruebas['prueba_servidor'] = 'OK';
@@ -200,8 +200,8 @@ else
     if(file_exists($__mf_constantes__['__MF_SDK_DIR__']."sdk15.php") && file_exists($__mf_constantes__['__MF_SDK_DIR__']."sdk17.php") && file_exists($__mf_constantes__['__MF_SDK_DIR__']."sdk25.php") && file_exists($__mf_constantes__['__MF_SDK_DIR__']."sdk27.php"))
     {
         
-        $cer= file_get_contents("http://app.multifacturas.com/app/pruebas/aaa010101aaa.cer");
-        $key= file_get_contents("http://app.multifacturas.com/app/pruebas/aaa010101aaa.key");
+        $cer= file_get_contents("https://app.multifacturas.com/app/pruebas/aaa010101aaa.cer");
+        $key= file_get_contents("https://app.multifacturas.com/app/pruebas/aaa010101aaa.key");
         file_put_contents($__mf_constantes__['__MF_SDK_DIR__']."certificados/AAA010101AAA.cer",$cer);
         file_put_contents($__mf_constantes__['__MF_SDK_DIR__']."certificados/AAA010101AAA.key",$key);
         //unlink('certificados/AAA010101AAA.cer.pem');

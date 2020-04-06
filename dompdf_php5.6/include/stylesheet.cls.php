@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: stylesheet.cls.php 461 2012-01-26 20:26:02Z fabien.menager $
  */
 
@@ -107,7 +107,7 @@ class Stylesheet {
   /**
    * Accepted CSS media types
    * List of types and parsing rules for future extensions:
-   * http://www.w3.org/TR/REC-html40/types.html
+   * https://www.w3.org/TR/REC-html40/types.html
    *   screen, tty, tv, projection, handheld, print, braille, aural, all
    * The following are non standard extensions for undocumented specific environments.
    *   static, visual, bitmap, paged, dompdf
@@ -285,7 +285,7 @@ class Stylesheet {
     $good_mime_type = true;
     
     if ( !$this->_dompdf->get_quirksmode() ) {
-      // See http://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
+      // See https://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
       if ( isset($http_response_header) ) {
         foreach($http_response_header as $_header) {
           if ( preg_match("@Content-Type:\s*([\w/]+)@i", $_header, $matches) ) {
@@ -308,7 +308,7 @@ class Stylesheet {
   }
 
   /**
-   * @link http://www.w3.org/TR/CSS21/cascade.html#specificity
+   * @link https://www.w3.org/TR/CSS21/cascade.html#specificity
    * 
    * 
    *
@@ -323,7 +323,7 @@ class Stylesheet {
    * @return int
    */
   private function _specificity($selector, $origin = self::ORIG_AUTHOR) {
-    // http://www.w3.org/TR/CSS21/cascade.html#specificity
+    // https://www.w3.org/TR/CSS21/cascade.html#specificity
     // ignoring the ":" pseudoclass modifyers
     // also ignored in _css_selector_to_xpath
 
@@ -1176,7 +1176,7 @@ class Stylesheet {
   
   /**
    * parse @font-face{} sections
-   * http://www.w3.org/TR/css3-fonts/#the-font-face-rule
+   * https://www.w3.org/TR/css3-fonts/#the-font-face-rule
    * 
    * @param string $str CSS @font-face rules
    * @return Style

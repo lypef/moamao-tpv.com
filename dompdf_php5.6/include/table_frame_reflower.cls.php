@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: table_frame_reflower.cls.php 465 2012-01-30 21:58:11Z fabien.menager $
  */
 
@@ -381,7 +381,7 @@ class Table_Frame_Reflower extends Frame_Reflower {
     $frame->position();
 
     // Table layout algorithm:
-    // http://www.w3.org/TR/CSS21/tables.html#auto-table-layout
+    // https://www.w3.org/TR/CSS21/tables.html#auto-table-layout
 
     if ( is_null($this->_state) )
       $this->get_min_max_width();

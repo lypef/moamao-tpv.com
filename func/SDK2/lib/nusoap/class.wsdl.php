@@ -328,7 +328,7 @@ if(!class_exists('wsdl')) {
 							} else {
 								$this->namespaces['ns' . (count($this->namespaces) + 1)] = $v;
 							}
-							if ($v == 'http://www.w3.org/2001/XMLSchema' || $v == 'http://www.w3.org/1999/XMLSchema' || $v == 'http://www.w3.org/2000/10/XMLSchema') {
+							if ($v == 'https://www.w3.org/2001/XMLSchema' || $v == 'https://www.w3.org/1999/XMLSchema' || $v == 'https://www.w3.org/2000/10/XMLSchema') {
 								$this->XMLSchemaVersion = $v;
 								$this->namespaces['xsi'] = $v . '-instance';
 							}
@@ -587,9 +587,9 @@ if(!class_exists('wsdl')) {
 		function getOperations($portName = '', $bindingType = 'soap') {
 			$ops = array();
 			if ($bindingType == 'soap') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap/';
 			} elseif ($bindingType == 'soap12') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap12/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap12/';
 			} else {
 				$this->debug("getOperations bindingType $bindingType may not be supported");
 			}
@@ -627,9 +627,9 @@ if(!class_exists('wsdl')) {
 		function getOperationData($operation, $bindingType = 'soap')
 		{
 			if ($bindingType == 'soap') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap/';
 			} elseif ($bindingType == 'soap12') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap12/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap12/';
 			}
 			// loop thru ports
 			foreach($this->ports as $port => $portData) {
@@ -658,9 +658,9 @@ if(!class_exists('wsdl')) {
 		 */
 		function getOperationDataForSoapAction($soapAction, $bindingType = 'soap') {
 			if ($bindingType == 'soap') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap/';
 			} elseif ($bindingType == 'soap12') {
-				$bindingType = 'http://schemas.xmlsoap.org/wsdl/soap12/';
+				$bindingType = 'https://schemas.xmlsoap.org/wsdl/soap12/';
 			}
 			// loop thru ports
 			foreach($this->ports as $port => $portData) {
@@ -1129,7 +1129,7 @@ if(!class_exists('wsdl')) {
 			$this->appendDebug($this->varDump($opData));
 
 			// Get encoding style for output and set to current
-			$encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
+			$encodingStyle = 'https://schemas.xmlsoap.org/soap/encoding/';
 			if(($direction == 'input') && isset($opData['output']['encodingStyle']) && ($opData['output']['encodingStyle'] != $encodingStyle)) {
 				$encodingStyle = $opData['output']['encodingStyle'];
 				$enc_style = $encodingStyle;
@@ -1231,7 +1231,7 @@ if(!class_exists('wsdl')) {
 			$this->appendDebug($this->varDump($opData));
 
 			// Get encoding style for output and set to current
-			$encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
+			$encodingStyle = 'https://schemas.xmlsoap.org/soap/encoding/';
 			if(($direction == 'input') && isset($opData['output']['encodingStyle']) && ($opData['output']['encodingStyle'] != $encodingStyle)) {
 				$encodingStyle = $opData['output']['encodingStyle'];
 				$enc_style = $encodingStyle;
@@ -1340,7 +1340,7 @@ if(!class_exists('wsdl')) {
 					$this->debug("in serializeType: expanded prefixed type: $uqType, $ns");
 				}
 
-				if($ns == $this->XMLSchemaVersion || $ns == 'http://schemas.xmlsoap.org/soap/encoding/'){
+				if($ns == $this->XMLSchemaVersion || $ns == 'https://schemas.xmlsoap.org/soap/encoding/'){
 					$this->debug('in serializeType: type namespace indicates XML Schema or SOAP Encoding type');
 					if ($unqualified && $use == 'literal') {
 						$elementNS = " xmlns=\"\"";
@@ -1392,16 +1392,16 @@ if(!class_exists('wsdl')) {
 						return $xml;
 					}
 					$this->debug('custom type extends XML Schema or SOAP Encoding namespace (yuck)');
-				} else if ($ns == 'http://xml.apache.org/xml-soap') {
+				} else if ($ns == 'https://xml.apache.org/xml-soap') {
 					$this->debug('in serializeType: appears to be Apache SOAP type');
 					if ($uqType == 'Map') {
-						$tt_prefix = $this->getPrefixFromNamespace('http://xml.apache.org/xml-soap');
+						$tt_prefix = $this->getPrefixFromNamespace('https://xml.apache.org/xml-soap');
 						if (! $tt_prefix) {
 							$this->debug('in serializeType: Add namespace for Apache SOAP type');
 							$tt_prefix = 'ns' . rand(1000, 9999);
-							$this->namespaces[$tt_prefix] = 'http://xml.apache.org/xml-soap';
+							$this->namespaces[$tt_prefix] = 'https://xml.apache.org/xml-soap';
 							// force this to be added to usedNamespaces
-							$tt_prefix = $this->getPrefixFromNamespace('http://xml.apache.org/xml-soap');
+							$tt_prefix = $this->getPrefixFromNamespace('https://xml.apache.org/xml-soap');
 						}
 						$contents = '';
 						foreach($value as $k => $v) {
@@ -1525,9 +1525,9 @@ if(!class_exists('wsdl')) {
 						$xml = "<$name$elementNS/>";
 					} else {
 						$xml = "<$name$elementNS xsi:nil=\"true\" xsi:type=\"" .
-							$this->getPrefixFromNamespace('http://schemas.xmlsoap.org/soap/encoding/') .
+							$this->getPrefixFromNamespace('https://schemas.xmlsoap.org/soap/encoding/') .
 							":Array\" " .
-							$this->getPrefixFromNamespace('http://schemas.xmlsoap.org/soap/encoding/') .
+							$this->getPrefixFromNamespace('https://schemas.xmlsoap.org/soap/encoding/') .
 							':arrayType="' .
 							$this->getPrefixFromNamespace($this->getPrefix($typeDef['arrayType'])) .
 							':' .
@@ -1552,7 +1552,7 @@ if(!class_exists('wsdl')) {
 					foreach($value as $k => $v) {
 						$this->debug("serializing array element: $k, $v of type: $typeDef[arrayType]");
 						//if (strpos($typeDef['arrayType'], ':') ) {
-						if (!in_array($typeDef['arrayType'],$this->typemap['http://www.w3.org/2001/XMLSchema'])) {
+						if (!in_array($typeDef['arrayType'],$this->typemap['https://www.w3.org/2001/XMLSchema'])) {
 							$contents .= $this->serializeType('item', $typeDef['arrayType'], $v, $use);
 						} else {
 							$contents .= $this->serialize_val($v, 'item', $typeDef['arrayType'], null, $this->XMLSchemaVersion, false, $use);
@@ -1569,8 +1569,8 @@ if(!class_exists('wsdl')) {
 						.$contents
 						."</$name>";
 				} else {
-					$xml = "<$name$elementNS xsi:type=\"".$this->getPrefixFromNamespace('http://schemas.xmlsoap.org/soap/encoding/').':Array" '.
-						$this->getPrefixFromNamespace('http://schemas.xmlsoap.org/soap/encoding/')
+					$xml = "<$name$elementNS xsi:type=\"".$this->getPrefixFromNamespace('https://schemas.xmlsoap.org/soap/encoding/').':Array" '.
+						$this->getPrefixFromNamespace('https://schemas.xmlsoap.org/soap/encoding/')
 						.':arrayType="'
 						.$this->getPrefixFromNamespace($this->getPrefix($typeDef['arrayType']))
 						.":".$this->getLocalPart($typeDef['arrayType'])."[$rows$cols]\">"
@@ -1775,7 +1775,7 @@ if(!class_exists('wsdl')) {
 		 * @param string $typeClass (complexType|simpleType|attribute)
 		 * @param string $phpType currently supported are array and struct (php assoc array)
 		 * @param string $compositor (all|sequence|choice)
-		 * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+		 * @param string $restrictionBase namespace:name (https://schemas.xmlsoap.org/soap/encoding/:Array)
 		 * @param array $elements e.g. array ( name => array(name=>'',type=>'') )
 		 * @param array $attrs e.g. array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'xsd:string[]'))
 		 * @param string $arrayType as namespace:name (xsd:string)
@@ -1822,7 +1822,7 @@ if(!class_exists('wsdl')) {
 		 * adds an XML Schema simple type to the WSDL types
 		 *
 		 * @param string $name
-		 * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+		 * @param string $restrictionBase namespace:name (https://schemas.xmlsoap.org/soap/encoding/:Array)
 		 * @param string $typeClass (should always be simpleType)
 		 * @param string $phpType (should always be scalar)
 		 * @param array $enumeration array of values
@@ -1859,12 +1859,12 @@ if(!class_exists('wsdl')) {
 		 * @param string $style (rpc|document) optional The style for the operation Note: when 'document' is specified, parameter and return wrappers are created for you automatically
 		 * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
 		 * @param string $documentation optional The description to include in the WSDL
-		 * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+		 * @param string $encodingStyle optional (usually 'https://schemas.xmlsoap.org/soap/encoding/' for encoded)
 		 * @access public
 		 */
 		function addOperation($name, $in = false, $out = false, $namespace = false, $soapaction = false, $style = 'rpc', $use = 'encoded', $documentation = '', $encodingStyle = ''){
 			if ($use == 'encoded' && $encodingStyle == '') {
-				$encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
+				$encodingStyle = 'https://schemas.xmlsoap.org/soap/encoding/';
 			}
 
 			if ($style == 'document') {
@@ -1906,7 +1906,7 @@ if(!class_exists('wsdl')) {
 						'message' => $name . 'Response',
 						'parts' => $out),
 					'namespace' => $namespace,
-					'transport' => 'http://schemas.xmlsoap.org/soap/http',
+					'transport' => 'https://schemas.xmlsoap.org/soap/http',
 					'documentation' => $documentation);
 			// add portTypes
 			// add messages

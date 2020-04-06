@@ -43,21 +43,21 @@ use Exception;
  *
  * @author    Robert Richards <rrichards@cdatazone.org>
  * @copyright 2007-2017 Robert Richards <rrichards@cdatazone.org>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license   https://www.opensource.org/licenses/bsd-license.php  BSD License
  */
 
 class XMLSecEnc
 {
-    const template = "<xenc:EncryptedData xmlns:xenc='http://www.w3.org/2001/04/xmlenc#'>
+    const template = "<xenc:EncryptedData xmlns:xenc='https://www.w3.org/2001/04/xmlenc#'>
    <xenc:CipherData>
       <xenc:CipherValue></xenc:CipherValue>
    </xenc:CipherData>
 </xenc:EncryptedData>";
 
-    const Element = 'http://www.w3.org/2001/04/xmlenc#Element';
-    const Content = 'http://www.w3.org/2001/04/xmlenc#Content';
+    const Element = 'https://www.w3.org/2001/04/xmlenc#Element';
+    const Content = 'https://www.w3.org/2001/04/xmlenc#Content';
     const URI = 3;
-    const XMLENCNS = 'http://www.w3.org/2001/04/xmlenc#';
+    const XMLENCNS = 'https://www.w3.org/2001/04/xmlenc#';
 
     /** @var null|DOMDocument */
     private $encdoc = null;
@@ -309,7 +309,7 @@ class XMLSecEnc
         $root = $this->encdoc->documentElement;
         $encKey = $this->encdoc->createElementNS(self::XMLENCNS, 'xenc:EncryptedKey');
         if ($append) {
-            $keyInfo = $root->insertBefore($this->encdoc->createElementNS('http://www.w3.org/2000/09/xmldsig#', 'dsig:KeyInfo'), $root->firstChild);
+            $keyInfo = $root->insertBefore($this->encdoc->createElementNS('https://www.w3.org/2000/09/xmldsig#', 'dsig:KeyInfo'), $root->firstChild);
             $keyInfo->appendChild($encKey);
         } else {
             $this->encKey = $encKey;
@@ -317,8 +317,8 @@ class XMLSecEnc
         $encMethod = $encKey->appendChild($this->encdoc->createElementNS(self::XMLENCNS, 'xenc:EncryptionMethod'));
         $encMethod->setAttribute('Algorithm', $srcKey->getAlgorith());
         if (! empty($srcKey->name)) {
-            $keyInfo = $encKey->appendChild($this->encdoc->createElementNS('http://www.w3.org/2000/09/xmldsig#', 'dsig:KeyInfo'));
-            $keyInfo->appendChild($this->encdoc->createElementNS('http://www.w3.org/2000/09/xmldsig#', 'dsig:KeyName', $srcKey->name));
+            $keyInfo = $encKey->appendChild($this->encdoc->createElementNS('https://www.w3.org/2000/09/xmldsig#', 'dsig:KeyInfo'));
+            $keyInfo->appendChild($this->encdoc->createElementNS('https://www.w3.org/2000/09/xmldsig#', 'dsig:KeyName', $srcKey->name));
         }
         $cipherData = $encKey->appendChild($this->encdoc->createElementNS(self::XMLENCNS, 'xenc:CipherData'));
         $cipherData->appendChild($this->encdoc->createElementNS(self::XMLENCNS, 'xenc:CipherValue', $strEncKey));
@@ -459,7 +459,7 @@ class XMLSecEnc
                     break;
                 case 'RetrievalMethod':
                     $type = $child->getAttribute('Type');
-                    if ($type !== 'http://www.w3.org/2001/04/xmlenc#EncryptedKey') {
+                    if ($type !== 'https://www.w3.org/2001/04/xmlenc#EncryptedKey') {
                         /* Unsupported key type. */
                         break;
                     }

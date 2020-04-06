@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @link    https://www.dompdf.com/
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: javascript_embedder.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 

@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: text_frame_reflower.cls.php 462 2012-01-29 22:44:23Z fabien.menager $
  */
 
@@ -171,7 +171,7 @@ class Text_Frame_Reflower extends Frame_Reflower {
     $add_line = false;
 
     // Handle text transform:
-    // http://www.w3.org/TR/CSS21/text.html#propdef-text-transform
+    // https://www.w3.org/TR/CSS21/text.html#propdef-text-transform
     switch (strtolower($style->text_transform)) {
       default: break;
       case "capitalize": $text = mb_convert_case($text, MB_CASE_TITLE); break;
@@ -180,7 +180,7 @@ class Text_Frame_Reflower extends Frame_Reflower {
     }
     
     // Handle white-space property:
-    // http://www.w3.org/TR/CSS21/text.html#propdef-white-space
+    // https://www.w3.org/TR/CSS21/text.html#propdef-white-space
     switch ($style->white_space) {
 
     default:

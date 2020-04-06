@@ -225,7 +225,7 @@ class DeclarationBlock extends RuleSet {
 		if (!isset($aRules['font']))
 			return;
 		$oRule = $aRules['font'];
-		// reset properties to 'normal' per http://www.w3.org/TR/21/fonts.html#font-shorthand
+		// reset properties to 'normal' per https://www.w3.org/TR/21/fonts.html#font-shorthand
 		$aFontProperties = array(
 			'font-style' => 'normal',
 			'font-variant' => 'normal',
@@ -283,7 +283,7 @@ class DeclarationBlock extends RuleSet {
 	 * Convert shorthand background declarations
 	 * (e.g. <tt>background: url("chess.png") gray 50% repeat fixed;</tt>)
 	 * into their constituent parts.
-	 * @see http://www.w3.org/TR/21/colors.html#propdef-background
+	 * @see https://www.w3.org/TR/21/colors.html#propdef-background
 	 * */
 
 	public function expandBackgroundShorthand() {

@@ -36,16 +36,16 @@ $datos['ruta_xml'] = 'ejemplo_generarxml.xml';
 $datos['modulo'] = 'generaxml';
 $datos['prefijos'] = array(
     'xsi' => array(
-        'xmlns' => 'http://www.w3.org/2001/XMLSchema-instance',
+        'xmlns' => 'https://www.w3.org/2001/XMLSchema-instance',
         'schemaURI' => ''
     ),
 	'cfdi' => array(
-		'xmlns' => 'http://www.sat.gob.mx/cfd/3',
-		'schemaURI' => 'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd'
+		'xmlns' => 'https://www.sat.gob.mx/cfd/3',
+		'schemaURI' => 'https://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd'
 	),
     'nomina' => array(
-        'xmlns' => 'http://www.sat.gob.mx/nomina',
-        'schemaURI' => 'http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina11.xsd'
+        'xmlns' => 'https://www.sat.gob.mx/nomina',
+        'schemaURI' => 'https://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina11.xsd'
     )
 );
 

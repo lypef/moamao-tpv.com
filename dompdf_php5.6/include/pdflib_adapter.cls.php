@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: pdflib_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
@@ -18,7 +18,7 @@
  * The coordinate origin is in the top left corner and y values
  * increase downwards.
  *
- * See {@link http://www.pdflib.com/} for more complete documentation
+ * See {@link https://www.pdflib.com/} for more complete documentation
  * on the underlying PDFlib functions.
  *
  * @package dompdf
@@ -512,7 +512,7 @@ class PDFLib_Adapter implements Canvas {
   
   function set_default_view($view, $options = array()) {
     // TODO
-    // http://www.pdflib.com/fileadmin/pdflib/pdf/manuals/PDFlib-8.0.2-API-reference.pdf
+    // https://www.pdflib.com/fileadmin/pdflib/pdf/manuals/PDFlib-8.0.2-API-reference.pdf
     /**
      * fitheight Fit the page height to the window, with the x coordinate left at the left edge of the window.
      * fitrect Fit the rectangle specified by left, bottom, right, and top to the window.

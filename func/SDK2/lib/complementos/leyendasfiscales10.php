@@ -4,8 +4,8 @@ function mf_complemento_leyendasfiscales10($datos)
 {
 	// Variable para los namespaces xml
 	global $__mf_namespaces__;
-	$__mf_namespaces__['leyendasFiscales']['uri'] = 'http://www.sat.gob.mx/leyendasFiscales';
-	$__mf_namespaces__['leyendasFiscales']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/leyendasFiscales/leyendasFisc.xsd';
+	$__mf_namespaces__['leyendasFiscales']['uri'] = 'https://www.sat.gob.mx/leyendasFiscales';
+	$__mf_namespaces__['leyendasFiscales']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/leyendasFiscales/leyendasFisc.xsd';
 
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<leyendasFisc:LeyendasFiscales version='1.0' $atrs>";

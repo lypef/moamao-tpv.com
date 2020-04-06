@@ -1,11 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: functions.inc.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
@@ -125,7 +125,7 @@ function build_url($protocol, $host, $base_path, $url) {
 
   $ret = $protocol;
 
-  if (!in_array(mb_strtolower($protocol), array("http://", "https://", "ftp://", "ftps://"))) {
+  if (!in_array(mb_strtolower($protocol), array("https://", "https://", "ftp://", "ftps://"))) {
     //On Windows local file, an abs path can begin also with a '\' or a drive letter and colon
     //drive: followed by a relative path would be a drive specific default folder.
     //not known in php app code, treat as abs path
@@ -226,7 +226,7 @@ function explode_url($url) {
 
     } else {
       // generate a url to access the file if no real path found.
-      $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+      $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'https://';
 
       $host = isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : php_uname("n");
 
@@ -292,7 +292,7 @@ function is_percent($value) { return false !== mb_strpos($value, "%"); }
 
 /**
  * Parses a data URI scheme
- * http://en.wikipedia.org/wiki/Data_URI_scheme
+ * https://en.wikipedia.org/wiki/Data_URI_scheme
  * @param string $data_uri The data URI to parse
  * @return array The result with charset, mime type and decoded data
  */
@@ -406,7 +406,7 @@ if ( !function_exists("mb_strlen") ) {
 
 /** 
  * Decoder for RLE8 compression in windows bitmaps
- * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
+ * https://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
  */
 function rle8_decode ($str, $width){
   $lineWidth = $width + (3 - ($width-1) % 4);
@@ -446,7 +446,7 @@ function rle8_decode ($str, $width){
 
 /** 
  * Decoder for RLE4 compression in windows bitmaps
- * see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
+ * see https://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
  */
 function rle4_decode ($str, $width) {
   $w = floor($width/2) + ($width % 2);
@@ -504,7 +504,7 @@ if ( !function_exists("imagecreatefrombmp") ) {
 
 /**
  * Credit goes to mgutt 
- * http://www.programmierer-forum.de/function-imagecreatefrombmp-welche-variante-laeuft-t143137.htm
+ * https://www.programmierer-forum.de/function-imagecreatefrombmp-welche-variante-laeuft-t143137.htm
  * Modified by Fabien Menager to support RGB555 BMP format
  */
 function imagecreatefrombmp($filename) {
@@ -752,7 +752,7 @@ if ( !function_exists("date_default_timezone_get") ) {
  * later.  Without this function, errors are displayed immediately and
  * PDF streaming is impossible.
  *
- * @see http://www.php.net/manual/en/function.set-error_handler.php
+ * @see https://www.php.net/manual/en/function.set-error_handler.php
  *
  * @param int $errno
  * @param string $errstr
@@ -868,7 +868,7 @@ if ( !function_exists('sys_get_temp_dir')) {
 /**
  * Find the current system temporary directory
  *
- * @link http://us.php.net/manual/en/function.sys-get-temp-dir.php#85261
+ * @link https://us.php.net/manual/en/function.sys-get-temp-dir.php#85261
  */
 function sys_get_temp_dir() {
   if (!empty($_ENV['TMP'])) { return realpath($_ENV['TMP']); }

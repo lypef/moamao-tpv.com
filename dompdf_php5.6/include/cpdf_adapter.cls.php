@@ -1,12 +1,12 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Orion Richardson <orionr@yahoo.com>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: cpdf_adapter.cls.php 466 2012-02-04 13:08:38Z fabien.menager $
  */
 
@@ -23,7 +23,7 @@ require_once(DOMPDF_LIB_DIR . "/class.pdf.php");
  * coordinate origin is in the top left corner, and y values increase
  * downwards.
  *
- * See {@link http://www.ros.co.nz/pdf/} for more complete documentation
+ * See {@link https://www.ros.co.nz/pdf/} for more complete documentation
  * on the underlying {@link Cpdf} class.
  *
  * @package dompdf

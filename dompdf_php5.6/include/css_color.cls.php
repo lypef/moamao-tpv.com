@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: css_color.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
@@ -207,7 +207,7 @@ class CSS_Color {
       return self::getArray(vsprintf("%02X%02X%02X", $triplet));
     
     // cmyk( c,m,y,k ) format
-    // http://www.w3.org/TR/css3-gcpm/#cmyk-colors
+    // https://www.w3.org/TR/css3-gcpm/#cmyk-colors
     } else if ( mb_strpos($colour, "cmyk") !== false ) {
       $i = mb_strpos($colour, "(");
       $j = mb_strpos($colour, ")");

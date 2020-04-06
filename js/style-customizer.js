@@ -12,9 +12,9 @@
 /*
 
 Template:  Theme Name
-Author: http://bootexperts.com/
+Author: https://bootexperts.com/
 Version: 1
-Design and Developed by: http://bootexperts.com/
+Design and Developed by: https://bootexperts.com/
 
 NOTE: This is js of style customizer, This file Change the styling of color, 
 backgrond patterns, Background images and box layout of the actual Template. 

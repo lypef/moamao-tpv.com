@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: frame_reflower.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
@@ -43,7 +43,7 @@ abstract class Frame_Reflower {
 
   /**
    * Collapse frames margins
-   * http://www.w3.org/TR/CSS2/box.html#collapsing-margins
+   * https://www.w3.org/TR/CSS2/box.html#collapsing-margins
    */
   protected function _collapse_margins() {
     $frame = $this->_frame;
@@ -303,7 +303,7 @@ abstract class Frame_Reflower {
         $match[1] = mb_strtolower(trim($match[1]));
 
         // Handle counter() references:
-        // http://www.w3.org/TR/CSS21/generate.html#content
+        // https://www.w3.org/TR/CSS21/generate.html#content
 
         $i = mb_strpos($match[1], ")");
         if ( $i === false )

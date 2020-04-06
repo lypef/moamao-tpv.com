@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:terceros="http://www.sat.gob.mx/terceros" targetNamespace="http://www.sat.gob.mx/terceros" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:terceros="https://www.sat.gob.mx/terceros" targetNamespace="https://www.sat.gob.mx/terceros" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="PorCuentadeTerceros">
 		<xs:annotation>
 			<xs:documentation> Complemento concepto para la emisión de Comprobante Fiscal Digital (CFD) y Comprobante Fiscal Digital a través de Internet (CFDI) por orden y cuenta de terceros.</xs:documentation>

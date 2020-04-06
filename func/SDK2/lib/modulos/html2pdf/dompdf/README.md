@@ -9,7 +9,7 @@ Dompdf
  
 **Dompdf is an HTML to PDF converter**
 
-At its heart, dompdf is (mostly) a [CSS 2.1](http://www.w3.org/TR/CSS2/) compliant
+At its heart, dompdf is (mostly) a [CSS 2.1](https://www.w3.org/TR/CSS2/) compliant
 HTML layout and rendering engine written in PHP. It is a style-driven renderer:
 it will download and read external stylesheets, inline style tags, and the style
 attributes of individual HTML elements. It also supports most presentational
@@ -21,11 +21,11 @@ release. For released code please
 
 ----
 
-**Check out the [demo](http://pxd.me/dompdf/www/examples.php) and ask any
-question on [StackOverflow](http://stackoverflow.com/questions/tagged/dompdf) or
-on the [Google Groups](http://groups.google.com/group/dompdf).**
+**Check out the [demo](https://pxd.me/dompdf/www/examples.php) and ask any
+question on [StackOverflow](https://stackoverflow.com/questions/tagged/dompdf) or
+on the [Google Groups](https://groups.google.com/group/dompdf).**
 
-Follow us on [![Twitter](http://twitter-badges.s3.amazonaws.com/twitter-a.png)](http://www.twitter.com/dompdf) or 
+Follow us on [![Twitter](https://twitter-badges.s3.amazonaws.com/twitter-a.png)](https://www.twitter.com/dompdf) or 
 [![Follow us on Google+](https://ssl.gstatic.com/images/icons/gplus-16.png)](https://plus.google.com/108710008521858993320?prsrc=3).
 
 ---
@@ -74,7 +74,7 @@ reference in CSS @font-face rules. See the
 [font overview](https://github.com/dompdf/dompdf/wiki/About-Fonts-and-Character-Encoding)
 for more information on how to use fonts.
 
-The [DejaVu TrueType fonts](http://dejavu-fonts.org) have been pre-installed
+The [DejaVu TrueType fonts](https://dejavu-fonts.org) have been pre-installed
 to give dompdf decent Unicode character coverage by default. To use the DejaVu
 fonts reference the font in your stylesheet, e.g. `body { font-family: DejaVu
 Sans; }` (for DejaVu Sans). The following DejaVu 2.34 fonts are available:
@@ -95,7 +95,7 @@ Make sure that the autoload file from Composer is loaded.
 
 ```php
 // somewhere early in your project's loading, require the Composer autoloader
-// see: http://getcomposer.org/doc/00-intro.md
+// see: https://getcomposer.org/doc/00-intro.md
 require 'vendor/autoload.php';
 
 ```
@@ -107,7 +107,7 @@ will reside
  * You can download stable copies of dompdf from
    https://github.com/dompdf/dompdf/releases
  * Or download a nightly (the latest, unreleased code) from
-   http://eclecticgeek.com/dompdf
+   https://eclecticgeek.com/dompdf
 
 Require dompdf, libraries, and helper functions in your PHP:
 
@@ -195,13 +195,13 @@ See [Dompdf\Options](src/Options.php) for a list of available options.
    any unexpected rendering issues you should either enable the built-in HTML5
    parser at runtime (`$dompdf->set_option('isHtml5ParserEnabled', true);`) 
    or run your HTML through a HTML validator/cleaner (such as
-   [Tidy](http://tidy.sourceforge.net) or the
-   [W3C Markup Validation Service](http://validator.w3.org)).
+   [Tidy](https://tidy.sourceforge.net) or the
+   [W3C Markup Validation Service](https://validator.w3.org)).
  * Large files or large tables can take a while to render.
  * CSS float is in development and may not produce the desired result
 
 ---
 
-[![Donate button](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](http://goo.gl/DSvWf)
+[![Donate button](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://goo.gl/DSvWf)
 
 *If you find this project useful, please consider making a donation. Any funds donated will be used to help further development on this project.)*

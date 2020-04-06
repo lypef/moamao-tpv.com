@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:aieps="http://www.sat.gob.mx/acreditamiento" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/acreditamiento" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:aieps="https://www.sat.gob.mx/acreditamiento" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/acreditamiento" elementFormDefault="qualified" attributeFormDefault="unqualified">
 <xs:element name="acreditamientoIEPS">
   <xs:annotation>
     <xs:documentation>Nodo requerido para expresar los detalles de la descripción del concepto para efectos de poder determinar el monto del estímulo aplicable.</xs:documentation>

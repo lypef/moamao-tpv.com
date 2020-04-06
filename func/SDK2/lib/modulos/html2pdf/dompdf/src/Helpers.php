@@ -67,7 +67,7 @@ class Helpers
 
         $ret = $protocol;
 
-        if (!in_array(mb_strtolower($protocol), array("http://", "https://", "ftp://", "ftps://"))) {
+        if (!in_array(mb_strtolower($protocol), array("https://", "https://", "ftp://", "ftps://"))) {
             //On Windows local file, an abs path can begin also with a '\' or a drive letter and colon
             //drive: followed by a relative path would be a drive specific default folder.
             //not known in php app code, treat as abs path
@@ -154,7 +154,7 @@ class Helpers
 
     /**
      * Parses a data URI scheme
-     * http://en.wikipedia.org/wiki/Data_URI_scheme
+     * https://en.wikipedia.org/wiki/Data_URI_scheme
      *
      * @param string $data_uri The data URI to parse
      *
@@ -178,7 +178,7 @@ class Helpers
 
     /**
      * Decoder for RLE8 compression in windows bitmaps
-     * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
+     * https://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
      *
      * @param string $str Data to decode
      * @param integer $width Image width
@@ -224,7 +224,7 @@ class Helpers
 
     /**
      * Decoder for RLE4 compression in windows bitmaps
-     * see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
+     * see https://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/bitmaps_6x0u.asp
      *
      * @param string $str Data to decode
      * @param integer $width Image width
@@ -377,7 +377,7 @@ class Helpers
 
             } else {
                 // generate a url to access the file if no real path found.
-                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'https://';
 
                 $host = isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : php_uname("n");
 
@@ -420,7 +420,7 @@ class Helpers
      * and CSS loader ({@link Stylesheet}) to be captured and displayed
      * later.  Without this function, errors are displayed immediately and
      * PDF streaming is impossible.
-     * @see http://www.php.net/manual/en/function.set-error_handler.php
+     * @see https://www.php.net/manual/en/function.set-error_handler.php
      *
      * @param int $errno
      * @param string $errstr
@@ -554,7 +554,7 @@ class Helpers
 
     /**
      * Credit goes to mgutt
-     * http://www.programmierer-forum.de/function-imagecreatefrombmp-welche-variante-laeuft-t143137.htm
+     * https://www.programmierer-forum.de/function-imagecreatefrombmp-welche-variante-laeuft-t143137.htm
      * Modified by Fabien Menager to support RGB555 BMP format
      */
     public static function imagecreatefrombmp($filename, $context = null)

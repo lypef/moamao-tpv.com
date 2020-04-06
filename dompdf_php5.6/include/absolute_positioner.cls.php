@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: absolute_positioner.cls.php 460 2012-01-26 07:17:46Z fabien.menager $
  */
 
@@ -29,7 +29,7 @@ class Absolute_Positioner extends Positioner {
     $left   = $style->length_in_pt($style->left,   $w);
     
     if ( $p && !($left === "auto" && $right === "auto") ) {
-      // Get the parent's padding box (see http://www.w3.org/TR/CSS21/visuren.html#propdef-top)
+      // Get the parent's padding box (see https://www.w3.org/TR/CSS21/visuren.html#propdef-top)
       list($x, $y, $w, $h) = $p->get_padding_box();
     }
     

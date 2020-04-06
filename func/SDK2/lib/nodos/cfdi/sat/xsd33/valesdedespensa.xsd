@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2010 rel. 3 (x64) (http://www.altova.com) by SAT (SAT) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:valesdedespensa="http://www.sat.gob.mx/valesdedespensa" targetNamespace="http://www.sat.gob.mx/valesdedespensa" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2010 rel. 3 (x64) (https://www.altova.com) by SAT (SAT) -->
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:valesdedespensa="https://www.sat.gob.mx/valesdedespensa" targetNamespace="https://www.sat.gob.mx/valesdedespensa" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="ValesDeDespensa">
 		<xs:annotation>
 			<xs:documentation>Complemento al Comprobante Fiscal Digital por Internet (CFDI) para integrar la información emitida por un prestador de servicios de monedero electrónico de vales de despensa.</xs:documentation>

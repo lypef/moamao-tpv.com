@@ -4,8 +4,8 @@ function mf_complemento_ecc11($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['ecc11']['uri'] = 'http://www.sat.gob.mx/EstadoDeCuentaCombustible';
-    $__mf_namespaces__['ecc11']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/EstadoDeCuentaCombustible/ecc11.xsd';
+    $__mf_namespaces__['ecc11']['uri'] = 'https://www.sat.gob.mx/EstadoDeCuentaCombustible';
+    $__mf_namespaces__['ecc11']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/EstadoDeCuentaCombustible/ecc11.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<ecc11:EstadoDeCuentaCombustible Version='1.1' $atrs>";

@@ -1,6 +1,6 @@
 /*
  * CSS Reset based on code from 
- * http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
+ * https://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
  * 
  * Earlier copy stated:
  * "If you want to use my reset styles, then feel free! It's all 
@@ -58,7 +58,7 @@ blockquote, q {
 /* 
  * Added 2009/02/04 to fix IE7's issue with interpolated 
  * scaling not turned on by default.  Based on an idea from
- * http://acidmartin.wordpress.com/2009/01/05/better-image-scaling-and-resampling-in-internet-explorer/
+ * https://acidmartin.wordpress.com/2009/01/05/better-image-scaling-and-resampling-in-internet-explorer/
  */
 img
 {

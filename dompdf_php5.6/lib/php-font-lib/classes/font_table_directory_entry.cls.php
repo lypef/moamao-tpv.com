@@ -1,9 +1,9 @@
 <?php
 /**
  * @package php-font-lib
- * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @link    https://php-font-lib.googlecode.com/
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: font_table_directory_entry.cls.php 38 2011-11-07 17:09:59Z fabien.menager $
  */
 

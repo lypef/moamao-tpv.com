@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: block_frame_reflower.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
  */
 
@@ -27,7 +27,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
 
   /**
    *  Calculate the ideal used value for the width property as per:
-   *  http://www.w3.org/TR/CSS21/visudet.html#Computing_widths_and_margins
+   *  https://www.w3.org/TR/CSS21/visudet.html#Computing_widths_and_margins
    *  
    *  @param float $width
    *  @return array
@@ -75,7 +75,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
       if ( $absolute ) {
 
         // resolve auto properties: see
-        // http://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-width
+        // https://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-width
 
         if ( $width === "auto" && $left === "auto" && $right === "auto" ) {
 
@@ -233,7 +233,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
 
     if ( $frame->is_absolute() ) {
 
-      // see http://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-height
+      // see https://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-height
 
       $dims = array($top !== "auto" ? $top : 0,
                     $style->margin_top !== "auto" ? $style->margin_top : 0,
@@ -391,7 +391,7 @@ class Block_Frame_Reflower extends Frame_Reflower {
 
   /**
    * Adjust the justification of each of our lines.
-   * http://www.w3.org/TR/CSS21/text.html#propdef-text-align
+   * https://www.w3.org/TR/CSS21/text.html#propdef-text-align
    */
   protected function _text_align() {
     $style = $this->_frame->get_style();

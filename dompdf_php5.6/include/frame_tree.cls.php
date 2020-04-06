@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: frame_tree.cls.php 464 2012-01-30 20:44:53Z fabien.menager $
  */
 
@@ -31,7 +31,7 @@ class Frame_Tree {
   /**
    * The main DomDocument
    *
-   * @see http://ca2.php.net/manual/en/ref.dom.php
+   * @see https://ca2.php.net/manual/en/ref.dom.php
    * @var DomDocument
    */
   protected $_dom;

@@ -100,8 +100,8 @@ function mf_nodo_retencion($datos,$produccion='NO')
     // Dividendos
     if(isset($datos['dividendos']))
     {
-        $ns_dividendos = 'xmlns:dividendos="http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos"';
-        $sl_dividendos = "http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd ";
+        $ns_dividendos = 'xmlns:dividendos="https://www.sat.gob.mx/esquemas/retencionpago/1/dividendos"';
+        $sl_dividendos = "https://www.sat.gob.mx/esquemas/retencionpago/1/dividendos https://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd ";
 
         $datosDividendos = $datos['dividendos'];
         $nodoDividendos = '<dividendos:Dividendos Version="1.0">';
@@ -131,7 +131,7 @@ function mf_nodo_retencion($datos,$produccion='NO')
         $datos['factura']['Cert'] = $certificado;
         $datosRetencion = $datos['factura'];
         $atrsRetenciones = 'Version=\'1.0\' ' . mf_atributos_nodo($datosRetencion, '') . '{SELLO} ';
-        $atrsRetenciones .= "xmlns:retenciones=\"http://www.sat.gob.mx/esquemas/retencionpago/1\" $ns_dividendos xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sat.gob.mx/esquemas/retencionpago/1 http://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd $sl_dividendos\" ";
+        $atrsRetenciones .= "xmlns:retenciones=\"https://www.sat.gob.mx/esquemas/retencionpago/1\" $ns_dividendos xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"https://www.sat.gob.mx/esquemas/retencionpago/1 https://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd $sl_dividendos\" ";
         $nodoRetenciones = "<?xml version=\"1.0\" encoding=\"utf-8\"?><retenciones:Retenciones $atrsRetenciones>";
     }
 

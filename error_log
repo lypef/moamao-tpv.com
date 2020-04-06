@@ -5947,7 +5947,7 @@
 [06-Oct-2019 20:09:46 America/Mexico_City] PHP Notice:  Undefined variable: cliente in /home/ascgarco/public_html/sale_finaly_report.php on line 172
 [06-Oct-2019 20:09:46 America/Mexico_City] PHP Notice:  Undefined variable: fecha_ini in /home/ascgarco/public_html/sale_finaly_report.php on line 180
 [06-Oct-2019 20:09:46 America/Mexico_City] PHP Notice:  Undefined variable: body in /home/ascgarco/public_html/func/db.php on line 3508
-[06-Oct-2019 21:16:20 America/Mexico_City] PHP Warning:  file_get_contents(http://www.floatrates.com/daily/mxn.json): failed to open stream: Connection timed out in /home/ascgarco/public_html/func/db.php on line 11125
+[06-Oct-2019 21:16:20 America/Mexico_City] PHP Warning:  file_get_contents(https://www.floatrates.com/daily/mxn.json): failed to open stream: Connection timed out in /home/ascgarco/public_html/func/db.php on line 11125
 [06-Oct-2019 21:16:20 America/Mexico_City] PHP Warning:  Invalid argument supplied for foreach() in /home/ascgarco/public_html/func/db.php on line 11127
 [06-Oct-2019 21:16:20 America/Mexico_City] PHP Notice:  Undefined variable: iva in /home/ascgarco/public_html/sale_finaly_report.php on line 121
 [06-Oct-2019 21:16:20 America/Mexico_City] PHP Notice:  Undefined variable: descuento in /home/ascgarco/public_html/sale_finaly_report.php on line 123

@@ -4,10 +4,10 @@
  * This javascript library contains helper routines to assist with event 
  * handling consinstently among browsers
  *
- * EventHelpers.js v.1.3 available at http://www.useragentman.com/
+ * EventHelpers.js v.1.3 available at https://www.useragentman.com/
  *
  * released under the MIT License:
- *   http://www.opensource.org/licenses/mit-license.php
+ *   https://www.opensource.org/licenses/mit-license.php
  *
  *******************************************************************************/
 var EventHelpers = new function(){
@@ -38,8 +38,8 @@ var EventHelpers = new function(){
      * me.addEvent(docunent, "keydown", keyPressedFunc);
      * me.addEvent(document, "keyup", keyPressFunc);
      *
-     * @author Scott Andrew - http://www.scottandrew.com/weblog/articles/cbs-events
-     * @author John Resig - http://ejohn.org/projects/flexible-javascript-events/
+     * @author Scott Andrew - https://www.scottandrew.com/weblog/articles/cbs-events
+     * @author John Resig - https://ejohn.org/projects/flexible-javascript-events/
      * @param {Object} obj - a javascript object.
      * @param {String} evType - an event to attach to the object.
      * @param {Function} fn - the function that is attached to the event.
@@ -61,8 +61,8 @@ var EventHelpers = new function(){
     /**
      * Removes an event that is attached to a javascript object.
      *
-     * @author Scott Andrew - http://www.scottandrew.com/weblog/articles/cbs-events
-     * @author John Resig - http://ejohn.org/projects/flexible-javascript-events/	 * @param {Object} obj - a javascript object.
+     * @author Scott Andrew - https://www.scottandrew.com/weblog/articles/cbs-events
+     * @author John Resig - https://ejohn.org/projects/flexible-javascript-events/	 * @param {Object} obj - a javascript object.
      * @param {String} evType - an event attached to the object.
      * @param {Function} fn - the function that is called when the event fires.
      */
@@ -273,7 +273,7 @@ var EventHelpers = new function(){
      *   ....
      *  }
      *
-     * @author This code is based off of code from http://dean.edwards.name/weblog/2005/09/busted/ by Dean
+     * @author This code is based off of code from https://dean.edwards.name/weblog/2005/09/busted/ by Dean
      * Edwards, with a modification by me.
      *
      * @param {String} funcName - a string containing the function to be called.
@@ -382,8 +382,8 @@ var EventHelpers = new function(){
 	
 	/* 
 	 * Fires an event manually.
-	 * @author Scott Andrew - http://www.scottandrew.com/weblog/articles/cbs-events
-	 * @author John Resig - http://ejohn.org/projects/flexible-javascript-events/	 * @param {Object} obj - a javascript object.
+	 * @author Scott Andrew - https://www.scottandrew.com/weblog/articles/cbs-events
+	 * @author John Resig - https://ejohn.org/projects/flexible-javascript-events/	 * @param {Object} obj - a javascript object.
 	 * @param {String} evType - an event attached to the object.
 	 * @param {Function} fn - the function that is called when the event fires.
 	 * 

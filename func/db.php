@@ -1898,7 +1898,7 @@
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
-			$fb_share = 'http://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
+			$fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
 			
 			// Add hijos
 			$stock = $row[1];
@@ -3330,7 +3330,7 @@
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
-			$fb_share = 'http://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
+			$fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
 			
 			// Add hijos
 			$stock = $row[1];
@@ -3525,7 +3525,7 @@
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
-			$fb_share = 'http://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
+			$fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
 			
 			// Add hijos
 			$stock = $row[1];
@@ -3719,7 +3719,7 @@
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
-	        $fb_share = 'http://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
+	        $fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
 	        
 			// Add hijos
 			$stock = $row[1];
@@ -4055,11 +4055,11 @@
 			
 			if (empty($desc)){$desc="Click en la imagen para mas informacion";}
         $body = '
-			<meta property="og:url" content="http://www.ascgar.com/products_detail_nosesion.php?id='.$id.'" />
+			<meta property="og:url" content="https://www.ascgar.com/products_detail_nosesion.php?id='.$id.'" />
         <meta property="og:type"  content="article" />
         <meta property="og:title" content="'.$row[0].' $'.$precio.' " />
         <meta property="og:description" content="'.$desc.'" />
-        <meta property="og:image" content="http://www.ascgar.com/images/'.$row[5].'" />
+        <meta property="og:image" content="https://www.ascgar.com/images/'.$row[5].'" />
 			';
 		}
 		return $body;
@@ -11886,7 +11886,7 @@
 	    $correo = str_replace("", ",,", $correo);
 	    
 	    
-        $message = '<center><br>APRECIABLE <b>'.$cliente.'</b>, SE EMITE <b>REMISION</b> DE SU COMPRA, <a href="http://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">VISUALIZAR</a><br><br></center>';
+        $message = '<center><br>APRECIABLE <b>'.$cliente.'</b>, SE EMITE <b>REMISION</b> DE SU COMPRA, <a href="https://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">VISUALIZAR</a><br><br></center>';
         
         $formato = '
         <html>
@@ -12023,7 +12023,7 @@
 					<div class="opps-info">
 						<div class="opps-reference">
 							<h4>FOLIO</h4>
-					<h3><a href="http://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
+					<h3><a href="https://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
 								</div>
 						</div>
                   		<span>'.$message.'</span>
@@ -12199,7 +12199,7 @@
     function GetUsd ()
     {
         $r = 0;
-        $data = file_get_contents("http://www.floatrates.com/daily/mxn.json");
+        $data = file_get_contents("https://www.floatrates.com/daily/mxn.json");
         $divisas = json_decode($data, true);
         foreach ($divisas as $moneda) 
         {
@@ -12218,7 +12218,7 @@
     function GetUsdToMXN ($price)
     {
         $r = 0;
-        $data = file_get_contents("http://www.floatrates.com/daily/mxn.json");
+        $data = file_get_contents("https://www.floatrates.com/daily/mxn.json");
         $divisas = json_decode($data, true);
         foreach ($divisas as $moneda) 
         {

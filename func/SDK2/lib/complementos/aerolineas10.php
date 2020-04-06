@@ -4,8 +4,8 @@ function mf_complemento_aerolineas10($datos)
 {
     // Se agregan los namespaces
     global $__mf_namespaces__;
-    $__mf_namespaces__['aerolineas']['uri'] = 'http://www.sat.gob.mx/aerolineas';
-    $__mf_namespaces__['aerolineas']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd';
+    $__mf_namespaces__['aerolineas']['uri'] = 'https://www.sat.gob.mx/aerolineas';
+    $__mf_namespaces__['aerolineas']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<aerolineas:Aerolineas Version='1.0' $atrs>";

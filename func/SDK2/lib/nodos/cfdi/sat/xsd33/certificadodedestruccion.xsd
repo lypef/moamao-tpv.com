@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:destruccion="http://www.sat.gob.mx/certificadodestruccion" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/certificadodestruccion" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:destruccion="https://www.sat.gob.mx/certificadodestruccion" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/certificadodestruccion" elementFormDefault="qualified" attributeFormDefault="unqualified">
   <xs:element name="certificadodedestruccion">
     <xs:annotation>
       <xs:documentation>Complemento para incorporar la información que integra el certificado de destrucción de vehículos destruidos por los centros de destrucción autorizados por el SAT.</xs:documentation>

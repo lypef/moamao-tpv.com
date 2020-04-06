@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by SAT (SAT) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:leyendasFisc="http://www.sat.gob.mx/leyendasFiscales" targetNamespace="http://www.sat.gob.mx/leyendasFiscales" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2010 rel. 3 (https://www.altova.com) by SAT (SAT) -->
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:leyendasFisc="https://www.sat.gob.mx/leyendasFiscales" targetNamespace="https://www.sat.gob.mx/leyendasFiscales" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="LeyendasFiscales">
 		<xs:annotation>
 			<xs:documentation>Nodo opcional para incluir leyendas previstas en disposiciones fiscales, distintas a las contenidas en el estándar de Comprobante Fiscal Digital (CFD) o Comprobante Fiscal Digital a través de Internet (CFDI).</xs:documentation>

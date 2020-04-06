@@ -4,8 +4,8 @@ function mf_complemento_consumocombustibles10($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['consumodecombustibles']['uri'] = 'http://www.sat.gob.mx/consumodecombustibles';
-    $__mf_namespaces__['consumodecombustibles']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/consumodecombustibles/consumodecombustibles.xsd';
+    $__mf_namespaces__['consumodecombustibles']['uri'] = 'https://www.sat.gob.mx/consumodecombustibles';
+    $__mf_namespaces__['consumodecombustibles']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/consumodecombustibles/consumodecombustibles.xsd';
 
     $atrs = mf_atributos_nodo($datos);
     $xml = "<consumodecombustibles:ConsumoDeCombustibles version='1.0' $atrs>";

@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    https://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\Css;
 
@@ -20,8 +20,8 @@ class AttributeTranslator
     static $_style_attr = "_html_style_attribute";
 
     // Munged data originally from
-    // http://www.w3.org/TR/REC-html40/index/attributes.html
-    // http://www.cs.tut.fi/~jkorpela/html2css.html
+    // https://www.w3.org/TR/REC-html40/index/attributes.html
+    // https://www.cs.tut.fi/~jkorpela/html2css.html
     static private $__ATTRIBUTE_LOOKUP = array(
         //'caption' => array ( 'align' => '', ),
         'img' => array(

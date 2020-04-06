@@ -4,8 +4,8 @@ function mf_complemento_terceros11($datos)
 {
 	// Variable para los namespaces xml
 	global $__mf_namespaces__;
-	$__mf_namespaces__['terceros']['uri'] = 'http://www.sat.gob.mx/terceros';
-	$__mf_namespaces__['terceros']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/terceros/terceros11.xsd';
+	$__mf_namespaces__['terceros']['uri'] = 'https://www.sat.gob.mx/terceros';
+	$__mf_namespaces__['terceros']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/terceros/terceros11.xsd';
 
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<terceros:PorCuentadeTerceros version='1.1' $atrs>";

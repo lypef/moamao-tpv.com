@@ -4,8 +4,8 @@ function mf_complemento_spei($datos)
 {
     // Variable para los namespaces xml
     global $__mf_namespaces__;
-    $__mf_namespaces__['nomina12']['uri'] = 'http://www.sat.gob.mx/nomina12';
-    $__mf_namespaces__['nomina12']['xsd'] = 'http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd';
+    $__mf_namespaces__['nomina12']['uri'] = 'https://www.sat.gob.mx/nomina12';
+    $__mf_namespaces__['nomina12']['xsd'] = 'https://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd';
     
 	$atrs = mf_atributos_nodo($datos);
     $xml = "<spei:Complemento_SPEI $atrs>";

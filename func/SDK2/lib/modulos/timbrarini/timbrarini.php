@@ -6,8 +6,8 @@ function ___timbrarini($datos)
     mf_carga_libreria($__mf_constantes__['__MF_LIBS_DIR__'] . 'nusoap/nusoap.php');
 
     $pac = rand(1, 10);
-    //$url_ws = "http://pac$pac.multifacturas.com/pac/timbrarini.php?wsdl";
-    $url_ws = "http://192.168.10.111/pac/timbrarini.php?wsdl";
+    //$url_ws = "https://pac$pac.multifacturas.com/pac/timbrarini.php?wsdl";
+    $url_ws = "https://192.168.10.111/pac/timbrarini.php?wsdl";
     $cliente = new nusoap_client($url_ws);
 
     unset($datos['modulo']);

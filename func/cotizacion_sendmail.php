@@ -109,7 +109,7 @@
     
     $total_pagar = Return_TotalPagar_Folio($folio);
     
-    $message = str_replace("%cot_cot%", '<a href="http://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>', $body);
+    $message = str_replace("%cot_cot%", '<a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>', $body);
     
     $txtxtra = $_POST['txtxtra']; 
     
@@ -261,7 +261,7 @@
 							</div>
 							<div class="opps-reference">
 							<h4>FOLIO</h4>
-					<h3><a href="http://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
+					<h3><a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
 								</div>
 						</div>
                   		<span><center><br>'.$message.'<br><br></center></span>

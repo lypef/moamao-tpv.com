@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:RepAux="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/AuxiliarFolios" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:contelec_td="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" targetNamespace="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/AuxiliarFolios" elementFormDefault="qualified" attributeFormDefault="unqualified">
-  <xs:import namespace="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" schemaLocation="CatalogosParaEsqContE.xsd"/>
+<xs:schema xmlns:RepAux="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/AuxiliarFolios" xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:contelec_td="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" targetNamespace="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/AuxiliarFolios" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:import namespace="https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogosParaEsqContE" schemaLocation="CatalogosParaEsqContE.xsd"/>
   <xs:element name="RepAuxFol">
     <xs:annotation>
       <xs:documentation>Estándar de reporte auxiliar de folios de los comprobantes fiscales de las pólizas que se entrega como parte de las pólizas de la contabilidad electrónica.</xs:documentation>

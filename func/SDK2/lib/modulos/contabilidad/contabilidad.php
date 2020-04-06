@@ -74,8 +74,8 @@ function ___contabilidad($datos)
                           Version=\"1.1\"
                           noCertificado=\"$numero_cer\"
                           xmlns:catalogocuentas=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogoCuentas\"
-                          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-                          xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogoCuentas http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogoCuentas/CatalogoCuentas_1_1.xsd\">";
+                          xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\"
+                          xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogoCuentas https://www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogoCuentas/CatalogoCuentas_1_1.xsd\">";
 
                         if (array_key_exists('Ctas', $datos['factura']['Catalago'])) {
                             foreach ($datos['factura']['Catalago']['Ctas'] as $iidx => $tmpp) {
@@ -122,8 +122,8 @@ function ___contabilidad($datos)
              Version=\"1.1\"
              noCertificado=\"$numero_cer\"
              xmlns:BCE=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/BalanzaComprobacion\"
-             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-             xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/BalanzaComprobacion http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/BalanzaComprobacion/BalanzaComprobacion_1_1.xsd\">";
+             xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\"
+             xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/BalanzaComprobacion https://www.sat.gob.mx/esquemas/ContabilidadE/1_1/BalanzaComprobacion/BalanzaComprobacion_1_1.xsd\">";
 
                         if (array_key_exists('Ctas', $datos['factura']['Balanza'])) {
                             foreach ($datos['factura']['Balanza']['Ctas'] as $iidx => $tmpp) {
@@ -171,8 +171,8 @@ function ___contabilidad($datos)
              TipoSolicitud=\"$TipoSolicitud\"
               noCertificado=\"$numero_cer\"
              xmlns:PLZ=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo\"
-             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-             xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo/PolizasPeriodo_1_1.xsd\">";
+             xmlns:xsi=\"https://www.w3.org/2001/XMLSchema-instance\"
+             xsi:schemaLocation=\"www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo https://www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo/PolizasPeriodo_1_1.xsd\">";
 
                 foreach ($datos['factura']['Polizas']['Poliza'] AS $idx => $tmp) {
                     $numUnIdenPol = $tmp['NumUnIdenPol'];

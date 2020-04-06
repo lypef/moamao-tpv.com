@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XMLSpy v2010 (http://www.altova.com) by MESMERiZE (MiZE) -->
-<xs:schema xmlns:servicioparcial="http://www.sat.gob.mx/servicioparcialconstruccion" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/servicioparcialconstruccion" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2010 (https://www.altova.com) by MESMERiZE (MiZE) -->
+<xs:schema xmlns:servicioparcial="https://www.sat.gob.mx/servicioparcialconstruccion" xmlns:xs="https://www.w3.org/2001/XMLSchema" targetNamespace="https://www.sat.gob.mx/servicioparcialconstruccion" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="parcialesconstruccion">
 		<xs:annotation>
 			<xs:documentation>Complemento para incorporar información de servicios parciales de construcción de inmuebles destinados a casa habitación.</xs:documentation>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:donat="http://www.sat.gob.mx/donat" targetNamespace="http://www.sat.gob.mx/donat" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:donat="https://www.sat.gob.mx/donat" targetNamespace="https://www.sat.gob.mx/donat" elementFormDefault="qualified" attributeFormDefault="unqualified">
   <xs:element name="Donatarias">
     <xs:annotation>
       <xs:documentation>Nodo opcional para incluir la información requerida por el Servicio de Administración Tributaria a las organizaciones civiles o fideicomisos autorizados para recibir donativos, que permite hacer deducibles los Comprobantes Fiscales Digitales (CFD) y Comprobantes Fiscales Digitales a través de Internet (CFDI) a los donantes.</xs:documentation>

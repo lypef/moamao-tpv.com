@@ -36,7 +36,7 @@
  *
  * @author    Robert Richards <rrichards@cdatazone.org>
  * @copyright 2007-2017 Robert Richards <rrichards@cdatazone.org>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license   https://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version   3.0.1
  */
 

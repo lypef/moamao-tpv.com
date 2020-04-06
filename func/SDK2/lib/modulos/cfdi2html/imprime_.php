@@ -26,9 +26,9 @@ function _inim_imprime()
     
     
         //
-        // http://thecodeabode.blogspot.com
+        // https://thecodeabode.blogspot.com
         // @author: Ben Kitzelman
-        // @license: FreeBSD: (http://opensource.org/licenses/BSD-2-Clause) Do whatever you like with it
+        // @license: FreeBSD: (https://opensource.org/licenses/BSD-2-Clause) Do whatever you like with it
         // @updated: 03-03-2013
         //
         var getAcrobatInfo = function() {
@@ -1293,17 +1293,17 @@ if(array_key_exists('nomina', $ns))
 if(array_key_exists('nomina12', $ns))
 {
 	// Catalagos
-	$catEntidad = array('AGU' => 'Aguascalientes', 'BCN' => 'Baja California', 'BCS' => 'Baja California Sur', 'CAM' => 'Campeche', 'CHP' => 'Chiapas', 'CHH' => 'Chihuahua', 'COA' => 'Coahuila', 'COL' => 'Colima', 'DIF' => 'Ciudad de México', 'DUR' => 'Durango', 'GUA' => 'Guanajuato', 'GRO' => 'Guerrero', 'HID' => 'Hidalgo', 'JAL' => 'Jalisco', 'MEX' => 'Estado de México', 'MIC' => 'Michoacán', 'MOR' => 'Morelos', 'NAY' => 'Nayarit', 'NLE' => 'Nuevo León', 'OAX' => 'Oaxaca', 'PUE' => 'Puebla', 'QUE' => 'Querétaro', 'ROO' => 'Quintana Roo', 'SLP' => 'San Luis Potosí', 'SIN' => 'Sinaloa', 'SON' => 'Sonora', 'TAB' => 'Tabasco', 'TAM' => 'Tamaulipas', 'TLA' => 'Tlaxcala', 'VER' => 'Veracruz', 'YUC' => 'Yucatán', 'ZAC' => 'Zacatecas', 'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 'CA' => 'California', 'NC' => 'Carolina del Norte', 'SC' => 'Carolina del Sur', 'CO' => 'Colorado', 'CT' => 'Connecticut', 'ND' => 'Dakota del Norte', 'SD' => 'Dakota del Sur', 'DE' => 'Delaware', 'FL' => 'Florida', 'GA' => 'Georgia', 'HI' => 'Hawái', 'ID' => 'Idaho', 'IL' => 'Illinois', 'IN' => 'Indiana', 'IA' => 'Iowa', 'KS' => 'Kansas', 'KY' => 'Kentucky', 'LA' => 'Luisiana', 'ME' => 'Maine', 'MD' => 'Maryland', 'MA' => 'Massachusetts', 'MI' => 'Míchigan', 'MN' => 'Minnesota', 'MS' => 'Misisipi', 'MO' => 'Misuri', 'MT' => 'Montana', 'NE' => 'Nebraska', 'NV' => 'Nevada', 'NJ' => 'Nueva Jersey', 'NY' => 'Nueva York', 'NH' => 'Nuevo Hampshire', 'NM' => 'Nuevo México', 'OH' => 'Ohio', 'OK' => 'Oklahoma', 'OR' => 'Oregón', 'PA' => 'Pensilvania', 'RI' => 'Rhode Island', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'VT' => 'Vermont', 'VA' => 'Virginia', 'WV' => 'Virginia Occidental', 'WA' => 'Washington', 'WI' => 'Wisconsin', 'WY' => 'Wyoming', 'ON' => 'Ontario ', 'QC' => ' Quebec ', 'NS' => ' Nueva Escocia', 'NB' => 'Nuevo Brunswick ', 'MB' => ' Manitoba', 'BC' => ' Columbia Británica', 'PE' => ' Isla del Príncipe Eduardo', 'SK' => ' Saskatchewan', 'AB' => ' Alberta', 'NL' => ' Terranova y Labrador', 'NT' => ' Territorios del Noroeste', 'YT' => ' Yukón', 'UN' => ' Nunavut');
+	$catEntidad = array('AGU' => 'Aguascalientes', 'BCN' => 'Baja California', 'BCS' => 'Baja California Sur', 'CAM' => 'Campeche', 'CHP' => 'Chiapas', 'CHH' => 'Chihuahua', 'COA' => 'Coahuila', 'COL' => 'Colima', 'DIF' => 'Ciudad de Mï¿½xico', 'DUR' => 'Durango', 'GUA' => 'Guanajuato', 'GRO' => 'Guerrero', 'HID' => 'Hidalgo', 'JAL' => 'Jalisco', 'MEX' => 'Estado de Mï¿½xico', 'MIC' => 'Michoacï¿½n', 'MOR' => 'Morelos', 'NAY' => 'Nayarit', 'NLE' => 'Nuevo Leï¿½n', 'OAX' => 'Oaxaca', 'PUE' => 'Puebla', 'QUE' => 'Querï¿½taro', 'ROO' => 'Quintana Roo', 'SLP' => 'San Luis Potosï¿½', 'SIN' => 'Sinaloa', 'SON' => 'Sonora', 'TAB' => 'Tabasco', 'TAM' => 'Tamaulipas', 'TLA' => 'Tlaxcala', 'VER' => 'Veracruz', 'YUC' => 'Yucatï¿½n', 'ZAC' => 'Zacatecas', 'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 'CA' => 'California', 'NC' => 'Carolina del Norte', 'SC' => 'Carolina del Sur', 'CO' => 'Colorado', 'CT' => 'Connecticut', 'ND' => 'Dakota del Norte', 'SD' => 'Dakota del Sur', 'DE' => 'Delaware', 'FL' => 'Florida', 'GA' => 'Georgia', 'HI' => 'Hawï¿½i', 'ID' => 'Idaho', 'IL' => 'Illinois', 'IN' => 'Indiana', 'IA' => 'Iowa', 'KS' => 'Kansas', 'KY' => 'Kentucky', 'LA' => 'Luisiana', 'ME' => 'Maine', 'MD' => 'Maryland', 'MA' => 'Massachusetts', 'MI' => 'Mï¿½chigan', 'MN' => 'Minnesota', 'MS' => 'Misisipi', 'MO' => 'Misuri', 'MT' => 'Montana', 'NE' => 'Nebraska', 'NV' => 'Nevada', 'NJ' => 'Nueva Jersey', 'NY' => 'Nueva York', 'NH' => 'Nuevo Hampshire', 'NM' => 'Nuevo Mï¿½xico', 'OH' => 'Ohio', 'OK' => 'Oklahoma', 'OR' => 'Oregï¿½n', 'PA' => 'Pensilvania', 'RI' => 'Rhode Island', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'VT' => 'Vermont', 'VA' => 'Virginia', 'WV' => 'Virginia Occidental', 'WA' => 'Washington', 'WI' => 'Wisconsin', 'WY' => 'Wyoming', 'ON' => 'Ontarioï¿½', 'QC' => 'ï¿½Quebecï¿½', 'NS' => 'ï¿½Nueva Escocia', 'NB' => 'Nuevo Brunswickï¿½', 'MB' => 'ï¿½Manitoba', 'BC' => 'ï¿½Columbia Britï¿½nica', 'PE' => 'ï¿½Isla del Prï¿½ncipe Eduardo', 'SK' => 'ï¿½Saskatchewan', 'AB' => 'ï¿½Alberta', 'NL' => 'ï¿½Terranova y Labrador', 'NT' => 'ï¿½Territorios del Noroeste', 'YT' => 'ï¿½Yukï¿½n', 'UN' => 'ï¿½Nunavut');
 	$catOrigenRegusro = array('IP' => 'Ingresos Personales', 'IF' => 'Ingresos Federales', 'IM' => 'Ingresos Mixtos');
 	$catTipoHoras = array('01' => 'Dobles', '02' => 'Triples', '03' => 'Simples');
 	$catTipoIncapacidad = array('01' => 'Riesgo de trabajo', '02' => 'Enfermedad en general', '03' => 'Maternidad');
-	$catTipoOtroPago = array('001' => 'Reintegro de ISR pagado en exceso', '002' => 'Subsidio para el empleo', '003' => 'Viáticos', '004' => 'Aplicación de saldo a favor por compensación anual', '999' => 'Pagos distintos a los listados y que no deben considerarse como ingreso por sueldos, salarios o ingresos asimilados');
-	$catTipoContrato = array('01' => 'Contrato de trabajo por tiempo indeterminado', '02' => 'Contrato de trabajo para obra determinada', '03' => 'Contrato de trabajo por tiempo determinado', '04' => 'Contrato de trabajo por temporada', '05' => 'Contrato de trabajo sujeto a prueba', '06' => 'Contrato de trabajo con capacitación inicial', '07' => 'Modalidad de contratación por pago de hora laborada', '08' => 'Modalidad de trabajo por comisión laboral', '09' => 'Modalidades de contratación donde no existe relación de trabajo', '10' => 'Jubilación, pensión, retiro.', '99' => 'Otro contrato');
+	$catTipoOtroPago = array('001' => 'Reintegro de ISR pagado en exceso', '002' => 'Subsidio para el empleo', '003' => 'Viï¿½ticos', '004' => 'Aplicaciï¿½n de saldo a favor por compensaciï¿½n anual', '999' => 'Pagos distintos a los listados y que no deben considerarse como ingreso por sueldos, salarios o ingresos asimilados');
+	$catTipoContrato = array('01' => 'Contrato de trabajo por tiempo indeterminado', '02' => 'Contrato de trabajo para obra determinada', '03' => 'Contrato de trabajo por tiempo determinado', '04' => 'Contrato de trabajo por temporada', '05' => 'Contrato de trabajo sujeto a prueba', '06' => 'Contrato de trabajo con capacitaciï¿½n inicial', '07' => 'Modalidad de contrataciï¿½n por pago de hora laborada', '08' => 'Modalidad de trabajo por comisiï¿½n laboral', '09' => 'Modalidades de contrataciï¿½n donde no existe relaciï¿½n de trabajo', '10' => 'Jubilaciï¿½n, pensiï¿½n, retiro.', '99' => 'Otro contrato');
 	$catTipoJornada = array('01' => 'Diurna', '02' => 'Nocturna', '03' => 'Mixta', '04' => 'Por hora', '05' => 'Reducida', '06' => 'Continuada', '07' => 'Partida', '08' => 'Por turnos', '99' => 'Otra Jornada');
 	$catTipoRegimen = array ('02' => 'Sueldos', '03' => 'Jubilados', '04' => 'Pensionados', '05' => 'Asimilados Miembros Sociedades Cooperativas Produccion', '06' => 'Asimilados Integrantes Sociedades Asociaciones Civiles', '07' => 'Asimilados Miembros consejos', '08' => 'Asimilados comisionistas', '09' => 'Asimilados Honorarios', '10' => 'Asimilados acciones', '11' => 'Asimilados otros', '99' => 'Otro Regimen');
 	$catRiesgoPuesto = array('1' => 'Clase I' , '2' => 'Clase II' , '3' => 'Clase III' , '4' => 'Clase IV' , '5' => 'Clase V');
 	$catTipoRegimen = array('02' => 'Sueldos' , '03' => 'Jubilados' , '04' => 'Pensionados' , '05' => 'Asimilados Miembros Sociedades Cooperativas Produccion' , '06' => 'Asimilados Integrantes Sociedades Asociaciones Civiles' , '07' => 'Asimilados Miembros consejos' , '08' => 'Asimilados comisionistas' , '09' => 'Asimilados Honorarios' , '10' => 'Asimilados acciones' , '11' => 'Asimilados otros' , '99' => 'Otro Regimen');
-	$catPeriodicidadPago = array('01' => 'Diario' , '02' => 'Semanal' , '03' => 'Catorcenal' , '04' => 'Quincenal' , '05' => 'Mensual' , '06' => 'Bimestral' , '07' => 'Unidad obra' , '08' => 'Comisión' , '09' => 'Precio alzado' , '99' => 'Otra Periodicidad');
+	$catPeriodicidadPago = array('01' => 'Diario' , '02' => 'Semanal' , '03' => 'Catorcenal' , '04' => 'Quincenal' , '05' => 'Mensual' , '06' => 'Bimestral' , '07' => 'Unidad obra' , '08' => 'Comisiï¿½n' , '09' => 'Precio alzado' , '99' => 'Otra Periodicidad');
 	$catBanco = array('002' => 'BANAMEX' , '006' => 'BANCOMEXT' , '009' => 'BANOBRAS' , '012' => 'BBVA BANCOMER' , '014' => 'SANTANDER' , '019' => 'BANJERCITO' , '021' => 'HSBC' , '030' => 'BAJIO' , '032' => 'IXE' , '036' => 'INBURSA' , '037' => 'INTERACCIONES' , '042' => 'MIFEL' , '044' => 'SCOTIABANK' , '058' => 'BANREGIO' , '059' => 'INVEX' , '060' => 'BANSI' , '062' => 'AFIRME' , '072' => 'BANORTE' , '102' => 'THE ROYAL BANK' , '103' => 'AMERICAN EXPRESS' , '106' => 'BAMSA' , '108' => 'TOKYO' , '110' => 'JP MORGAN' , '112' => 'BMONEX' , '113' => 'VE POR MAS' , '116' => 'ING' , '124' => 'DEUTSCHE' , '126' => 'CREDIT SUISSE' , '127' => 'AZTECA' , '128' => 'AUTOFIN' , '129' => 'BARCLAYS' , '130' => 'COMPARTAMOS' , '131' => 'BANCO FAMSA' , '132' => 'BMULTIVA' , '133' => 'ACTINVER' , '134' => 'WAL-MART' , '135' => 'NAFIN' , '136' => 'INTERBANCO' , '137' => 'BANCOPPEL' , '138' => 'ABC CAPITAL' , '139' => 'UBS BANK' , '140' => 'CONSUBANCO' , '141' => 'VOLKSWAGEN' , '143' => 'CIBANCO' , '145' => 'BBASE' , '166' => 'BANSEFI' , '168' => 'HIPOTECARIA FEDERAL' , '600' => 'MONEXCB' , '601' => 'GBM' , '602' => 'MASARI' , '605' => 'VALUE' , '606' => 'ESTRUCTURADORES' , '607' => 'TIBER' , '608' => 'VECTOR' , '610' => 'B&B' , '614' => 'ACCIVAL' , '615' => 'MERRILL LYNCH' , '616' => 'FINAMEX' , '617' => 'VALMEX' , '618' => 'UNICA' , '619' => 'MAPFRE' , '620' => 'PROFUTURO' , '621' => 'CB ACTINVER' , '622' => 'OACTIN' , '623' => 'SKANDIA' , '626' => 'CBDEUTSCHE' , '627' => 'ZURICH' , '628' => 'ZURICHVI' , '629' => 'SU CASITA' , '630' => 'CB INTERCAM' , '631' => 'CI BOLSA' , '632' => 'BULLTICK CB' , '633' => 'STERLING' , '634' => 'FINCOMUN' , '636' => 'HDI SEGUROS' , '637' => 'ORDER' , '638' => 'AKALA' , '640' => 'CB JPMORGAN' , '642' => 'REFORMA' , '646' => 'STP' , '647' => 'TELECOMM' , '648' => 'EVERCORE' , '649' => 'SKANDIA' , '651' => 'SEGMTY' , '652' => 'ASEA' , '653' => 'KUSPIT' , '655' => 'SOFIEXPRESS' , '656' => 'UNAGRA' , '659' => 'OPCIONES EMPRESARIALES DEL NOROESTE' , '901' => 'CLS' , '902' => 'INDEVAL' , '670' => 'LIBERTAD');
 	
 	// NOMINA
@@ -1402,7 +1402,7 @@ if(array_key_exists('nomina12', $ns))
 		//$NumeroSeguridadSocial= autoformato_impresion($Receptor['NumeroSeguridadSocial']);
         $NumeroSeguridadSocial= $Receptor['NumSeguridadSocial'];
         $FechaInicioRelLaboral= autoformato_impresion($Receptor['FechaInicioRelLaboral']);
-		$Antiguedad= autoformato_impresion($Receptor[utf8_encode('Antigüedad')]);
+		$Antiguedad= autoformato_impresion($Receptor[utf8_encode('Antigï¿½edad')]);
 		$TipoContrato= autoformato_impresion($Receptor['TipoContrato']);
 		$TipoContrato = $catTipoContrato[$TipoContrato];
 		$Sindicalizado= autoformato_impresion($Receptor['Sindicalizado']);
@@ -1789,7 +1789,7 @@ if(array_key_exists('nomina12', $ns))
     foreach ($xml->xpath('//nomina12:SeparacionIndemnizacion') as $Separacion)
     {
         $TotalPagado= autoformato_impresion($Separacion['TotalPagado']);
-        $NumAñosServicio= autoformato_impresion($Separacion['NumAñosServicio']);
+        $NumAï¿½osServicio= autoformato_impresion($Separacion['NumAï¿½osServicio']);
         $UltimoSueldoMensOrd= autoformato_impresion($Separacion['UltimoSueldoMensOrd']);
         $IngresoAcumulable= autoformato_impresion($Separacion['IngresoAcumulable']);
         $IngresoNoAcumulable= autoformato_impresion($Separacion['IngresoNoAcumulable']);
@@ -1797,7 +1797,7 @@ if(array_key_exists('nomina12', $ns))
         
         $NominaSeparacion.="<tr>
 	<td style='font-size:$letra px !important'>$TotalPagado</td>
-	<td style='font-size:$letra px !important'>$NumAñosServicio</td>
+	<td style='font-size:$letra px !important'>$NumAï¿½osServicio</td>
 	<td style='font-size:$letra px !important'>$UltimoSueldoMensOrd</td>
 	<td style='font-size:$letra px !important'>$IngresoAcumulable</td>
 	<td style='font-size:$letra px !important'>$IngresoNoAcumulable</td>
@@ -1812,7 +1812,7 @@ if(array_key_exists('nomina12', $ns))
 <table width='100%'>
 	<tr class='factura_detalles_cabecera'  >
 		<td style='font-size:$letra px !important'>TOTAL PAGADO</td>
-		<td style='font-size:$letra px !important'>AÑOS SERVICIO</td>
+		<td style='font-size:$letra px !important'>Aï¿½OS SERVICIO</td>
 		<td style='font-size:$letra px !important' >ULTIMO SUELDO MENS ORD</td>
 		<td style='font-size:$letra px !important'>INGRESO ACUMULABLE</td>
 		<td style='font-size:$letra px !important'>INGRESO NO ACUMULABLE</td>
@@ -1881,7 +1881,7 @@ if(array_key_exists('nomina12', $ns))
     foreach ($xml->xpath('//nomina12:CompensacionSaldosAFavor') as $Compensacion)
     {
         $SaldoAFavor= autoformato_impresion($Compensacion['SaldoAFavor']);
-        $Ano= autoformato_impresion($Compensacion[utf8_encode('Año')]);
+        $Ano= autoformato_impresion($Compensacion[utf8_encode('Aï¿½o')]);
         $RemanenteSalFav= autoformato_impresion($Compensacion['RemanenteSalFav']);
         
         $NominaCompensacion.="<tr>
@@ -1899,7 +1899,7 @@ if(array_key_exists('nomina12', $ns))
 <table width='100%'>
 	<tr class='factura_detalles_cabecera'  >
 		<td style='font-size:$letra px !important'>SALDO A FAVOR</td>
-		<td style='font-size:$letra px !important'>AÑO</td>
+		<td style='font-size:$letra px !important'>Aï¿½O</td>
 		<td style='font-size:$letra px !important'>REMANENTE</td>
 	</tr>
             $NominaCompensacion
@@ -1949,7 +1949,7 @@ if($emisor_municipio2==$emisor_localidad2)
     $emisor_localidad='';
 }
 
-//////////  DISEÑO ////////////
+//////////  DISEï¿½O ////////////
 
 if($version=='3.2')
 {
@@ -2184,7 +2184,7 @@ $sellos_pie="
                 $cadena_sat 
                 <br/>
 
-<b>Este documento es una representación impresa de un CFDI</b> EFECTOS FISCALES AL PAGO 
+<b>Este documento es una representaciï¿½n impresa de un CFDI</b> EFECTOS FISCALES AL PAGO 
             </div>
             <br/>
 $referencia $barcode_factura 
@@ -2650,47 +2650,47 @@ function formato_metodo_pago($metodo_pago)
 {
     $metodo_pago=str_replace('01','Efectivo (01)',$metodo_pago);
     $metodo_pago=str_replace('02','Cheque Nominativo (02)',$metodo_pago);
-    $metodo_pago=str_replace('03','Transferencia electrónica de fondos (03)',$metodo_pago);
-    $metodo_pago=str_replace('04','Tarjetas de crédito (04)',$metodo_pago);
-    $metodo_pago=str_replace('05','Monederos electrónicos (05)',$metodo_pago);
-    $metodo_pago=str_replace('06','Dinero electrónico (06)',$metodo_pago);
+    $metodo_pago=str_replace('03','Transferencia electrï¿½nica de fondos (03)',$metodo_pago);
+    $metodo_pago=str_replace('04','Tarjetas de crï¿½dito (04)',$metodo_pago);
+    $metodo_pago=str_replace('05','Monederos electrï¿½nicos (05)',$metodo_pago);
+    $metodo_pago=str_replace('06','Dinero electrï¿½nico (06)',$metodo_pago);
     $metodo_pago=str_replace('07','Tarjetas digitales (07)',$metodo_pago);
     $metodo_pago=str_replace('08','Vales de despensa (08)',$metodo_pago);
     $metodo_pago=str_replace('09','Bienes (09)',$metodo_pago);
     $metodo_pago=str_replace('10','Servicio (10)',$metodo_pago);
     $metodo_pago=str_replace('11','Por cuenta de tercero (11)',$metodo_pago);
-    $metodo_pago=str_replace('12','Dación en pago (12)',$metodo_pago);
-    $metodo_pago=str_replace('13','Pago por subrogación (13)',$metodo_pago);
-    $metodo_pago=str_replace('14','Pago por consignación (14)',$metodo_pago);
-    $metodo_pago=str_replace('15','Condonación (15)',$metodo_pago);
-    $metodo_pago=str_replace('16','Cancelación (16)',$metodo_pago);
-    $metodo_pago=str_replace('17','Compensación (17)',$metodo_pago);
+    $metodo_pago=str_replace('12','Daciï¿½n en pago (12)',$metodo_pago);
+    $metodo_pago=str_replace('13','Pago por subrogaciï¿½n (13)',$metodo_pago);
+    $metodo_pago=str_replace('14','Pago por consignaciï¿½n (14)',$metodo_pago);
+    $metodo_pago=str_replace('15','Condonaciï¿½n (15)',$metodo_pago);
+    $metodo_pago=str_replace('16','Cancelaciï¿½n (16)',$metodo_pago);
+    $metodo_pago=str_replace('17','Compensaciï¿½n (17)',$metodo_pago);
     $metodo_pago=str_replace('98','NA (98)',$metodo_pago);
     $metodo_pago=str_replace('99','Otros (99)',$metodo_pago);
-    $metodo_pago=str_replace('28','Tarjeta de Débito (28)',$metodo_pago);
+    $metodo_pago=str_replace('28','Tarjeta de Dï¿½bito (28)',$metodo_pago);
     $metodo_pago=str_replace('29','Tarjeta de Servicio (29)',$metodo_pago);
 
 /*
 
-01 – Efectivo
-02 – Cheque
-03 – Transferencia
-04 – Tarjetas de crédito
-05 – Monederos electrónicos
-06 – Dinero electrónico
-07 – Tarjetas digitales
-08 – Vales de despensa
-09 – Bienes
-10 – Servicio
-11 – Por cuenta de tercero
-12 – Dación en pago
-13 – Pago por subrogación
-14 – Pago por consignación
-15 – Condonación
-16 – Cancelación
-17 – Compensación
-98 – NA
-99 – Otros
+01 ï¿½ Efectivo
+02 ï¿½ Cheque
+03 ï¿½ Transferencia
+04 ï¿½ Tarjetas de crï¿½dito
+05 ï¿½ Monederos electrï¿½nicos
+06 ï¿½ Dinero electrï¿½nico
+07 ï¿½ Tarjetas digitales
+08 ï¿½ Vales de despensa
+09 ï¿½ Bienes
+10 ï¿½ Servicio
+11 ï¿½ Por cuenta de tercero
+12 ï¿½ Daciï¿½n en pago
+13 ï¿½ Pago por subrogaciï¿½n
+14 ï¿½ Pago por consignaciï¿½n
+15 ï¿½ Condonaciï¿½n
+16 ï¿½ Cancelaciï¿½n
+17 ï¿½ Compensaciï¿½n
+98 ï¿½ NA
+99 ï¿½ Otros
 
 
 
@@ -2724,49 +2724,49 @@ function formato_forma_pago33($forma_pago)
 {
     $forma_pago=str_replace('01','Efectivo (01)',$forma_pago);
     $forma_pago=str_replace('02','Cheque Nominativo (02)',$forma_pago);
-    $forma_pago=str_replace('03','Transferencia electrónica de fondos (03)',$forma_pago);
-    $forma_pago=str_replace('04','Tarjetas de crédito (04)',$forma_pago);
-    $forma_pago=str_replace('05','Monederos electrónicos (05)',$forma_pago);
-    $forma_pago=str_replace('06','Dinero electrónico (06)',$forma_pago);
+    $forma_pago=str_replace('03','Transferencia electrï¿½nica de fondos (03)',$forma_pago);
+    $forma_pago=str_replace('04','Tarjetas de crï¿½dito (04)',$forma_pago);
+    $forma_pago=str_replace('05','Monederos electrï¿½nicos (05)',$forma_pago);
+    $forma_pago=str_replace('06','Dinero electrï¿½nico (06)',$forma_pago);
     //$forma_pago=str_replace('07','Tarjetas digitales (07)',$forma_pago);
     $forma_pago=str_replace('08','Vales de despensa (08)',$forma_pago);
     //$forma_pago=str_replace('09','Bienes (09)',$forma_pago);
     //$forma_pago=str_replace('10','Servicio (10)',$forma_pago);
     //$forma_pago=str_replace('11','Por cuenta de tercero (11)',$forma_pago);
-    $forma_pago=str_replace('12','Dación en pago (12)',$forma_pago);
-    $forma_pago=str_replace('13','Pago por subrogación (13)',$forma_pago);
-    $forma_pago=str_replace('14','Pago por consignación (14)',$forma_pago);
-    $forma_pago=str_replace('15','Condonación (15)',$forma_pago);
-    //$forma_pago=str_replace('16','Cancelación (16)',$forma_pago);
-    $forma_pago=str_replace('17','Compensación (17)',$forma_pago);
-    $forma_pago=str_replace('23','Novación (23)',$forma_pago);
-    $forma_pago=str_replace('24','Confusión (24)',$forma_pago);
-    $forma_pago=str_replace('25','Remisión de deuda (25)',$forma_pago);
-    $forma_pago=str_replace('26','Prescripción o caducidad (26)',$forma_pago);
-    $forma_pago=str_replace('27','A satisfacción del acreedor (27)',$forma_pago);
-    $forma_pago=str_replace('28','Tarjeta de Débito (28)',$forma_pago);
+    $forma_pago=str_replace('12','Daciï¿½n en pago (12)',$forma_pago);
+    $forma_pago=str_replace('13','Pago por subrogaciï¿½n (13)',$forma_pago);
+    $forma_pago=str_replace('14','Pago por consignaciï¿½n (14)',$forma_pago);
+    $forma_pago=str_replace('15','Condonaciï¿½n (15)',$forma_pago);
+    //$forma_pago=str_replace('16','Cancelaciï¿½n (16)',$forma_pago);
+    $forma_pago=str_replace('17','Compensaciï¿½n (17)',$forma_pago);
+    $forma_pago=str_replace('23','Novaciï¿½n (23)',$forma_pago);
+    $forma_pago=str_replace('24','Confusiï¿½n (24)',$forma_pago);
+    $forma_pago=str_replace('25','Remisiï¿½n de deuda (25)',$forma_pago);
+    $forma_pago=str_replace('26','Prescripciï¿½n o caducidad (26)',$forma_pago);
+    $forma_pago=str_replace('27','A satisfacciï¿½n del acreedor (27)',$forma_pago);
+    $forma_pago=str_replace('28','Tarjeta de Dï¿½bito (28)',$forma_pago);
     $forma_pago=str_replace('29','Tarjeta de Servicio (29)',$forma_pago);
     $forma_pago=str_replace('99','Por definir (99)',$forma_pago);
 /*
-01 – Efectivo
-02 – Cheque
-03 – Transferencia
-04 – Tarjetas de crédito
-05 – Monederos electrónicos
-06 – Dinero electrónico
-07 – Tarjetas digitales
-08 – Vales de despensa
-09 – Bienes
-10 – Servicio
-11 – Por cuenta de tercero
-12 – Dación en pago
-13 – Pago por subrogación
-14 – Pago por consignación
-15 – Condonación
-16 – Cancelación
-17 – Compensación
-98 – NA
-99 – Otros
+01 ï¿½ Efectivo
+02 ï¿½ Cheque
+03 ï¿½ Transferencia
+04 ï¿½ Tarjetas de crï¿½dito
+05 ï¿½ Monederos electrï¿½nicos
+06 ï¿½ Dinero electrï¿½nico
+07 ï¿½ Tarjetas digitales
+08 ï¿½ Vales de despensa
+09 ï¿½ Bienes
+10 ï¿½ Servicio
+11 ï¿½ Por cuenta de tercero
+12 ï¿½ Daciï¿½n en pago
+13 ï¿½ Pago por subrogaciï¿½n
+14 ï¿½ Pago por consignaciï¿½n
+15 ï¿½ Condonaciï¿½n
+16 ï¿½ Cancelaciï¿½n
+17 ï¿½ Compensaciï¿½n
+98 ï¿½ NA
+99 ï¿½ Otros
 */
     $forma_pago=strtoupper($forma_pago);
     return $forma_pago;

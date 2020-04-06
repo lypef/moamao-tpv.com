@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2010 rel. 3 (x64) (http://www.altova.com) by SAT (SAT) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:consumodecombustibles="http://www.sat.gob.mx/consumodecombustibles" targetNamespace="http://www.sat.gob.mx/consumodecombustibles" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- edited with XMLSpy v2010 rel. 3 (x64) (https://www.altova.com) by SAT (SAT) -->
+<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema" xmlns:consumodecombustibles="https://www.sat.gob.mx/consumodecombustibles" targetNamespace="https://www.sat.gob.mx/consumodecombustibles" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="ConsumoDeCombustibles">
 		<xs:annotation>
 			<xs:documentation>Complemento al Comprobante Fiscal Digital por Internet (CFDI) para integrar la información de consumo de combustibles por monedero electrónico.</xs:documentation>
