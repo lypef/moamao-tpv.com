@@ -12,15 +12,15 @@
                                 <?php 
                                     if ($_GET["department"])
                                     {
-                                        echo _getProductsDepartment($_GET["department"]);
+                                        echo _getProductsDepartment($_GET["department"],$_GET["pagina"]);
                                     }
                                     elseif ($_GET["search"])
                                     {
-                                        echo _getProductsSearch($_GET["search"]);
+                                        echo _getProductsSearch($_GET["search"],$_GET["pagina"]);
                                     }
                                     elseif ($_GET["almacen"])
                                     {
-                                        echo _getProductsAlmacen($_GET["almacen"]);
+                                        echo _getProductsAlmacen($_GET["almacen"],$_GET["pagina"]);
                                     }
                                     else
                                     {
@@ -91,20 +91,21 @@
     
     if ($_GET["department"])
     {
-        echo _getProductsModalDepartment($_GET["department"]);
+        echo _getProductsModalDepartment($_GET["department"], $_GET["pagina"]);
     }
     elseif ($_GET["search"])
     {
-        echo _getProductsModalSearch($_GET["search"]);
+        echo _getProductsModalSearch($_GET["search"],$_GET["pagina"]);
     }
     elseif ($_GET["almacen"])
     {
-        echo _getProductsModalAlmacen($_GET["almacen"]);
+        echo _getProductsModalAlmacen($_GET["almacen"],$_GET["pagina"]);
     }
     else
     {
         echo _getProductsModal($_GET["pagina"]);
     }
+    
     if ($_GET["folio_sale"])
     {
         echo '<meta http-equiv="refresh" content="0; url=sale_finaly_report.php?folio_sale='.$_GET["folio_sale"].'">';

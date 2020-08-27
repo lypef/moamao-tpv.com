@@ -6,13 +6,16 @@
             <h4>SELECCIONE CLIENTE PARA CREAR VENTA</h4>
     </div>
     <?php 
-        if ($_GET["search"])
+
+        if ($_GET["search"] && $_GET["pagina"])
         {
-            echo create_sale_SelectClientSearch($_GET["search"]);
-        }else
+            echo create_sale_SelectClientSearch($_GET["search"] , $_GET["pagina"]);
+        }
+        elseif ($_GET["pagina"])
         {
             echo create_sale_SelectClient($_GET["pagina"]);
         }
+
     ?>
 </div>  
 <script>
@@ -29,12 +32,14 @@ if (getUrlVars()["clientreturn"])
 </script>
 <?php
     include 'func/footer.php';
-    if ($_GET["search"])
-    {
-        echo select_client_sale_modal_search($_GET["search"]);
-    }else
-    {
-        echo select_client_sale_modal();
-    }
+
+    if ($_GET["search"] && $_GET["pagina"])
+        {
+            echo select_client_sale_modal_search($_GET["search"] , $_GET["pagina"]);
+        }
+        elseif ($_GET["pagina"])
+        {
+            echo select_client_sale_modal($_GET["pagina"]);
+        }
 ?>
         

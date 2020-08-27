@@ -5,7 +5,7 @@
     use Dompdf\Dompdf;
 
     // Dompdf php 5
-    //require_once("dompdf/dompdf_config.inc.php");
+    //require_once("dompdf_php5.6/dompdf_config.inc.php");
     
     $folio = $_GET["folio"];
     session_start();
@@ -71,8 +71,8 @@
         </tr>
     </table>
     <br><hr>
-    <p>ABONO: $ '.number_format($cobrado,2,".",",").' MXN | '.numtoletras($cobrado).'</p>
-    <p>RECIBIMOS LA CANTIDAD DE : $ '.number_format($cobrado,2,".",",").' MXN ('.numtoletras($cobrado).') EN CALIDAD DE ABONO POR CONCEPTO DE EL PEDIDO CON FOLIO: '.$folio.'</p>';
+    <p>ABONO: $ '.number_format($cobrado,GetNumberDecimales(),".",",").' MXN | '.numtoletras($cobrado).'</p>
+    <p>RECIBIMOS LA CANTIDAD DE : $ '.number_format($cobrado,GetNumberDecimales(),".",",").' MXN ('.numtoletras($cobrado).') EN CALIDAD DE ABONO POR CONCEPTO DE EL PEDIDO CON FOLIO: '.$folio.'</p>';
     
     $codigoHTML .= FooterPageReport();
     

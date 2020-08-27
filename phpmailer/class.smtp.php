@@ -2,10 +2,10 @@
 /**
  * PHPMailer RFC821 SMTP email transport class.
  * PHP Version 5
- * @package PHPMsailer
+ * @package PHPMailer
  * @link https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
  * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jsagielski (jimjag) <jimjag@gmail.com>
+ * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
  * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
  * @author Brent R. Matzelle (original founder)
  * @copyright 2014 Marcus Bointon

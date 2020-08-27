@@ -2,25 +2,32 @@
     include 'func/header.php';
 ?>
 <div class="col-md-12">
-    <form class="header-search-box" action="facturas.php">
-        <div class="col-md-8">
-            <input type="text" placeholder="Ingrese folio o nombre de cliente." name="search" autocomplete="off">
-        </div>
-        <div class="col-md-4">
-            <button class="submit-btn" type="submit">Buscar</button>
-        </div>
-    </form>
+<form class="header-search-box" action="facturas.php">
+			<div>
+				<input type="hidden" id="pagina" name="pagina" value="1">
+				<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
+				  width: 100%;
+                  padding: 24px 20px;
+                  margin: 8px 0;
+                  display: inline-block;
+                  border: 3px solid #4A4A4A;
+                  border-radius: 4px;
+                  box-sizing: border-box;
+              " value = "<?php echo $_GET["search"]; ?>">
+			</div>
+		</form>
 </div>
 
 <div class="col-md-12">
     <?php 
-        if ($_GET["pagina"])
+        
+        if ($_GET["pagina"] && $_GET["search"])
+        {
+            echo table_facturas_search($_GET["search"], $_GET["pagina"]); 
+        }
+        elseif ($_GET["pagina"])
         {
             echo table_facturas($_GET["pagina"]); 
-        }
-        if ($_GET["search"])
-        {
-            echo table_facturas_search($_GET["search"]); 
         }
     ?>
 </div>  
@@ -39,6 +46,13 @@
 </script>
 <?php
     include 'func/footer.php';
-    echo table_facturas_options_modal(); 
+    if ($_GET["pagina"] && $_GET["search"])
+    {
+        echo table_facturas_options_modal_Search($_GET["search"], $_GET["pagina"]); 
+    }
+    elseif ($_GET["pagina"])
+    {
+        echo table_facturas_options_modal($_GET["pagina"]); 
+    }
 ?>
         

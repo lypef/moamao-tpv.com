@@ -109,7 +109,7 @@
     
     $total_pagar = Return_TotalPagar_Folio($folio);
     
-    $message = str_replace("%cot_cot%", '<a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>', $body);
+    $message = str_replace("%cot_cot%", '<a href="'.GetDominio().'/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">VER DOCUMENTO</a>', $body);
     
     $txtxtra = $_POST['txtxtra']; 
     
@@ -251,32 +251,22 @@
 				'.$txtxtra.'
 				<div class="opps">
 				<div class="opps-header">
-					<div class="opps-reminder">Ficha digital. No es necesario imprimir.</div>
+					<div class="opps-reminder">'.static_empresa_nombre().'</div>
 					<div class="opps-info">
 						<div class="opps-ammount">
 							<h4>Monto a pagar</h4>
-									<h2>$ '.number_format($total_pagar,2,".",",").' <sup>MXN</sup></h2>
+									<h2>$ '.number_format($total_pagar,GetNumberDecimales(),".",",").' <sup>MXN</sup></h2>
 									<p>'.numtoletras($total_pagar).'</p>
 								</div>
 							</div>
 							<div class="opps-reference">
 							<h4>FOLIO</h4>
-					<h3><a href="https://www.ascgar.com/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
+					<h3><a href="'.GetDominio().'/sale_finaly_report_cotizacion.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
 								</div>
 						</div>
-                  		<span><center><br>'.$message.'<br><br></center></span>
-                  </p>
-						<div class="opps-instructions">
-							<h2>Instrucciones</h2>
-							<ol>
-								<li>Eliga opcion de pago <a href="https://docs.google.com/document/d/1sAfwi1dGMLck4KXnpdhF4e4_XHYj4L4YnErFkgvIxXY/edit" target="_blank">SELECCIONE AQUI</a>.</li>
-								<li>Realice el pago correspondiente con tranferencia o en efectivo.</li>
-								<li>Responda este correo con su ficha de pago o envielo por <a href="https://api.whatsapp.com/send?phone=5219231200505&text=&source=&data=" target="_blank">whatsapp</a>.</li>
-								<li>Al confirmar su pago, le entregaran un comprobante impreso o digital segun sea el caso. <strong>En se podra verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</li>
-								<li>Al completar estos pasos recibiras un correo de <strong>CLTA D & D</strong> confirmando tu pago e iniciando logistica.</li>
-							</ol>
-							<div class="opps-footnote">GRUPO ASCGAR</div>
-						</div>
+                  		<span><center><br>'.$message.'<br><br>
+                  		</center></span><br>
+                  </p><br>
 					</div>	
 				</body>
 			</html>

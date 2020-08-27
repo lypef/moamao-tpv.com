@@ -195,7 +195,7 @@
             </div>
             
             <div class="col-md-6">
-            <label>Contrase���a Sello</label>
+            <label>Contrase&ntilde;a Sello</label>
             <input type="password" name="cfdi_pass" id="cfdi_pass" value="<?php echo $_SESSION['cfdi_pass'];?>">
             </div>
             
@@ -399,52 +399,59 @@
     </div>
     <!--Lista de ventas abiertas-->
     <?php echo $modal_ventas; ?>
-    
-    <!--Corte z-->
-    <div class="modal fade" id="cut_z_yes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">REALIZAR CORTE Z ?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <p>Al realizar un corte z, el usuario le indica al sistema que su turno ha terminado y se procede a realizar los respectivos movimientos.</p>
-        </div>
-        <div class="modal-footer">
-            <form action="sale_cut_z.php" method="post">
-                <button type="button" name="no" id="no" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                <button type="submit" class="btn btn-danger">SI</button>
-            </form>
-        </div>
-        </div>
-    </div>
-    </div>
-
     <!--Corte z global-->
     <div class="modal fade" id="cut_z_yes_global" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">REALIZAR CORTE Z GLOBAL?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="cut_z_yes_global_close" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <p>DEJE EN CERO LA CAJA GLOBAL SI ESTA SEGURO DE LO QUE HACE.</p>
+            <p>Este procedimiento vaciara todas las ventas filtradas previemante, Desea continuar ?</p>
         </div>
         <div class="modal-footer">
-            <form action="sale_cut_z_global.php" method="post">
+            <form action="/func/cut_z_global.php" method="post">
+                
+                <input type="hidden" id="usuario" name="usuario" value="<?php echo $_GET["usuario"]; ?>">
+                <input type="hidden" id="sucursal" name="sucursal" value="<?php echo $_GET["sucursal"]; ?>">
+                
                 <button type="button" name="no" id="no" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                <button type="submit" class="btn btn-danger">SI</button>
+                <button type="submit" class="btn btn-danger" onclick='document.getElementById("cut_z_yes_global_close").click();'>SI</button>
             </form>
         </div>
         </div>
     </div>
     </div>
+
+    <!--Corte z usuario-->
+    <div class="modal fade" id="cut_z_yes_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">REALIZAR CORTE Z?</h5>
+            <button type="button" id="cut_z_yes_global_close" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Este procedimiento vaciara todas las ventas afiliadas a el usuario actual ?</p>
+        </div>
+        <div class="modal-footer">
+            <form action="/func/cut_x_view.php" method="post">
+                
+                <input type="hidden" id="cut" name="cut" value="1">
+                <button type="button" name="no" id="no" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                
+                <button type="submit" class="btn btn-danger" onclick='document.getElementById("cut_z_yes_user").click();'>SI</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <!--Perfil-->
     <div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -477,11 +484,11 @@
                     <input type="file" name="imagen" id="imagen" accept="image/jpeg,image/jpg" >
                 </div>
                 <div class="col-md-12">
-                    <label>Ingrese contrase���a si desea cambiarla</label>
+                    <label>Ingrese contrase&ntilde;a si desea cambiarla</label>
                     <input type="password" name="pass1" id="pass1">
                 </div>
                 <div class="col-md-12">
-                    <label>Confirme contrase���a</label>
+                    <label>Confirme contrase&ntilde;a</label>
                     <input type="password" name="pass2" id="pass2">
                 </div>
             </div>
@@ -578,7 +585,7 @@
                     <input type="text" name="username" id="username" placeholder="Nombre o razon social" required>
                 </div>
                 <div class="col-md-12">
-                    <br><label>Escriba una contrase���a<span class="required">*</span></label>
+                <br><label>Escriba una contrase&ntilde;a<span class="required">*</span></label>
                     <input type="password" name="pass" id="pass" required>
                 </div>
                 <div class="col-md-12">
@@ -733,25 +740,36 @@
             <input type="hidden" name="url" id="url" value="<?php echo $_SERVER['REQUEST_URI']?>">
             <div class="col-md-12">
                 <label>Monto<span class="required">*</span> </label>
-                <input type="text" placeholder="$ 0.0" id="monto" name="monto" autocomplete="off" required>
+                <input type="number" step="0.0001" placeholder="$ 0.0" id="monto" name="monto" autocomplete="off" required>
             </div>
             <div class="col-md-12">
                 <br>
                 <label>Ingrese un concepto<span class="required">*</span> </label>
                 <input type="text" placeholder="Indique concepto" id="concepto" name="concepto" autocomplete="off" required>
             </div>
-            <div class="col-md-12">
-                <br><label>Selecione sucursal<span class="required">*</span></label><br>
-                <select id="sucursal" name="sucursal" required>
-                        <?php echo Select_sucursales_Add_user() ?>
-                </select>                                       
-            </div>
+
+            <?php 
+                if ($_SESSION['change_suc'] == 1)
+                {
+                    echo '
+                    <div class="col-md-12">
+                        <br><label>Selecione sucursal<span class="required">*</span></label><br>
+                        <select id="sucursal" name="sucursal" required>
+                                '.Select_sucursales_selected($_SESSION['sucursal']).'
+                        </select>                                       
+                    </div>
+                    ';
+                }else
+                {
+                    echo '<input type="hidden" id="sucursal" name="sucursal" value="'.$_SESSION['sucursal'].'">';
+                }
+            ?>
             </div>
     
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="sumbit" class="btn btn-success    ">Guardar</button>
+            <button type="sumbit" class="btn btn-success" onclick="javascript:this.form.submit(); this.disabled= true;">Guardar</button>
             </form>
         </div>
         </div>
@@ -774,25 +792,35 @@
             <input type="hidden" name="url" id="url" value="<?php echo $_SERVER['REQUEST_URI']?>">
             <div class="col-md-12">
                 <label>Monto<span class="required">*</span> </label>
-                <input type="text" placeholder="$ 0.0" id="monto" name="monto" autocomplete="off" required>
+                <input type="number" step="0.0001" placeholder="$ 0.0" id="monto" name="monto" autocomplete="off" required>
             </div>
             <div class="col-md-12">
                 <br>
                 <label>Ingrese un concepto<span class="required">*</span> </label>
                 <input type="text" placeholder="Indique concepto" id="concepto" name="concepto" autocomplete="off" required>
             </div>
-            <div class="col-md-12">
-                <br><label>Selecione sucursal<span class="required">*</span></label><br>
-                <select id="sucursal" name="sucursal" required>
-                        <?php echo Select_sucursales_Add_user() ?>
-                </select>                                       
-            </div>
+            <?php 
+                if ($_SESSION['change_suc'] == 1)
+                {
+                    echo '
+                    <div class="col-md-12">
+                        <br><label>Selecione sucursal<span class="required">*</span></label><br>
+                        <select id="sucursal" name="sucursal" required>
+                                '.Select_sucursales_selected($_SESSION['sucursal']).'
+                        </select>                                       
+                    </div>
+                    ';
+                }else
+                {
+                    echo '<input type="hidden" id="sucursal" name="sucursal" value="'.$_SESSION['sucursal'].'">';
+                }
+            ?>
             </div>
     
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="sumbit" class="btn btn-danger">Guardar</button>
+            <button type="sumbit" class="btn btn-danger" onclick="javascript:this.form.submit(); this.disabled= true;">Guardar</button>
             </form>
         </div>
         </div>
@@ -814,15 +842,15 @@
 					<div class="row">
 						
 						<form action="func/cotizacion_sendmailAll.php" autocomplete="on" method="post">
-							<div class="col-md-12">
-							<br>
+                        <div class="col-md-12">
+                                <label>ASUNTO</label>
+                                <input type="text" name="header" id="header" placeholder="Cotizacion: #######"  value="">
+                            </div>
+                            <div class="col-md-12">
+                            <br>
 								<label>Mensaje</label>
-								<textarea placeholder="Escriba aqui un texto html si es necesario" name="txtxtra" id="txtxtra" class="custom-textarea"></textarea>
-							</div>
-							<div class="col-md-12">
-								<br>
-								<label>ASUNTO</label>
-								<input type="text" name="header" id="header" placeholder="Cotizacion: #######"  value="">
+								<textarea name="txtxtra" id="txtxtra"></textarea>
+								<script>CKEDITOR.replace('txtxtra');</script>
 							</div>
 					</div>
 				</div>
@@ -889,7 +917,7 @@
                             <div class="col-md-12">
                                 <br>
                                 <label>Ingrese correo electronico</label>
-                                <input type="email" name="correo" id="correo" placeholder="Email de cliente o empresa">
+                                <input type="text" name="correo" id="correo" placeholder="Email de cliente o empresa">
                             </div>
 					</div>
 				</div>
@@ -903,6 +931,99 @@
 			</div>
 			</div>
     <!-- Finaliza agregar cliente-->
+
+    <!-- Inicia Agregar credito -->
+    <div class="modal fade" id="addcredit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"><center>AGREGAR NUEVO CREDITO</center></center></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						
+						<form id="contact-form" action="func/credit_add.php" method="post" autocomplete="off">
+                              <div class="col-md-12">
+                                <label>Seleccione cliente<span class="required">*</span></label>
+                                <select id="select_client" name="select_client">
+                                        <?php echo Select_clients(0) ?>
+                                </select>
+                              </div>
+
+                              <div class="col-md-12">
+                                <br><label>Seleccione sucursal<span class="required">*</span></label>
+                                <select id="select_sucursal" name="select_sucursal">
+                                        <?php echo Select_sucursales(0) ?>
+                                </select>
+                              </div>
+                              
+                              <div class="col-md-12">
+                                <br>
+                                <label>Ingrese no. de factura</label>
+                                <input type="text" name="factura" id="factura" placeholder="F: ##-##">
+                              </div>
+                              
+                              <div class="col-md-12">
+                                  <br>
+                                <label>Ingrese adeudo total</label>
+                                <input type="number" step="1"  name="adeudo" id="adeudo" placeholder="Ingrese adeudo" required value="1">
+                            </div>
+                
+                            <div class="col-md-12">
+                                <br>
+                                <label>Ingrese abono</label>
+                                <input type="number" step="1"  name="abono" id="abono" placeholder="Opcional" required value="0">
+                            </div>
+                
+                            <div class="col-md-12">
+                                <br>
+                                <label>Ingrese dias estimados de credito</label>
+                                <input type="number" step="1"  name="dias" id="dias" placeholder="Opcional" required value="0">
+                            </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" id="url" name="url" value="<?php echo $_SERVER['REQUEST_URI'] ?>">
+						<input type="hidden" id="url_web" name="url_web" value="<?php echo $_SERVER['HTTP_HOST'] ?>">
+						<button type="sumbit" class="btn btn-success"  onclick="javascript:this.form.submit(); this.disabled= true;" >Enviar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+    <!-- Finaliza agregar credito-->
+
+
+<!-- Inicia Generar ticket soporte tecnico -->
+<div class="modal fade" id="addsoportetecnico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"><center>Ingrese folio de venta o licencia</center></center></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						
+                    <form id="contact-form" action="func/create_sale_soporte.php" method="post" autocomplete="off">
+                              <div class="col-md-12">
+                                <input type="tel" name="folio" id="folio" placeholder="Folio venta, Licencia de usuario" required>
+                              </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<button type="sumbit" class="btn btn-success"  onclick="javascript:this.form.submit(); this.disabled= true;" >Solicitar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+    <!-- Finaliza Generar ticket soporte tecnico -->
 
     <script>
     if (getUrlVars()["error_update_empresa"])
@@ -1070,6 +1191,26 @@
         body +="</div>";
         document.getElementById("message").innerHTML = body;
     }
+    if (getUrlVars()["credit_add_add"])
+    {
+        var body = "<div class='alert alert-success alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>AGREGADO!</strong> credito agregado con exito.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
+    }
+    if (getUrlVars()["credit_add_noadd"])
+    {
+        var body = "<div class='alert alert-danger alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>ERROR!</strong> Verifique informacion";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
+    }
     if (getUrlVars()["okannuity"])
     {
         var body = "<div class='alert alert-success alert-dismissible show' role='alert'>";
@@ -1091,124 +1232,47 @@
         body +="</div>";
         document.getElementById("message").innerHTML = body;
     }
-    </script>
-
-<script>
-    function ancho_cm_pulg() 
+    if (getUrlVars()["sale_liquid"])
     {
-        document.getElementById("pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
-        
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+        var body = "<div class='alert alert-success alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>HECHO! </strong> Venta sin adeudo.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
     }
 
-    function ancho_pulg_cm() 
+    if (getUrlVars()["process_yes"])
     {
-        document.getElementById("cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
-        
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+        var body = "<div class='alert alert-success alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>HECHO! </strong> Proceso exitoso.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
     }
-
-    function alto_cm_pulg() 
-    {
-        document.getElementById("pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
-    }
-
-    function alto_pulg_cm() 
-    {
-        document.getElementById("cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
-    }
-
     
-
-
-    function ancho_cm_pulg_hijos() 
+    if (getUrlVars()["sale_noliquid"])
     {
-        document.getElementById("hijos_pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+        var body = "<div class='alert alert-danger alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>Error!</strong>El proceso no se realizo con exito.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
     }
 
-    function ancho_pulg_cm_hijos() 
+    function hideMenuVarMobile() 
     {
-        document.getElementById("hijos_cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+        jQuery('.mean-nav ul:first').slideUp();
+        jQuery(".meanmenu-reveal.meanclose").toggleClass("meanclose").html("<span /><span /><span />");
+        this.menuOn = false;
     }
 
-    function alto_cm_pulg_hijos() 
-    {
-        document.getElementById("hijos_pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
-    }
-
-    function alto_pulg_cm_hijos() 
-    {
-        document.getElementById("hijos_cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
-
-        var span = document.getElementById("precio"+arguments[0]);
-        while( span.firstChild ) {
-            span.removeChild( span.firstChild );
-        }
-        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
-        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
-        var total = (cm_ancho * cm_alto) * arguments[2];
-        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
-    }
-</script>
+    </script>
 </body>
 
 </html>
@@ -1221,4 +1285,3 @@ $(window).load(function() {
 })
 </script>
 <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v4.0"></script>

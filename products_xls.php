@@ -17,12 +17,12 @@
 
     if ($_GET["almacen"])
     {
-        $sales = mysqli_query($con,"SELECT p.id, p.`no. De parte`,p.nombre, a.nombre, d.nombre, if (p.cc2 > 0, p.cc2,p.precio_costo) as precio_costo, if (p.vc2 > 0, p.vc2,p.precio_normal) as precio_normal, p.stock, p.loc_almacen FROM productos p, almacen a, departamentos d WHERE p.almacen = a.id and p.departamento = d.id and a.id = '$id' ORDER by p.nombre asc");
+        $sales = mysqli_query($con,"SELECT p.id, p.`no. De parte`,p.nombre, a.nombre, d.nombre, p.precio_costo, p.precio_normal, p.stock, p.loc_almacen FROM productos p, almacen a, departamentos d WHERE p.almacen = a.id and p.departamento = d.id and a.id = '$id' ORDER by p.nombre asc");
     }
     
     if ($_GET["almacen"] == 'full')
     {
-        $sales = mysqli_query($con,"SELECT p.id, p.`no. De parte`,p.nombre, a.nombre, d.nombre, if (p.cc2 > 0, p.cc2,p.precio_costo) as precio_costo, if (p.vc2 > 0, p.vc2,p.precio_normal) as precio_normal, p.stock, p.loc_almacen FROM productos p, almacen a, departamentos d WHERE p.almacen = a.id and p.departamento = d.id ORDER by p.nombre asc");
+        $sales = mysqli_query($con,"SELECT p.id, p.`no. De parte`,p.nombre, a.nombre, d.nombre, p.precio_costo, p.precio_normal, p.stock, p.loc_almacen FROM productos p, almacen a, departamentos d WHERE p.almacen = a.id and p.departamento = d.id ORDER by p.nombre asc");
     }
 
     $total_inventario = 0;
@@ -78,7 +78,7 @@
     <h3><center>'.$_SESSION['empresa_direccion'].'</center></h3>
     <h3><center>MAIL: '.$_SESSION['empresa_correo'].' | TEL: '.$_SESSION['empresa_telefono'].'</center></h3>
     <h4><center>LISTA DE PRODUCTOS EN EXISTENCIA</center></h4>
-    <h1><center>TOTAL DE INVENTARIO: $ '.number_format($total_inventario,2,".",",").'</center></h1>
+    <h1><center>TOTAL DE INVENTARIO: $ '.number_format($total_inventario,GetNumberDecimales(),".",",").'</center></h1>
     <table style="width:100%">
         <tr>
         <th class="table-head th-name uppercase">NO. PARTE</th>

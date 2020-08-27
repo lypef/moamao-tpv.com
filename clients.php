@@ -3,13 +3,14 @@
 ?>
 <div class="col-md-12">
     <?php 
-        if ($_GET["pagina"])
+        
+        if ($_GET["search"] && $_GET["pagina"])
+        {
+            echo table_clientes_search($_GET["search"], $_GET["pagina"]); 
+        }
+        elseif ($_GET["pagina"])
         {
             echo table_clientes($_GET["pagina"]); 
-        }
-        if ($_GET["search"])
-        {
-            echo table_clientes_search($_GET["search"]); 
         }
     ?>
 </div>  
@@ -82,13 +83,14 @@
 </script>
 <?php
     include 'func/footer.php';
-    if ($_GET["pagina"])
+
+    if ($_GET["search"] && $_GET["pagina"])
+    {
+        echo table_ClientesModal_search($_GET["search"], $_GET["pagina"]); 
+    }
+    elseif ($_GET["pagina"])
     {
         echo table_ClientesModal($_GET["pagina"]);
-    }
-    if ($_GET["search"])
-    {
-        echo table_ClientesModal_search($_GET["search"]); 
     }
 ?>
         

@@ -1,3 +1,4 @@
+var menuOn = false;
 /*
 
   Template Name: Freak Ecommerce Responsive Bootstrap Template
@@ -675,7 +676,6 @@ $(window).resize(function(){updateoverlayresize();});})(jQuery);
                             }
                         };
 
-                        var menuOn = false;
                         var meanMenuExist = false;
 
 

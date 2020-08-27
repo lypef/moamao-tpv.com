@@ -4,6 +4,7 @@
     $con = db_conectar();  
     
     $folio = $_POST['folio'];
+    
     $fecha = date("Y-m-d H:i:s");
     $descuento = Sale_Descuento($folio);
     $total = 0;
@@ -36,7 +37,8 @@
 
     if (!mysqli_error($con))
     {
-        SendMailLog($folio);
+        SendMailLog($folio, true);
+        mysqli_query($con,"UPDATE credits SET abono = adeudo , pay = 1 where factura = '$folio' ");
         echo '<script>location.href = "/products.php?pagina=1&sale_ok=true&folio_sale='.$folio.'"</script>';
     }else
     {

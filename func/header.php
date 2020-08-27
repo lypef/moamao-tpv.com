@@ -7,7 +7,7 @@
 
     $departamentos = mysqli_query(db_conectar(),"SELECT id, nombre FROM departamentos");
     $departamentos_ = mysqli_query(db_conectar(),"SELECT id, nombre FROM departamentos");
-    $almacenes = mysqli_query(db_conectar(),"SELECT id, nombre FROM almacen");
+    $almacenes = mysqli_query(db_conectar(),"SELECT a.id, a.nombre FROM sucursal_almacen sa, almacen a WHERE sa.almacen = a.id and sa.sucursal = $_SESSION[sucursal] ");
     $sales_open = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.fecha, f.descuento, f.iva FROM folio_venta f, clients c, users v where f.client = c.id and f.vendedor = v.id and f.open = 1 and f.pedido = 0 and f.cotizacion = 0");
     $sales_open2 = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.fecha, f.descuento, f.iva FROM folio_venta f, clients c, users v where f.client = c.id and f.vendedor = v.id and f.open = 1 and f.pedido = 0 and f.cotizacion = 0");
 ?>
@@ -173,6 +173,9 @@
 
     <!-- Modernizr JS -->
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <!-- CK Editor -->
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 
 <body>
@@ -189,16 +192,37 @@
         <!-- Start of header area -->
         <header>
             <div class="header-top-bar white-bg ptb-20">
-                <div class="container" style="width:99%; !important">
+                <div class="container">
                     <div class="row">
                         <div class="col-sm-4">
-                            <div class="header-top">
+                        <div class="header-top">
                                 <ul>
-                                <li class="lh-50">
-                                    <form action="products.php" autocomplete="off">
-                                        <input type="text" placeholder="Buscar" name="search" autocomplete="off">
-                                    </form>
-                                </li>
+                                    <li class="lh-50">
+                                        <a href="#" class="pr-20"><i class="zmdi zmdi-search"></i></a>
+                                        <div class="header-bottom-search header-top-down header-top-hover lh-35">
+                                            <form action="products.php" class="header-search-box" action="index.php">
+                                                <div>
+                                                    <input type="text" placeholder="Buscar" name="search" autocomplete="off">
+                                                    <button class="btn btn-search" type="submit">
+                                                        <i class="zmdi zmdi-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <li class="lh-50">
+                                        <a href="#" class="prl-20 text-uppercase">DEPARTAMENTOS</a>
+                                        <div class="header-top-down header-top-hover header-top-down-lang pl-15 lh-35 lh-35">
+                                            <ul>
+                                                <?php
+                                                while($row = mysqli_fetch_array($departamentos))
+                                                {
+                                                    echo '<li><a href=products.php?department='.$row[0].'>'.$row[1].'</a></li>';
+                                                }
+                                                ?>
+                                            </ul>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -218,19 +242,6 @@
                         <div class="col-sm-4">
                             <div class="header-top header-top-right">
                                 <ul>
-                                <li class="lh-50">
-                                        <a href="#" class="prl-20 text-uppercase">DEPARTAMENTOS</a>
-                                        <div class="header-top-down header-top-hover header-top-down-lang pl-15 lh-35 lh-35">
-                                            <ul>
-                                                <?php
-                                                while($row = mysqli_fetch_array($departamentos))
-                                                {
-                                                    echo '<li><a href=products.php?department='.$row[0].'>'.$row[1].'</a></li>';
-                                                }
-                                                ?>
-                                            </ul>
-                                        </div>
-                                    </li>
                                     <li class="lh-50">
                                         <a href="#" class="prl-20 text-uppercase">ALMACENES</a>
                                         <div class="header-top-down header-top-hover header-top-down-lang pl-15 lh-35 lh-35">
@@ -262,9 +273,7 @@
                                 <div class="col-md-12">
                                     <nav id="primary-menu">
                                         <ul class="main-menu text-center">
-                                            <li class="mega-parent"><a href="#"><i class="zmdi zmdi-plus"></i> Lo mas nuevo</a>
                                                 <div class="mega-menu-area header-top-hover p-30">
-
                                                 <?php
                                                     while($row = mysqli_fetch_array($departamentos_))
                                                     {
@@ -280,7 +289,7 @@
 
                                                 </div>
                                             </li>
-                                            <li><a href="#">Productos</a>
+                                            <li><a href="/products.php?pagina=1">Productos ▼</a>
                                                 <ul class="dropdown header-top-hover ptb-10">
                                                     <?php 
                                                         if ($_SESSION['product_add'] == 1)
@@ -309,7 +318,7 @@
                                                 </ul>
                                             </li>
 
-                                            <li><a href="clients.php?pagina=1">Clientes</a>
+                                            <li><a href="clients.php?pagina=1">Clientes ▼</a>
                                                 <ul class="dropdown header-top-hover ptb-10">
                                                     <?php
                                                     if ($_SESSION['client_add'] == 1)
@@ -323,29 +332,18 @@
                                                     }
                                                     if ($_SESSION['client_guest'] == 1)
                                                     {
-                                                        echo '<li><a href="clients.php?pagina=1">Gestionar</a></li>';
+                                                        echo '<li><a href="clients.php?pagina=1">Gestionar</a></li>
+                                        <li><a target="_blank" href="clients_pdf.php?pagina=1">Gen. Reporte</a></li>';
                                                     }
-                                                    
-                                                    if ($_SESSION['client_guest'] == 1)
-                                                    {
-                                                        echo '<li><a href="annuity.php">Anualidades</a></li>';
-                                                    }
-                                                    
                                                     ?>
                                                 </ul>
+                                                
                                             </li>
-                                            <?php
-                                                if ($_SESSION['sucursal_gest'] == 1)
-                                                {
-                                                    echo '<li><a href="sucursales.php">Sucursales</a>';
-                                                }
-                                            ?>
-                                            
                                             <?php
                                                 if ($_SESSION['usuarios'] == 1)
                                                 {
                                                     echo '
-                                                        <li><a href="users.php">Usuarios</a>
+                                                        <li><a href="users.php">Usuarios ▼</a>
                                                             <ul class="dropdown header-top-hover ptb-10">
                                                                 <li><a href="#" data-toggle="modal" data-target="#user_add">Agregar</a></li>
                                                                 <li><a href="users.php">Gestionar</a></li>
@@ -355,7 +353,7 @@
                                                 }
                                             ?>
                                             
-                                            <li><a href="#">Empresa</a>
+                                            <li><a href="#">Empresa ▼</a>
                                                 <div class="mega-menu-area-2 header-top-hover p-30">
                                                   <ul class="single-mega-item">
                                                         <?php
@@ -544,22 +542,18 @@
                                                       <li><a href="create_cotizacion.php?pagina=1">Crear cotizacion</a></li>
                                                       <li><a href="cotizaciones.php">Ver cotizaciones</a></li>
                                                       <li><a href="/func/create_sale_cot_xpress.php">Cotizacion Xpress</a></li>
-                                                      <?php
-                                                        if ($_SESSION['propiedades'] == 1)
-                                                        {
-                                                        echo '<li><a href="#" data-toggle="modal" data-target="#SendCotAll">Enviar por email</a></li>
-                                                  ';}?>
                                                   </ul>
-                                                  <ul class="single-mega-item">
+                                                  
+                                                  <!--<ul class="single-mega-item">
                                                       <li><h2 class="mega-menu-title mb-15">Pedidos</h2></li>
                                                       <li>
                                                       <li><a href="create_order.php?pagina=1">Crear pedido</a></li>
                                                       <li><a href="orders.php">Ver pedidos</a></li>
                                                       <li></li>
                                                       <li></li>
-                                                  </ul>
+                                                  </ul>-->
                                                   <ul class="single-mega-item">
-                                                      <br><li><h2 class="mega-menu-title mb-15">Ventas / Abiertas</h2></li>
+                                                      <li><h2 class="mega-menu-title mb-15">Ventas / Abiertas</h2></li>
                                                       <?php
                                                           if ($_SESSION['vtd_pg'] == 1)
                                                           {
@@ -681,12 +675,50 @@
                                                   </ul>
                                                 </div>
                                             </li>
-                                            <li><a href="facturas.php?pagina=1">Facturas</a>
+                                            <?php
+                                            if ($_SESSION['finanzas'] == 1)
+                                            {
+                                                echo '
+                                                <li><a href="credits.php?client=0">Creditos ▼</a>
+                                                    <ul class="dropdown header-top-hover ptb-10">
+                                                        <li>
+                                                            <a href="#" title="Agregar credito" data-toggle="modal" data-target="#addcredit">
+                                                                Agregar
+                                                            </a>
+                                                        </li>
+                                                        <li><a href="credits.php?client=0&sucursal=0">Gestionar</a></li>
+                                                    </ul>
+                                                </li> 
+                                                ';
+                                            }
+                                            ?>
+                                            <li><a href="credits.php?client=0">Mas ▼</a>
+                                                <ul class="dropdown header-top-hover ptb-10">
+                                                    <?php
+                                                        if ($_SESSION['sucursal_gest'] == 1)
+                                                        {
+                                                            echo '<li><a href="sucursales.php">Sucursales</a>';
+                                                        }
+                                                    ?>
+                                                    <li><a href="facturas.php?pagina=1">Facturas</a>
+                                                </ul>
+                                            </li> 
+                                            
                                             <?php 
                                                 if ($_SESSION['caja'] == 1)
                                                 {
                                                     $items = '
-                                                        <li><a href="view_move.php?usuario=0&sucursal=0&t_pago=0">Visualizar</a></li>
+                                                        <li><a href="#" data-toggle="modal" data-target="#profile">Perfil</a></li>
+                                                        <hr style="margin-top: 0em; margin-bottom: 0.9em;">
+
+                                                        <li><a href="view_move.php?usuario=0&sucursal=0">Corte de caja</a></li>
+                                                        <li><a href="/func/cut_x_global.php">Corte X Global</a></li>
+                                                        <hr style="margin-top: 0em; margin-bottom: 0.9em;">
+
+                                                        <li><a href="/func/cut_x_view.php">Corte X</a></li>
+                                                        <li><a href="#" data-toggle="modal" data-target="#cut_z_yes_user">Corte Z</a></li>
+
+                                                        <hr style="margin-top: 0em; margin-bottom: 0.9em;">
                                                         <li><a href="#" data-toggle="modal" data-target="#ingreso">Registrar ingreso</a></li>
                                                         <li><a href="#" data-toggle="modal" data-target="#egreso">Registrar egreso</a></li>
                                                     ';
@@ -715,9 +747,15 @@
                                                         border-radius: 50%;
                                                         background-size: 100% auto;
                                                         "> '.$_SESSION['users_username'].' ▼ </a><ul class="dropdown header-top-hover ptb-10">
-                                                                <li><a href="#" data-toggle="modal" data-target="#profile">Perfil</a></li>
-                                                                <li><a href="sale_cut_x.php">Corte x</a></li>
-                                                                <li><a href="#" data-toggle="modal" data-target="#cut_z_yes">Corte Z</a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#profile">Perfil</a></li>
+                                                            <hr style="margin-top: 0em; margin-bottom: 0.9em;">
+
+                                                            <li><a href="/func/cut_x_view.php">Corte X</a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#cut_z_yes_user">Corte Z</a></li>
+                                                            <hr style="margin-top: 0em; margin-bottom: 0.9em;">
+                                                            
+                                                            <li><a href="#" data-toggle="modal" data-target="#ingreso">Registrar ingreso</a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#egreso">Registrar egreso</a></li>
                                                             </ul>
                                                         </li>
                                                     ';
@@ -740,14 +778,14 @@
                                 <nav id="dropdown">
                                     <ul>
                                         <li><a href="/products.php?pagina=1">Productos</a></li>
-                                        <li><a href="/clients.php?pagina=1">Clientes</a>
+                                        <li><a href="/clients.php?pagina=1">Clientes </a>
                                             <ul>
                                             <?php
                                                 if ($_SESSION['client_add'] == 1)
                                                 {
                                                     echo '
                                                     <li>
-                                                        <a href="#" title="Agregar cliente" data-toggle="modal" data-target="#addclient">
+                                                        <a href="#" title="Agregar cliente" data-toggle="modal" data-target="#addclient" onclick="hideMenuVarMobile()">
                                                             Agregar cliente
                                                         </a>
                                                     </li>';
@@ -755,8 +793,8 @@
                                                 }
                                                 if ($_SESSION['client_guest'] == 1)
                                                 {
-                                                    echo '<li><a href="clients.php?pagina=1">Gestionar</a></li>';
-                                                    echo '<li><a href="annuity.php">Anualidades</a></li>';
+                                                    echo '<li><a href="clients.php?pagina=1">Gestionar</a></li>
+                                                    <li><a target="_blank" href="clients_pdf.php?pagina=1">Gen. Reporte</a></li>';
                                                 }
                                             ?>
                                             </ul>
@@ -767,11 +805,6 @@
                                             echo '<li><a href="create_cotizacion.php?pagina=1">Crear cotizacion</a></li>';
                                             ?>
                                             <li><a href="cotizaciones.php">Ver cotizaciones</a></li>
-                                            <?php
-                                                if ($_SESSION['propiedades'] == 1)
-                                                {
-                                                echo '<li><a href="#" data-toggle="modal" data-target="#SendCotAll">Enviar por email</a></li>
-                                          ';}?>
                                             </ul>
                                         </li>
                                         <!-- Ventas abiertas moviles
@@ -808,6 +841,50 @@
                                                     <li><a href="#" data-toggle="modal" data-target="#cut_z_yes">Corte Z</a></li>
                                             </li>
                                         -->
+                                        <li><a href="/credits.php?client=0&sucursal=0.php">Creditos</a>
+                                            <ul>
+                                            <?php
+                                            echo '<li>
+                                                    <a href="#" title="Agregar credito" data-toggle="modal" data-target="#addcredit" onclick="hideMenuVarMobile()">
+                                                        Agregar
+                                                    </a>
+                                                </li>';
+                                            ?>
+                                            <li><a href="/credits.php?client=0&sucursal=0.php">Gestionar</a></li>
+                                            </ul>
+                                        </li>
+                                        <?php 
+                                            if ($_SESSION['caja'] == 1)
+                                            {
+                                                echo '
+                                                    <li><a href="#">Caja</a>
+                                                        <ul>
+                                                            <li><a href="view_move.php?usuario=0&sucursal=0">Corte de caja</a></li>
+                                                            <li><a href="/func/cut_x_global.php">Corte X Global</a></li>
+                                                            <li><a href="/func/cut_x_view.php">Corte X</a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#cut_z_yes_user" onclick="hideMenuVarMobile()">Corte Z</a></li>
+        
+                                                            <li><a href="#" title="ingreso" data-toggle="modal" data-target="#ingreso" onclick="hideMenuVarMobile()">Registrar ingreso</a></li>
+                                                            <li><a href="#" title="egreso" data-toggle="modal" data-target="#egreso" onclick="hideMenuVarMobile()">Registrar egreso</a></li>
+                                                        </ul>
+                                                    </li>
+                                                ';
+                                            }else
+                                            {
+                                                echo '
+                                                    <li><a href="#">Caja</a>
+                                                        <ul>
+                                                            <li><a href="/func/cut_x_view.php">Corte X</a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#cut_z_yes_user" onclick="hideMenuVarMobile()">Corte Z</a></li>
+                                                            <li><a href="#" title="ingreso" data-toggle="modal" data-target="#ingreso" onclick="hideMenuVarMobile()">Registrar ingreso</a></li>
+                                                            <li><a href="#" title="egreso" data-toggle="modal" data-target="#egreso" onclick="hideMenuVarMobile()">Registrar egreso</a></li>
+                                                        </ul>
+                                                    </li>
+                                                ';
+                                            }
+                                        ?>
+                                        <li><a href="#" data-toggle="modal" data-target="#profile" onclick="hideMenuVarMobile()">Perfil</a></li>
+                                        <li><a href="/facturas.php?pagina=1">Facturas</a>
                                         <?php
                                         $hoy = date("Y-m-d");
                                                                 
@@ -816,6 +893,8 @@
                                         <li><a href="create_sale.php?pagina=1">Crear venta</a></li>
                                         <li><a href="/func/create_sale_xpress.php">Crear venta Xpress</a></li>
                                         <li><a href="/func/create_sale_cot_xpress.php">Cotizacion Xpress</a></li>
+                                        <li><a href="#" title="ingreso" data-toggle="modal" data-target="#ingreso" onclick="hideMenuVarMobile()">Registrar ingreso</a></li>
+                                        <li><a href="#" title="egreso" data-toggle="modal" data-target="#egreso" onclick="hideMenuVarMobile()">Registrar egreso</a></li>
                                                       <?php
                                                         $modal_ventas = "";
                                                         while($row = mysqli_fetch_array($sales_open2))
@@ -951,4 +1030,4 @@
             });
             return vars;
           }
-        </script>
+        </script> 

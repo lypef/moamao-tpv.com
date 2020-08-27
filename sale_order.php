@@ -50,7 +50,7 @@
                         <?php 
                             if ($_GET["search"])
                             {
-                                echo _getProducts_saleSearch_order($_GET["search"], $_GET["folio"]);
+                                echo _getProducts_saleSearch_order($_GET["search"], $_GET["folio"], $_GET["pagina"]);
                             }
                             else
                             {
@@ -101,7 +101,7 @@
     
     if ($_GET["search"])
     {
-        echo _getProductsModal_sale_search_order($_GET["search"], $_GET["folio"]);
+        echo _getProductsModal_sale_search_order($_GET["search"], $_GET["folio"], $_GET["pagina"]);
     }
     else
     {

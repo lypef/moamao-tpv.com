@@ -3,12 +3,12 @@
 ?>
 <div class="col-md-12">
     <div class="section-title-2 text-uppercase mb-40 text-center">
-            <h4>SELECCIONE CLIENTE PARA CREAR VENTA</h4>
+            <h4>SELECCIONE CLIENTE</h4>
     </div>
     <?php 
         if ($_GET["search"])
         {
-            echo create_sale_SelectClientSearch_client($_GET["search"]);
+            echo create_sale_SelectClientSearch_client($_GET["search"], $_GET["pagina"]);
         }else
         {
             echo create_sale_SelectClient_client($_GET["pagina"]);

@@ -2,15 +2,14 @@
     //ini_set( 'display_errors', 1 );
     //error_reporting( E_ALL );
     require_once 'db.php';
-    
     // Dompdf php 7
     require_once '../dompdf_php7.1/autoload.inc.php';
     use Dompdf\Dompdf;
 
     // Dompdf php 5
     //require_once("dompdf/dompdf_config.inc.php");
-    
-    $ColorBarr = ColorBarrReport();
+
+    $ColorBarr = "#cc353a";
     
     $url = $_POST['url'];
     $user = $_POST['user'];
@@ -43,8 +42,8 @@
                     <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: left;">'.$temp1[4].'</td>
                     <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: left;">'.GetFechaText($fecha).'</td>
                     <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: center;">'.$temp1[0].'</td>
-                    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($temp1[2],2,".",",").'</td>
-                    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($precio_p,2,".",",").'</td>
+                    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($temp1[2],GetNumberDecimales(),".",",").'</td>
+                    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($precio_p,GetNumberDecimales(),".",",").'</td>
                 </tr>
                 ';
            }
@@ -63,8 +62,8 @@
                 <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: left;">'.$temp0[2].'</td>
                 <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: left;">'.GetFechaText($fecha).'</td>
                 <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: center;">'.$temp0[0].'</td>
-                <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($temp0[1],2,".",",").'</td>
-                <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($tmp,2,".",",").'</td>
+                <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($temp0[1],GetNumberDecimales(),".",",").'</td>
+                <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top:none; text-align: right;">'.number_format($tmp,GetNumberDecimales(),".",",").'</td>
             </tr>
             ';
         }
@@ -84,11 +83,14 @@
     <table width="100%" border="0">
         <tr>
             <td width="35%">
-                <img src="../'.ReturnImgLogo().'" alt="Membrete" height="auto" width="350">
+                <img src="../images/logolola.jpg" alt="Membrete" height="auto" width="350">
             </td>
 
             <td>
-                
+                <center>
+                <h2 style="display:inline;">CLTA</h2>
+                <br>CLTA D&D | GRUPO ASCGAR
+                </center>
             </td>
         </tr>
     </table>
@@ -103,11 +105,11 @@
     <br>
     <table border="1" style="width:100%; border-collapse: collapse;">
         <tr>
-        <th bgcolor="'.$ColorBarr.'" style="width:40%; border-right:1px solid '.$ColorBarr.';border-left:1px solid '.$ColorBarr.';border-bottom:1px solid black;border-top:1px solid '.$ColorBarr.'">PRODUCTO</th> 
-        <th bgcolor="'.$ColorBarr.'" style="width:25%;border-right:1px solid '.$ColorBarr.';border-left:1px solid '.$ColorBarr.';border-bottom:1px solid black;border-top:1px solid '.$ColorBarr.'">FECHA VENTA</th> 
-        <th bgcolor="'.$ColorBarr.'" style="border-right:1px solid '.$ColorBarr.';border-left:1px solid '.$ColorBarr.';border-bottom:1px solid black;border-top:1px solid '.$ColorBarr.'">UNIDADES</th> 
-        <th bgcolor="'.$ColorBarr.'" style="border-right:1px solid '.$ColorBarr.';border-left:1px solid '.$ColorBarr.';border-bottom:1px solid black;border-top:1px solid '.$ColorBarr.'">PRECIO UNITARIO</th>
-        <th bgcolor="'.$ColorBarr.'" style="border-right:1px solid '.$ColorBarr.';border-left:1px solid '.$ColorBarr.';border-bottom:1px solid black;border-top:1px solid '.$ColorBarr.'">TOTAL</th>
+        <th bgcolor="#5a94dd" style="width:40%; border-right:1px solid #5a94dd;border-left:1px solid #5a94dd;border-bottom:1px solid black;border-top:1px solid #5a94dd">PRODUCTO</th> 
+        <th bgcolor="#5a94dd" style="width:25%;border-right:1px solid #5a94dd;border-left:1px solid #5a94dd;border-bottom:1px solid black;border-top:1px solid #5a94dd">FECHA VENTA</th> 
+        <th bgcolor="#5a94dd" style="border-right:1px solid #5a94dd;border-left:1px solid #5a94dd;border-bottom:1px solid black;border-top:1px solid #5a94dd">UNIDADES</th> 
+        <th bgcolor="#5a94dd" style="border-right:1px solid #5a94dd;border-left:1px solid #5a94dd;border-bottom:1px solid black;border-top:1px solid #5a94dd">PRECIO UNITARIO</th>
+        <th bgcolor="#5a94dd" style="border-right:1px solid #5a94dd;border-left:1px solid #5a94dd;border-bottom:1px solid black;border-top:1px solid #5a94dd">TOTAL</th>
         </tr>
         '.$body_products.'
     </table>
@@ -116,17 +118,17 @@
     <table style="height: 5px;" width="100%">
     <tbody>
     <tr>
-    <td bgcolor="'.$ColorBarr.'" align="center"><strong>'.numtoletras($sueldo_pagar).'</strong></td>
+    <td bgcolor="#5a94dd" align="center"><strong>'.numtoletras($sueldo_pagar).'</strong></td>
     </tr>
     <tr>
     <td>
      <table width="100%">
     <tbody>
     <tr>
-    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> UTILIDAD:</strong> $ '.number_format( $utilidad,2,".",",").'</td>
-    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> SUELDO:</strong> $ '.number_format( $sueldo,2,".",",").'</td>
-    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> COMISION '.$porcent_comision.' % :</strong> $ '.number_format( $utilidad* ($porcent_comision / 100),2,".",",").'</td>
-    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> TOTAL:</strong> $ '.number_format($sueldo_pagar,2,".",",").'</td>
+    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> UTILIDAD:</strong> $ '.number_format( $utilidad,GetNumberDecimales(),".",",").'</td>
+    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> SUELDO:</strong> $ '.number_format( $sueldo,GetNumberDecimales(),".",",").'</td>
+    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> COMISION '.$porcent_comision.' % :</strong> $ '.number_format( $utilidad* ($porcent_comision / 100),GetNumberDecimales(),".",",").'</td>
+    <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black" align="center"><strong> TOTAL:</strong> $ '.number_format($sueldo_pagar,GetNumberDecimales(),".",",").'</td>
     </tr>
     </tbody>
     </table>
@@ -136,8 +138,7 @@
     </tbody>
     </table>';
     
-    echo $body;
-    /*mysqli_query(db_conectar(),"UPDATE `folio_venta` SET `comision_pagada` = '1' WHERE vendedor = $user ");  
+    mysqli_query(db_conectar(),"UPDATE `folio_venta` SET `comision_pagada` = '1' WHERE vendedor = $user ");  
     
     $body .= FooterPageReport();
     
@@ -147,5 +148,5 @@
     $dompdf->load_html($body);
     ini_set("memory_limit","128M");
     $dompdf->render();
-    $dompdf->stream("PAY".$nombre_user.".pdf");*/
+    $dompdf->stream("PAY".$nombre_user.".pdf");
 ?>

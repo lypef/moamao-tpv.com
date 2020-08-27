@@ -2,10 +2,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://www.dompdf.com/
+ * @link    https://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
+ * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: load_font.php 467 2012-02-04 13:25:17Z fabien.menager $
  */
 
@@ -35,7 +35,7 @@ the directory containing normal font file (n_file) for additional files that
 it thinks might be the correct ones (e.g. that end in _Bold or b or B).  If
 it finds the files they will also be processed.  All files will be
 automatically copied to the DOMPDF font directory, and afm files will be
-generated using php-font-lib (http://code.google.com/p/php-font-lib/).
+generated using php-font-lib (https://code.google.com/p/php-font-lib/).
 
 Examples:
 

@@ -31,35 +31,24 @@
                 <input type="text" name="cv" id="cv" placeholder="Clave sat">
               </div>
               
-              
-              <div class="col-md-2">
-                <label>U. medida</label>
+              <div class="col-md-3">
+                <label>Unidad de medida</label>
                 <input type="text" name="um" id="um" placeholder="U. Medida sat">
               </div>
 
-              <div class="col-md-2">
-                <label>U. Descripcion</label>
+              <div class="col-md-3">
+                <label>Unidad de medida descripcion</label>
                 <input type="text" name="um_des" id="um_des" placeholder="U. Medida des sat">
               </div>
               
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>Stock minimo <span class="required">*</span> </label>
-                <input type="text" name="stock_minimo" id="stock_minimo" value="0" required>
+                <input type="number" name="stock_minimo" id="stock_minimo" value="0" required>
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>Stock maximo <span class="required">*</span> </label>
-                <input type="text" name="stock_maximo" id="stock_maximo" value="0" required>
-              </div>
-              
-              <div class="col-md-2">
-                <label>Costo CM2</label>
-                <input type="text" name="cc2" id="cc2" value="0.0" required>
-              </div>
-              
-              <div class="col-md-2">
-                <label>Venta CM2</label>
-                <input type="text" name="vc2" id="vc2" value="0.0" required>
+                <input type="number" name="stock_maximo" id="stock_maximo" value="0" required>
               </div>
 
               
@@ -275,16 +264,6 @@
     if (getUrlVars()["um_des"])
     {
         document.getElementById("um_des").value = getUrlVars()["um_des"];    
-    }
-
-    if (getUrlVars()["cc2"])
-    {
-        document.getElementById("cc2").value = getUrlVars()["cc2"];    
-    }
-
-    if (getUrlVars()["vc2"])
-    {
-        document.getElementById("vc2").value = getUrlVars()["vc2"];    
     }
     
 

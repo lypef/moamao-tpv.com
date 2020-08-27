@@ -8,6 +8,7 @@
     $url = $_POST['url'];
     $precio = $_POST['costo'];
     $hijo = $_POST['hijo'];
+    
 
     $url = str_replace("&add_product_sale=true", "", $url);
     $url = str_replace("?add_product_sale=true", "", $url);
@@ -19,34 +20,14 @@
     $con = db_conectar();  
         if ($hijo > 0)
         {
-            if (isset($_POST['cm_ancho'.$product]))
-            {
-                $price = returnVc2($product);
-                $ancho = $_POST['cm_ancho'.$product];
-                $alto = $_POST['cm_alto'.$product];
-                $total = ($ancho * $alto) * $price;
-
-                mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`, `product_sub`, `ancho`, `alto`) VALUES ('$folio', '$product', '$unidades', '$total', '$hijo','$ancho','$alto');");
-            }else
-            {
-                mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`, `product_sub`) VALUES ('$folio', '$product', '$unidades', '$precio', '$hijo');");
-            }            
+            mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`, `product_sub`) VALUES ('$folio', '$product', '$unidades', '$precio', '$hijo');");
         }else
         {
-            if (isset($_POST['cm_ancho'.$product]))
-            {
-                $price = returnVc2($product);
-                $ancho = $_POST['cm_ancho'.$product];
-                $alto = $_POST['cm_alto'.$product];
-                $total = ($ancho * $alto) * $price;
-                mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`, `ancho`, `alto`) VALUES ('$folio', '$product', '$unidades', '$total','$ancho','$alto');");
-            }else
-            {
-                mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`) VALUES ('$folio', '$product', '$unidades', '$precio');");
-            }
+            mysqli_query($con,"INSERT INTO `product_venta` (`folio_venta`, `product`, `unidades`, `precio`) VALUES ('$folio', '$product', '$unidades', '$precio');");
         }
         
-      if (!mysqli_error($con))
+    
+        if (!mysqli_error($con))
         {
             $addpregunta = false;
 

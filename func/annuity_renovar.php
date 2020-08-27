@@ -45,6 +45,6 @@
         $con = db_conectar();  
         mysqli_query($con,"UPDATE `folio_venta` SET `open` = '0', `cotizacion` = '0', `fecha_venta` = '$fecha', `cobrado` = '$price' WHERE folio = $folio;");
         
-        SendMailLog($folio);
+        SendMailLog($folio, true);
     }
 ?>

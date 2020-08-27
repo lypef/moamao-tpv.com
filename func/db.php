@@ -1,5 +1,5 @@
 <?php
-	
+
 	function db_conectar ()
 	{
 		$host = "localhost";
@@ -10,61 +10,282 @@
 		mysqli_query($coneccion, "SET NAMES 'utf8'");
 		return $coneccion;
 	}
+
+
+	function urlWhatsapp ()
+	{
+		return 'https://wa.me/4144444';
+	}
+	
+	function GetDominio ()
+	{
+		return 'http://www.url.mx';
+	}
+	
+	function GetNumberDecimales ()
+	{
+		return 2;
+	}
+	
+	function static_empresa_nombre ()
+	{
+		return "Grupo Ascgar";
+	}
+
+	function static_empresa_email()
+	{
+		return "contacto@cyberchoapas.com";
+	}
 	
 	function ColorBarrReport ()
 	{
-		return "#cc353a";
+		return "#9c0003 ";
+	}
+
+	function DesglosarReportIva ()
+	{
+		return true;
+	}
+
+	function Ticket ()
+	{
+		return false;
 	}
 
 	function ReportCotTranfers ()
 	{
-		/*return '
-        <table style="width: 100%; border-collapse: collapse;" border="1" cellspacing="0">
-        <tbody>
-        <tr>
-        <td style="background-color: '.ColorBarrReport().'; text-align: center; font-family: Arial, serif; font-size: x-small;"><span style="color: #000000;"><strong>NUMEROS DE CUENTA</strong></span></td>
-        </tr>
-        <tr>
-        <td>
-        <table style="height: 27px;" width="100%" cellspacing="0">
-        <tbody>
-        <tr>
-        <td style="border-right: 1px solid #000000; font-family: Arial, serif; font-size: x-small; text-align: left;" width="50%"><strong>BANCOPPEL (SIN FACTURA):&nbsp;</strong>ARLENE GARCIA AGUILAR<br /><strong>N. CTA:</strong> 10313587261&nbsp;&nbsp;<strong>C.INT:</strong> 137873103135872618</td>
-        <td style="border-left: 0px solid #000000; font-family: Arial, serif; font-size: x-small; text-align: left;"><strong>CITIBANAMEX:&nbsp;</strong><span style="font-weight: 400;">FRANCISCO EDUARDO ASCENCIO DOMINGUEZ&nbsp;</span><span style="font-weight: 400;"><br /></span><strong>N. CTA:</strong> 8107838 <strong>C.INT</strong><strong>:</strong> 002873701581078386&nbsp;<strong>SUC</strong>: 7015</td>
-        </tr>
-        <tr style="text-align: left;">
-        <td style="border-right: 1px solid #000000; border-top: 1px solid #000000; font-family: Arial, serif; font-size: x-small; text-align: left;" width="50%"><strong>BANCOPPEL:&nbsp;</strong><span style="font-weight: 400;">FRANCISCO EDUARDO ASCENCIO DOMINGUEZ</span><span style="font-weight: 400;"><br /></span><strong>N. CTA:</strong> 10373915195 <strong>C.INT</strong><strong>:</strong> 137873103739151955</td>
-        <td style="border-top: 1px solid #000000; font-family: Arial, serif; font-size: x-small; text-align: left;"><strong>SANTANDER:&nbsp;</strong><span style="font-weight: 400;">FRANCISCO EDUARDO ASCENCIO DOMINGUEZ</span><span style="font-weight: 400;"><br /></span><strong>N. CTA:</strong> 20007053263 <strong>C.INT</strong><strong>:</strong> 014873200070532631</td>
-        </tr>
-        </tbody>
-        </table>
-        </td>
-        </tr>
-        <tr>
-        <td>
-        <table width="100%" cellspacing="0">
-        <tbody>
-        <tr>
-        <td style="border-right: 1px solid #000000; text-align: left; font-family: Arial, serif; font-size: x-small;"><strong>Oxxo:&nbsp;</strong>4766 8408 6486 7697</td>
-        <td style="border-right: 1px solid #000000; text-align: left; font-family: Arial, serif; font-size: x-small;" width="35%"><strong>Paypal:&nbsp;</strong>&nbsp;&nbsp;pagos@cyberchoapas.com</td>
-        <td style="text-align: left; font-family: Arial, serif; font-size: x-small;"><strong>Mercadopago:</strong>&nbsp;&nbsp;ventas@cyberchoapas.com</td>
-        </tr>
-        </tbody>
-        </table>
-        </td>
-        </tr>
-        <tr>
-        <td style="background-color: '.ColorBarrReport() .'; text-align: center; font-family: Arial, serif; font-size: X-small;"><strong><span style="color: #000000;"><em>| www.cyberchoapas.com | ::: GRUPO ASCGAR ::: | www.ascgar.com |</em></span></strong></td>
-        </tr>
-        </tbody>
-        </table>
-		';   */
 		return '';
 	}
+
+	function CheckCredit ($id, $folio)
+	{
+		$con = db_conectar();  
+		
+		$data = mysqli_query($con,"SELECT adeudo, (abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = $id) ) AS adeudo FROM credits WHERE id = $id");
+		if ($row = mysqli_fetch_array($data))
+	    {
+			if ($row[1] >= $row[0])
+			{
+				mysqli_query($con,"UPDATE `credits` SET `pay` = '1' WHERE `credits`.`id` = $id ;");
+				
+				if (is_numeric($folio))
+				{
+					//Finalizar venta
+					$fecha = date("Y-m-d H:i:s");
+					$descuento = Sale_Descuento($folio);
+					$total = 0;
+					
+					$Lproducts = mysqli_query($con,"SELECT product, unidades, precio, product_sub, p_generico FROM `product_venta` where folio_venta = '$folio';");
+					while($row = mysqli_fetch_array($Lproducts))
+					{
+						if ($row[4] == "")
+						{
+							$total = $total + ($row[1] * $row[2]);
+							if ($row[3])
+							{
+								DescontarProductosStock_hijo($row[3], $row[1]);
+							}else
+							{
+								DescontarProductosStock($row[0], $row[1]);
+							}
+						}
+					}
+
+					$genericos = mysqli_query($con,"SELECT unidades, p_generico, precio, id FROM product_venta v WHERE p_generico != '' and folio_venta = '$folio'");
+					while($row = mysqli_fetch_array($genericos))
+					{
+						$total = $total + ($row[0] * $row[2]);
+					}
+					$total = $total - ($total * ($descuento / 100));
+					
+					
+					mysqli_query($con,"UPDATE `folio_venta` SET `open` = '0', `cotizacion` = '0', `fecha_venta` = '$fecha', `cobrado` = '$total' WHERE folio = $folio;");
+
+					if (!mysqli_error($con))
+					{
+						SendMailLog($folio, true);   
+					}
+					// Finaliza finalizar venta
+				}
+			}
+	    }
+	}
+
+
+	function CheckCreditExistCotizacion ($folio)
+	{
+		$b = false;
+
+		$con = db_conectar();  
+		
+		$data = mysqli_query($con,"SELECT id from credits WHERE factura = '$folio'");
+		if ($row = mysqli_fetch_array($data))
+	    {
+			$b = true;
+		}
+		
+		return $b;
+	}
+
+	function GetOxxoPayFolio ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT oxxo_pay FROM `folio_venta` where folio= $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        $body = $row[0];
+	    }
+		return $body;
+	}
+
+	function GetOxxoPayFolioUpdate ($folio, $ref)
+	{
+		mysqli_query(db_conectar(),"UPDATE `folio_venta` SET `oxxo_pay` = '$ref' WHERE `folio_venta`.`folio` = '$folio';");
+	}
 	
+	function GetOxxoPayFolioEmail ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT c.correo FROM folio_venta v, clients c WHERE v.client = c.id and v.folio = $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        if (strlen($row[0]) > 2)
+			{
+				$body = $row[0];
+			}else
+			{
+				$body = static_empresa_email();
+			}
+	    }
+		return $body;
+	}
+	
+	function GetOxxoPayRefEmail ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT c.correo FROM folio_venta v, clients c WHERE v.client = c.id and v.oxxo_pay = $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        $body = $row[0];
+	    }
+		return $body;
+	}
+	
+	function GetOxxoPayFolioVenta ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT v.folio FROM folio_venta v, clients c WHERE v.client = c.id and v.oxxo_pay = $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        $body = $row[0];
+	    }
+		return $body;
+	}
+	
+	function GetOxxoPayFolioTel ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT c.telefono FROM folio_venta v, clients c WHERE v.client = c.id and folio = $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        if (strlen($row[0]) > 9)
+			{
+				$body = "+52" . $row[0];
+			}else
+			{
+				$body = "+529231200505";
+			}
+			
+	    }
+		return $body;
+	}
+
+    function GetOxxoPayFolioCliente ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT c.nombre FROM folio_venta v, clients c WHERE v.client = c.id and folio = $folio");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        $body = $row[0];
+	    }
+		return $body;
+	}
+	
+	function GenRefOxxo ($total, $folio)
+	{
+		$FolExist = GetOxxoPayFolio($folio);
+		if ($FolExist == "0")
+		{
+			$r_informacion = 0; $r_promo_nego = 0; $referencia = "";
+			
+			require_once('./oxxo_pay/lib/Conekta.php');
+			\Conekta\Conekta::setApiKey("key_");
+			\Conekta\Conekta::setApiVersion("2.0.0");
+
+			try{
+			
+			$order = \Conekta\Order::create(
+				array(
+					"line_items" => array(
+					array(
+						"name" => "Pago correspondiente al folio: " . $folio,
+						"unit_price" => number_format($total,GetNumberDecimales(),"",""),
+						"quantity" => 1
+					)),
+					"currency" => "MXN",
+					"customer_info" => array(
+					"name" => GetOxxoPayFolioCliente($folio),
+					"email" => GetOxxoPayFolioEmail($folio),
+					"phone" => GetOxxoPayFolioTel($folio)
+					),
+					"charges" => array(
+						array(
+							"payment_method" => array(
+							"type" => "oxxo_cash"
+							)
+						)
+					)
+				)
+				);
+				
+				$referencia = $order->charges[0]->payment_method->reference;
+				GetOxxoPayFolioUpdate($folio,$referencia);
+				// Return
+				$var = str_split($referencia, 4);
+				$r = "";
+				
+				for($i=0; $i<count($var); $i++)
+				{
+				  $r .= $var[$i] . "-";
+			   }
+			  
+				return substr($r, 0, -1);
+				
+			} catch (\Conekta\ParameterValidationError $error)
+			{
+				return $error->getMessage();
+			} catch (\Conekta\Handler $error)
+			{
+				return $error->getMessage();
+			}
+		}else
+		{
+			// Return fol ya existe
+			$var = str_split($FolExist, 4);
+			$r = "";
+			
+			for($i=0; $i<count($var); $i++)
+			{
+			  $r .= $var[$i] . "-";
+		   }
+		  
+			return substr($r, 0, -1);
+		}
+	}
+
 	function ReturnImgLogo ()
 	{
-		return 'images/logo/logo_promarco.png';
+		return 'images/logolola.jpg';
 	}
 	
 	function db_sessionValidarYES ()
@@ -76,7 +297,7 @@
 	function db_sessionValidarNO ()
 	{
 		session_start();
-  		if (isset($_SESSION['users_id']) == false){ echo '<script>location.href = "index.php"</script>';}
+  		if (isset($_SESSION['users_id']) == false){ echo '<script>location.href = "/index.php"</script>';}
 	}
 
 	function db_sessionDestroy ()
@@ -140,17 +361,6 @@
 			    "> '.$oferta.substr($row[1],0,28).' ... <strong>$ '.$precio.'</strong></a></li>';
 	    }
 		return $body;
-	}
-
-	function returnVc2 ($id)
-	{
-		$data = mysqli_query(db_conectar(),"SELECT vc2 FROM productos WHERE `id` = $id ");
-		$r = 0.0;
-		while($row = mysqli_fetch_array($data))
-	    {
-	        $r = $row[0];
-	    }
-		return $r;
 	}
 
 	function ReturnProductsOferta ()
@@ -223,6 +433,20 @@
 	    {
 	        $body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
 	    }
+		return $body;
+	}
+
+	function GetAlmacen ($sucursal)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT a.nombre, sa.id FROM sucursal_almacen sa, almacen a, sucursales s WHERE sa.sucursal = s.id and sa.almacen = a.id and sa.sucursal = '$sucursal' ;");
+		$body = "<ul>";
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $body.'<li><b> * </b>'.$row[0].'  | <a href="/func/suc_alm_delete.php?id='.$row[1].'">Eliminar</a></li>';
+		}
+
+		$body = $body . "</ul>";
+
 		return $body;
 	}
 
@@ -324,6 +548,16 @@
 	    }
 		return $body;
 	}
+
+	function Return_NombreClient ($id)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT nombre FROM clients where id = $id ");
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $row[0];
+	    }
+		return $body;
+	}
 	
 	function Return_ExistRelationsAnnuity ($client)
 	{
@@ -352,6 +586,16 @@
 	function Return_NombreUser ($id)
 	{
 		$data = mysqli_query(db_conectar(),"SELECT nombre FROM users where id = $id ");
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $row[0];
+	    }
+		return $body;
+	}
+
+	function Return_NombreSucursal ($id)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT nombre FROM sucursales where id = $id");
 		while($row = mysqli_fetch_array($data))
 	    {
 			$body = $row[0];
@@ -435,6 +679,61 @@
 		return $body;
 	}
 
+	function Select_UsuariosCutBox ($user)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre FROM users ORDER by nombre asc");
+		$body = "<option value='0' selected>TODOS LOS USUARIOS</option>";
+
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($row[0] == $user)
+			{
+				$body = $body.'<option value='.$row[0].' selected>'.$row[1].'</option>';
+			}else
+			{
+				$body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
+			}
+			
+	    }
+		return $body;
+	}
+
+	function Select_SucursalesCutBox ($sucursal)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre FROM sucursales ORDER by nombre asc");
+		$body = "<option value='0' selected>TODAS LAS SUCURSALES</option>";
+
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($row[0] == $sucursal)
+			{
+				$body = $body.'<option value='.$row[0].' selected>'.$row[1].'</option>';
+			}else
+			{
+				$body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
+			}
+		}
+		
+		return $body;
+	}
+
+	function Select_clients ($client)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre FROM `clients` order by nombre asc");
+		$body = "<option value='0'>TODOS LOS CLIENTES</option>";
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($client == $row[0])
+			{
+				$body = $body.'<option value='.$row[0].' selected>'.$row[1].'</option>';
+			}else
+			{
+				$body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
+			}
+	    }
+		return $body;
+	}
+
 	function Select_sucursales ()
 	{
 		$data = mysqli_query(db_conectar(),"SELECT id, nombre FROM sucursales ORDER by nombre asc");
@@ -442,6 +741,24 @@
 		while($row = mysqli_fetch_array($data))
 	    {
 	        $body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
+	    }
+		return $body;
+	}
+
+	function Select_sucursales_selected ($id)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre FROM sucursales ORDER by nombre asc");
+		$body = "<option value='0'>LISTA DE SUCURSALES</option>";
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($id == $row[0])
+			{
+				$body = $body.'<option value='.$row[0].' selected>'.$row[1].'</option>';
+			}else
+			{
+				$body = $body.'<option value='.$row[0].'>'.$row[1].'</option>';
+			}
+
 	    }
 		return $body;
 	}
@@ -468,6 +785,17 @@
 		return $body;
 	}
 
+	function GetFilterAlmacen ($sucursal)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT almacen FROM sucursal_almacen where sucursal = '$sucursal';");
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+	        $body .= ' almacen = '.$row[0].' or';
+	    }
+		return $body;
+	}
+
 	function _getProducts ($pagina)
 	{
 		$login = false;
@@ -485,9 +813,19 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
+		if (isset($_SESSION['sucursal']))
+		{
+		    $c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos");
+		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
-		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos");
 
 		$pagination = '<div class="row">
 						<div class="col-md-12">
@@ -502,16 +840,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -548,15 +909,15 @@
 
 		  }
 
-		  $precio = $row[3];
+		    $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[10].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -603,7 +964,8 @@
 		$icons_edit = "";
 
 		if (isset($_SESSION['users_id'])){ $login = true;}
-		
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+
 		$TAMANO_PAGINA = 16;
 
 		if (!$pagina) {
@@ -614,9 +976,11 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
-		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
-		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos");
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		$c_s = str_replace("almacen","s.almacen",$c);
+		$c_p = str_replace("almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
 
 		$pagination = '<div class="row">
 						<div class="col-md-12">
@@ -629,18 +993,41 @@
 
 		if ($pagina > 1)
 		{
-			$pagination = $pagination . '<li><a href="?folio='.$folio.'&?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -662,6 +1049,7 @@
 			<div>
 				<input type="text" placeholder="Buscar" name="search" autocomplete="off">
 				<input type="hidden" id="folio" name="folio" value="'.$folio.'">
+				<input type="hidden" id="pagina" name="pagina" value="1">
 			</div>
 			
 		</div>
@@ -679,13 +1067,13 @@
 	    {
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[10].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -708,7 +1096,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -734,7 +1122,8 @@
 		$icons_edit = "";
 
 		if (isset($_SESSION['users_id'])){ $login = true;}
-		
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+
 		$TAMANO_PAGINA = 16;
 
 		if (!$pagina) {
@@ -746,8 +1135,11 @@
 		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
-		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos");
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		$c_s = str_replace("almacen","s.almacen",$c);
+		$c_p = str_replace("almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
 
 		$pagination = '<div class="row">
 						<div class="col-md-12">
@@ -760,18 +1152,41 @@
 
 		if ($pagina > 1)
 		{
-			$pagination = $pagination . '<li><a href="?folio='.$folio.'&?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -781,6 +1196,7 @@
 									</div>
 									</div>
 									</div><p>';
+
 		$body = '<div class="row">
 					<div class="col-md-12">
 						<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -811,13 +1227,13 @@
 	    {
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -840,7 +1256,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -878,8 +1294,11 @@
 		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
-		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos");
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		$c_s = str_replace("almacen","s.almacen",$c);
+		$c_p = str_replace("almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
 
 		$pagination = '<div class="row">
 						<div class="col-md-12">
@@ -892,18 +1311,41 @@
 
 		if ($pagina > 1)
 		{
-			$pagination = $pagination . '<li><a href="?folio='.$folio.'&?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -913,6 +1355,8 @@
 									</div>
 									</div>
 									</div><p>';
+					
+					
 		$body = '<div class="row">
 		<div class="col-md-12">
 		<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -943,13 +1387,13 @@
 	    {
 		    $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[10].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -972,7 +1416,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -988,11 +1432,126 @@
 		return $body;
 	}
 
-	function _getProducts_saleSearch ($txt, $folio)
+	function _getProducts_saleSearch ($txt, $folio, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+			$c_s = str_replace("p.almacen","s.almacen",$c);
+		    $c_p = str_replace("p.almacen","p.almacen",$c);
+			
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			LIMIT $inicio, $TAMANO_PAGINA");
+
+
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where `no. De parte` like '%$txt%' or nombre like '%$txt%' or descripcion like '%$txt%' or marca like '%$txt%'or proveedor like '%$txt%' ORDER by id desc");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
 		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+									
 		$body = '<div class="row">
 		<div class="col-md-12">
 		<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -1003,8 +1562,9 @@
 		<div class="col-md-8">
 			<form class="header-search-box" action="sale.php">
 			<div>
-				<input type="text" placeholder="Buscar" name="search" autocomplete="off">
+				<input type="text" placeholder="Buscar" name="search" autocomplete="off" value="'.$txt.'">
 				<input type="hidden" id="folio" name="folio" value="'.$folio.'">
+				<input type="hidden" id="pagina" name="pagina" value="1">
 			</div>
 			
 		</div>
@@ -1016,20 +1576,24 @@
 			<br><br><br><br>
 			</form>
 		</div>
-	</div>';
+	</div>
+
+	'.$pagination.'
+
+	';
 		
 
 		while($row = mysqli_fetch_array($data))
 	    {
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1052,7 +1616,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -1072,11 +1636,128 @@
 		return $body;
 	}
 
-	function _getProducts_CotSearch ($txt, $folio)
+	function _getProducts_CotSearch ($txt, $folio, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+		$c_s = str_replace("p.almacen","s.almacen",$c);
+		$c_p = str_replace("p.almacen","p.almacen",$c);
+
+		$data = mysqli_query(db_conectar(),"
+		SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+		p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		LIMIT $inicio, $TAMANO_PAGINA");
+
+
+		$datatmp = mysqli_query(db_conectar(),"
+		SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+		p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where `no. De parte` like '%$txt%' or nombre like '%$txt%' or descripcion like '%$txt%' or marca like '%$txt%'or proveedor like '%$txt%' ORDER by id desc");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
 		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+
+
 		$body = '<div class="row">
 		<div class="col-md-12">
 		<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -1087,7 +1768,7 @@
 		<div class="col-md-8 text-right">
 			<form class="header-search-box" action="sale_cot.php">
 			<div>
-				<input type="text" placeholder="Buscar" name="search" autocomplete="off">
+				<input type="text" placeholder="Buscar" name="search" autocomplete="off" value = "'.$txt.'">
 				<input type="hidden" id="folio" name="folio" value="'.$folio.'">
 			</div>
 			
@@ -1100,20 +1781,22 @@
 			</form>
 		</div>
 	</div>
-</div>';
+</div>
+'.$pagination.'
+';
 		
 
 		while($row = mysqli_fetch_array($data))
 	    {
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1136,7 +1819,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -1156,10 +1839,128 @@
 		return $body;
 	}
 
-	function _getProducts_saleSearch_order ($txt, $folio)
+	function _getProducts_saleSearch_order ($txt, $folio, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+        
+        
+        
+		$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+			$c_s = str_replace("p.almacen","s.almacen",$c);
+		    $c_p = str_replace("p.almacen","p.almacen",$c);
+			
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			LIMIT $inicio, $TAMANO_PAGINA");
+
+
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+        $num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where `no. De parte` like '%$txt%' or  nombre like '%$txt%' or descripcion like '%$txt%' or marca like '%$txt%'or proveedor like '%$txt%' ORDER by id desc");
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+
 		
 		$body = '<div class="row">
 		<div class="col-md-12">
@@ -1171,7 +1972,7 @@
 		<div class="col-md-8">
 			<form class="header-search-box" action="sale_order.php">
 			<div>
-				<input type="text" placeholder="Buscar" name="search" autocomplete="off">
+				<input type="text" placeholder="Buscar" name="search" autocomplete="off" value = "'.$txt.'">
 				<input type="hidden" id="folio" name="folio" value="'.$folio.'">
 			</div>
 			
@@ -1184,20 +1985,22 @@
 			</form>
 		</div>
 	</div>
-				</div>';
+				</div>
+				'.$pagination.'
+				';
 		
 
 		while($row = mysqli_fetch_array($data))
 	    {
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[4].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1220,7 +2023,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#add_car'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -1240,16 +2043,113 @@
 		return $body;
 	}
 
-	function _getProductsDepartment ($departamento)
+	function _getProductsDepartment ($departamento, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
 		$login = false;
 		$icons_edit = "";
 
 		if (isset($_SESSION['users_id'])){ $login = true;}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where departamento = $departamento order by id desc ");
+		if ($login)
+		{
+			$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, 
+			p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, 
+			p.loc_almacen FROM productos p, almacen a, departamentos d where
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento and ( $c_p ) or 
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento and p.departamento = $departamento and (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 
+			order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte` FROM productos p where p.departamento = '$departamento' and ( $c_p ) or p.departamento = '$departamento' and (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, 
+			p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, 
+			p.loc_almacen FROM productos p, almacen a, departamentos d where
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento or 
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento and p.departamento = $departamento
+			order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.id p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, 
+			p.loc_almacen FROM productos p, almacen a, departamentos d where
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento or 
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = $departamento and p.departamento = $departamento
+			order by p.id desc");
+		}
+
+		
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
 				
+					$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?department='.$departamento.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+									
+									
 		$body = '<div class="row">
 					<div class="col-md-12">
 						<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -1257,7 +2157,7 @@
 						</div>
 					</div>
 				</div>';
-		
+		$body .= $pagination;
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -1277,13 +2177,13 @@
 
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1320,16 +2220,92 @@
 		return $body;
 	}
 
-	function _getProductsAlmacen ($almacen)
+	function _getProductsAlmacen ($almacen, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
 		$login = false;
 		$icons_edit = "";
 
 		if (isset($_SESSION['users_id'])){ $login = true;}
 		
+		if ($login)
+		{
+			$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte` FROM productos p where p.almacen = '$almacen' and ( $c_p ) or (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte` FROM productos p where p.almacen = 2 and ( $c_p ) or (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where almacen = $almacen ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT id FROM productos where almacen = $almacen");
+		}
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where almacen = $almacen order by id desc ");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
 				
+					$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?almacen='.$almacen.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
 		$body = '<div class="row">
 					<div class="col-md-12">
 						<div class="section-title-2 text-uppercase mb-40 text-center">
@@ -1338,6 +2314,7 @@
 					</div>
 				</div>';
 		
+		$body .= $pagination;
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -1357,13 +2334,13 @@
 
 		  $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[10].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1384,7 +2361,7 @@
 					</div>
 				</div>
 				<div class="product-content text-center text-uppercase">
-					<a href="product-details.html" title="'.$row[0].'">'.substr($row[0], 0, 25).'.</a>
+					<a href="#" title="Ver detalles" data-toggle="modal" data-target="#viewM'.$row[9].'">'.substr($row[0], 0, 25).'.</a>
 					<div class="rating-icon">
 						'.$_stock.'
 					</div>
@@ -1404,29 +2381,178 @@
 		return $body;
 	}
 
-	function _getProductsSearch ($txt)
+	function _getProductsSearch ($txt, $pagina)
 	{
-		$contador = 0;
 		$login = false;
+		$contador = 0;
 		$icons_edit = "";
-
+		
 		if (isset($_SESSION['users_id'])){ $login = true;}
+
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos where `no. De parte` like '%$txt%' or nombre like '%$txt%' or descripcion like '%$txt%' or marca like '%$txt%'or proveedor like '%$txt%' ORDER by id desc");
+		if ($login)
+		{
+			$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+			$c_s = str_replace("p.almacen","s.almacen",$c);
+		    $c_p = str_replace("p.almacen","p.almacen",$c);
+			
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			LIMIT $inicio, $TAMANO_PAGINA");
+
+
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%'
+			LIMIT $inicio, $TAMANO_PAGINA");
+
+
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' ");
+		}
+
+		
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+                            
+
+        $num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'"><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
 				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+
+
 		$body = '<div class="row">
 					<div class="col-md-12">
 						<div class="section-title-2 text-uppercase mb-40 text-center">
 							<h4>LISTA DE PRODUCTOS : '.$txt.' </h4>
 						</div>
 					</div>
-				</div>';
+				</div>
+				'.$pagination.'
+				';
 		
 
 		while($row = mysqli_fetch_array($data))
 	    {
-		  $contador = $contador + 1;
+		  $contador += 1;
 		  if ($login)
 		  {
 			if ($_SESSION['product_gest'] == 1)
@@ -1441,15 +2567,15 @@
 			}else {$icons_edit = '';}
 		  }
 
-		  $precio = $row[3];
+		    $precio = $row[3];
 			$msg_oferta = "";
-			$_stock = '<p>P/N: '.$row[10].'</p>';
+			$_stock = '<p>PN: '.$row[12].'</p>';
 
 			if ($row[2] == 1)
 			{
 				$precio = $row[4];
 				$msg_oferta = '<span class="new-label red-color text-uppercase">off</span>';
-				$_stock = '<p>P/N: '.$row[10].'  | Antes $ '.$row[3].' MXN</p>';
+				$_stock = '<p>PN: '.$row[12].'  | Antes $ '.$row[3].' MXN</p>';
 			}
 
 	        $body = $body.'<div class="col-md-3">
@@ -1511,7 +2637,7 @@
 		
 		$con = db_conectar();
 
-		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des, cc2, vc2 FROM productos where id = $id ");
+		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des FROM productos where id = $id ");
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -1542,36 +2668,26 @@
 	                <input type="text" name="cv" id="cv" placeholder="Clave del producto" value="'.$row[21].'">
 	              </div>
 	              
-	              <div class="col-md-2">
-	                <label>U. Medida</label>
+	              <div class="col-md-3">
+	                <label>Unidad de medida</label>
 	                <input type="text" name="um" id="um" placeholder="U. Medida sat" value="'.$row[22].'">
 				  </div>
 
-				  <div class="col-md-2">
-	                <label>U. Descripcion</label>
+				  <div class="col-md-3">
+	                <label>Unidad de medida des</label>
 	                <input type="text" name="um_des" id="um_des" placeholder="U. Medida sat" value="'.$row[23].'">
 				  </div>
                   
-                  <div class="col-md-2">
+                  <div class="col-md-3">
 	                <label>Stock minimo<span class="required">*</span></label>
-	                <input type="text" name="stock_minimo" id="stock_minimo" placeholder="Stock minimo" value="'.$row[18].'">
+	                <input type="number" name="stock_minimo" id="stock_minimo" placeholder="Stock minimo" value="'.$row[18].'">
 				  </div>
 				  
-				  <div class="col-md-2">
+				  <div class="col-md-3">
 				  <label>Stock maximo<span class="required">*</span></label>
-				  <input type="text" name="stock_maximo" id="stock_maximo" placeholder="Stock minimo" value="'.$row[19].'">
+				  <input type="number" name="stock_maximo" id="stock_maximo" placeholder="Stock minimo" value="'.$row[19].'">
 				 </div>
 				
-				 <div class="col-md-2">
-					<label>Costo CM2</label>
-					<input type="text" name="cc2" id="cc2" value="'.$row[24].'" required>
-				</div>
-				
-				<div class="col-md-2">
-					<label>Venta CM2</label>
-					<input type="text" name="vc2" id="vc2" value="'.$row[25].'" required>
-				</div>
-			  
 				<div class="col-md-6">
 	                <label>Precio normal<span class="required">*</span></label>
 	                <input type="text" name="precio" id="precio" placeholder="Precio al publico" value="'.$row[2].'">
@@ -1891,7 +3007,18 @@
 		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
+		if (isset($_SESSION['sucursal']))
+		{
+			$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
+			
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id or p.departamento = d.id and p.almacen = a.id  order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
+		}
 		
 		$con_hijos  = db_conectar();
 
@@ -1902,7 +3029,7 @@
 			
 			// Add hijos
 			$stock = $row[1];
-			$almacen = '<option value='.$row[9].'>'.$row[13].' | '.$row[1].' UDS</option>';
+			$almacen = '<option value='.$row[9].'>'.$row[16].' | '.$row[1].' UDS</option>';
 			
 
 			$hijos = mysqli_query($con_hijos,"SELECT s.id, s.padre, a.nombre, s.stock FROM productos_sub s, almacen a where s.almacen = a.id and padre = '$row[9]' ");
@@ -1970,7 +3097,7 @@
 											</div>
 											<div class="product-details-content">
 												<div class="product-content text-uppercase">
-													<p>Parte NO: '.$row[12].' | '.$row[0].'</p>
+													<p>Parte NO: '.$row[10].' | '.$row[0].'</p>
 													<div class="rating-icon pb-20 mt-10">
 														<p>Unidades disponibles: '.$stock.' UDS</>
 													</div>
@@ -1980,26 +3107,26 @@
 												</div>
 												<div class="product-view pb-20">
 													<h4 class="product-details-tilte text-uppercase">Descripcion</h4>
-													<p>'.$row[10].'</p>
+													<p>'.$row[11].'</p>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Departamento</h4>
-														<p>'.$row[14].'</p>
+														<p>'.$row[12].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Marca</h4>
-														<p>'.$row[15].'</p>
+														<p>'.$row[13].'</p>
 													</div>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Ubicacion</h4>
-														<p>'.$row[16].'</p>
+														<p>'.$row[14].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">T. Entrega</h4>
-													'.$row[11].'
+													'.$row[15].'
 													</div>
 												</div>
 												<div class="country-select shop-select col-md-12">
@@ -2038,7 +3165,7 @@
 
 	              <div class="col-md-6">
 	                <label>Numero de parte</label>
-	                <input type="text" name="parte" id="parte" placeholder="AEF594-S" value='.$row[12].'>
+	                <input type="text" name="parte" id="parte" placeholder="AEF594-S" value='.$row[10].'>
 	              </div>
 	              <div class="col-md-6">
 	                <label>Nombre del producto</label>
@@ -2070,7 +3197,7 @@
 	          </div>
   		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 		        <button type="submit" class="btn btn-primary">Guardar</button>
 		        </form>
 		      </div>
@@ -2095,7 +3222,12 @@
 		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2 FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		$c_s = str_replace("almacen","s.almacen",$c);
+		$c_p = str_replace("almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p )");
+
 		$con_hijos  = db_conectar();
 
 		$body = "";
@@ -2113,11 +3245,11 @@
 			
 			// Add hijos
 			$stock = $row[1];
-			$almacen = '<option value='.$row[9].'>'.$row[13].' | '.$row[1].' UDS</option>';
+			$almacen = '<option value='.$row[9].'>'.$row[16].' | '.$row[1].' UDS</option>';
 			
 			$exist = '
 			<tr>
-				<td class="item-des"><p>'.$row[13].'</p></td>
+				<td class="item-des"><p>'.$row[16].'</p></td>
 				<td class="item-des"><p>'.$row[1].' UDS</p></td>
 				<td class="item-des"><p>
 					<div class="col-md-12">
@@ -2129,7 +3261,7 @@
 							<input type="hidden" id="hijo" name="hijo" value="0">
 							
 							<div class="col-md-6">
-								<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
+								<input type="number" step="1" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
 							</div>
 
 							<div class="col-md-6">
@@ -2138,57 +3270,6 @@
 						</form>
 					</div>
 				</td>
-			</tr>
-			';
-
-			$exist_cm = '
-			<tr>
-				<form action="func/producst_add_sale.php" autocomplete="off" method="post">
-					<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-					<input type="hidden" id="product" name="product" value="'.$row[9].'">
-					<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-					<input type="hidden" id="folio" name="folio" value="'.$folio.'">
-					<input type="hidden" id="hijo" name="hijo" value="0">
-				
-					<td class="item-des"><br><p>'.$row[13].' ('.$row[1].' UDS)</p></td>
-					
-					<td>
-						<div class="col-md-12">
-							<div class="col-md-6">
-								<center><span>Ancho</span></center>
-								<input type="text" id="cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg('.$row[9].', this.value, '.$row[18].')"/>
-							</div>
-
-							<div class="col-md-6">
-								<center><span>Alto</span></center>
-								<input type="text" id="cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg('.$row[9].', this.value, '.$row[18].')" />
-							</div>
-						</div>
-					</td>
-					
-					<td>
-						<div class="col-md-12">
-							<div class="col-md-6">
-								<center><span>Ancho</span></center>
-								<input type="text" id="pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm('.$row[9].', this.value, '.$row[18].')"/>
-							</div>
-
-							<div class="col-md-6">
-								<center><span>Alto</span></center>
-								<input type="text" id="pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm('.$row[9].', this.value, '.$row[18].')" />
-							</div>
-						</div>
-					</td>
-					
-					<td>
-						<center><span>Uds</span></center>
-						<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
-					</td>
-
-					<td>
-						<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
-					</td>
-				</form>
 			</tr>
 			';
 
@@ -2213,7 +3294,7 @@
 							<input type="hidden" id="hijo" name="hijo" value="'.$item[0].'">
 							
 							<div class="col-md-6">
-							<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
+							<input type="number" step="1" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
 							</div>
 
 							<div class="col-md-6">
@@ -2225,56 +3306,6 @@
 				</tr>
 				';
 
-				$exist_cm .= '
-				<tr>
-					<form action="func/producst_add_sale.php" autocomplete="off" method="post">
-						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-						<input type="hidden" id="product" name="product" value="'.$row[9].'">
-						<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-						<input type="hidden" id="folio" name="folio" value="'.$folio.'">
-						<input type="hidden" id="hijo" name="hijo" value="'.$item[0].'">
-					
-						<td class="item-des"><br><p>'.$item[2].' ('.$item[3].' UDS)</p></td>
-						
-						<td>
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho</span></center>
-									<input type="text" id="hijos_cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto</span></center>
-									<input type="text" id="hijos_cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-						</td>
-						
-						<td>
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho</span></center>
-									<input type="text" id="hijos_pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm_hijos('.$row[9].', this.value, '.$row[18].')"/>
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto</span></center>
-									<input type="text" id="hijos_pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-						</td>
-						
-						<td>
-							<center><span>Uds</span></center>
-							<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
-						</td>
-
-						<td>
-							<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
-						</td>
-					</form>
-				</tr>
-				';
 			} //Finaliza hijos
 			
 			
@@ -2315,7 +3346,7 @@
 											</div>
 											<div class="product-details-content">
 												<div class="product-content text-uppercase">
-													<p>Parte NO: '.$row[12].' | '.$row[0].'</p>
+													<p>Parte NO: '.$row[10].' | '.$row[0].'</p>
 													<div class="rating-icon pb-20 mt-10">
 														<p>Unidades disponibles: '.$stock.' UDS</>
 													</div>
@@ -2325,26 +3356,26 @@
 												</div>
 												<div class="product-view pb-20">
 													<h4 class="product-details-tilte text-uppercase">Descripcion</h4>
-													<p>'.$row[10].'</p>
+													<p>'.$row[11].'</p>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Departamento</h4>
-														<p>'.$row[14].'</p>
+														<p>'.$row[12].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Marca</h4>
-														<p>'.$row[15].'</p>
+														<p>'.$row[13].'</p>
 													</div>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Ubicacion</h4>
-														<p>'.$row[16].'</p>
+														<p>'.$row[14].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">T. Entrega</h4>
-														'.$row[11].'
+														'.$row[15].'
 													</div>
 												</div>
 												<div class="country-select shop-select col-md-12">
@@ -2360,106 +3391,59 @@
 								</div>
 							</div>
 						</div>
-					</div>';
+					</div>
 					
-					if ($row[17] <= 0)
-					{
-						$body .= 
-						'
-						<!--Agragar producto a venta-->
-						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="country-select shop-select col-md-6">
-										<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-									</div>
-									
-									<div class="country-select shop-select col-md-6">
-									<p>Unidades disponibles: '.$stock.' UDS</>
-									</div>
-										<div class="col-md-12">
-											<div class="section-title-2 text-uppercase mb-40 text-center">
-												<h4>EXISTENCIAS</h4>
-											</div>
-										</div>
-										
-										<table class="cart table">
-										<thead>
-											<tr>
-												<th class="table-head th-name uppercase">ALMACEN</th>
-												<th class="table-head th-name uppercase">STOCK</th>
-												<th class="table-head th-name uppercase">AGREGAR</th>
-											</tr>
-										</thead>
-										<tbody>
-											'.$exist.'
-										</tbody>
-										</table>
-										</div>
-										</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-										</div>
-									</div>
-									</div>
-									</div>
-						';
-					}else
-					{
-						$body .= 
-						'
-						<!--Agregar producto a venta-->
-						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-										<div class="col-md-12">
-											<div class="section-title-2 text-uppercase mb-40 text-center">
-												<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-											</div>
-										</div>
-										
-										<table class="cart table">
-										<thead>
-											<tr>
-												<th class="table-head th-name uppercase text-center">INFO</th>
-												<th class="table-head th-name uppercase text-center">CM</th>
-												<th class="table-head th-name uppercase text-center">PULGADAS</th>
-												<th class="table-head th-name uppercase text-center">AGREGAR</th>
-												<th class="table-head th-name uppercase"></th>
-											</tr>
-										</thead>
-										<tbody>
-											'.$exist_cm.'
-										</tbody>
-										</table>
-										</div>
-										</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-										</div>
-									</div>
-									</div>
-									</div>
-						';
-					}
+					<!--Agragar producto a venta-->
+					<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        
+
+
+				        
+	          <div class="row">
+				 <div class="col-md-12">
+					<div class="country-select shop-select col-md-6">
+						<p>Precio: '.$precio.'</p>
+					</div>
 					
-				}
+					<div class="country-select shop-select col-md-6">
+					 <p>Unidades disponibles: '.$stock.' UDS</>
+				  	</div>
+						<div class="col-md-12">
+							<div class="section-title-2 text-uppercase mb-40 text-center">
+								<h4>EXISTENCIAS</h4>
+							</div>
+						</div>
+						
+						<table class="cart table">
+						<thead>
+							<tr>
+								<th class="table-head th-name uppercase">ALMACEN</th>
+								<th class="table-head th-name uppercase">STOCK</th>
+								<th class="table-head th-name uppercase">AGREGAR</th>
+							</tr>
+						</thead>
+						<tbody>
+							'.$exist.'
+						</tbody>
+						</table>
+						
+				</div>
+	          </div>
+  		      </div>
+		      <div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+		      </div>
+		    </div>
+		  </div>
+		  </div>';
+		}
 		
 		return $body;
 	}
@@ -2476,8 +3460,11 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
-		
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2 FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
+		$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		$c_s = str_replace("almacen","s.almacen",$c);
+		$c_p = str_replace("almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.`no. De parte`, p.descripcion, d.nombre, p.marca, p.loc_almacen, p.`tiempo de entrega`, a.nombre FROM productos p, departamentos d, almacen a where p.departamento = d.id and p.almacen = a.id AND (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 or p.departamento = d.id and p.almacen = a.id AND ( $c_p ) order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			
 		
 		$body = "";
 		while($row = mysqli_fetch_array($data))
@@ -2530,9 +3517,8 @@
 											</div>
 											<div class="product-details-content">
 												<div class="product-content text-uppercase">
-													<p>Parte NO: '.$row[12].' | '.$row[0].'</p>
+													<p>Parte NO: '.$row[10].' | '.$row[0].'</p>
 													<div class="rating-icon pb-20 mt-10">
-														<p>Unidades disponibles: '.$stock.' UDS</>
 													</div>
 													<div class="product-price pb-20">
 														'.$precio.'
@@ -2540,26 +3526,26 @@
 												</div>
 												<div class="product-view pb-20">
 													<h4 class="product-details-tilte text-uppercase">Descripcion</h4>
-													<p>'.$row[10].'</p>
+													<p>'.$row[11].'</p>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Departamento</h4>
-														<p>'.$row[14].'</p>
+														<p>'.$row[12].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Marca</h4>
-														<p>'.$row[15].'</p>
+														<p>'.$row[13].'</p>
 													</div>
 												</div>
 												<div class="product-attributes clearfix">
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">Ubicacion</h4>
-														<p>'.$row[16].'</p>
+														<p>'.$row[14].'</p>
 													</div>
 													<div class="pull-left" id="quantity-wanted">
 														<h4 class="product-details-tilte text-uppercase pb-10">T. Entrega</h4>
-														'.$row[11].'
+														'.$row[15].'
 													</div>
 												</div>
 											</div>
@@ -2569,93 +3555,9 @@
 								</div>
 							</div>
 						</div>
-					</div>';
-
-		  if ($row[17] > 0)
-		  {
-			$body .= 
-			'
-			<!--Agragar producto a venta-->
-				  <div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-dialog-centered" role="document">
-				  <div class="modal-content">
-					<div class="modal-header">
-					  <h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-					  </button>
 					</div>
-					<div class="modal-body">
-			<div class="row">
-			   <div class="col-md-12">
-				  <div class="country-select shop-select col-md-6">
-					  <span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-				  </div>
-				  
-				  <div class="country-select shop-select col-md-6">
-				   <p>Unidades disponibles: '.$stock.' UDS</>
-					</div>
-					  <div class="col-md-12">
-						  <div class="section-title-2 text-uppercase mb-40 text-center">
-							  <h4>Agregar</h4>
-						  </div>
-					  </div>
-					  <form action="func/producst_add_sale_order.php" autocomplete="off" method="post">
-						  <input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-						  <input type="hidden" id="product" name="product" value="'.$row[9].'">
-						  <input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-						  <input type="hidden" id="folio" name="folio" value="'.$folio.'">
-						  
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho cm</span></center>
-									<input type="text" id="cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto cm</span></center>
-									<input type="text" id="cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-							
-							<div class="col-md-12">
-								<br>
-								<div class="col-md-6">
-									<center><span>Ancho pulgadas</span></center>
-									<input type="text" id="pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm('.$row[9].', this.value, '.$row[18].')"/>
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto pulgadas</span></center>
-									<input type="text" id="pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-						
 					
-						  <div class="col-md-12">
-							  <br>
-							  <center><span>Unidades</span></center>
-							  <input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
-						  </div>
-
-						  <div class="col-md-12 text-center">
-							  <button type="submit" class="btn btn-primary">Agregar</button>
-						  </div>
-
-					  </form>
-			  </div>
-			</div>
-			  </div>
-			<div class="modal-footer">
-				  <button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-			</div>
-		  </div>
-		</div>
-		</div>
-			';
-		  }else
-		  {
-			  $body .= 
-			  '
-			  <!--Agragar producto a venta-->
+					<!--Agragar producto a venta-->
 					<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 				    <div class="modal-content">
@@ -2685,7 +3587,7 @@
 							<input type="hidden" id="folio" name="folio" value="'.$folio.'">
 							
 							<div class="col-md-4">
-								<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
+								<input type="number" step="1" id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
 							</div>
 
 							<div class="col-md-8">
@@ -2701,17 +3603,51 @@
 		      </div>
 		    </div>
 		  </div>
-		  </div>
-			  ';
-		  }
+		  </div>';
 		}
 		
 		return $body;
 	}
 
-	function _getProductsModal_sale_search ($txt, $folio)
+	function _getProductsModal_sale_search ($txt, $folio, $pagina)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2 FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.`no. De parte` like '%$txt%' or p.nombre like '%$txt%' or p.descripcion like '%$txt%' or p.marca like '%$txt%'or p.proveedor like '%$txt%' order by p.id asc");
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+		$c_s = str_replace("p.almacen","s.almacen",$c);
+		$c_p = str_replace("p.almacen","p.almacen",$c);
+		
+		$data = mysqli_query(db_conectar(),"
+		SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+		p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		LIMIT $inicio, $TAMANO_PAGINA");
 		
 		$select = "";
 
@@ -2749,7 +3685,7 @@
 							<input type="hidden" id="hijo" name="hijo" value="0">
 							
 							<div class="col-md-6">
-								<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
+								<input type="number" step="1" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
 							</div>
 
 							<div class="col-md-6">
@@ -2758,57 +3694,6 @@
 						</form>
 					</div>
 				</td>
-			</tr>
-			';
-
-			$exist_cm = '
-			<tr>
-				<form action="func/producst_add_sale.php" autocomplete="off" method="post">
-					<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-					<input type="hidden" id="product" name="product" value="'.$row[9].'">
-					<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-					<input type="hidden" id="folio" name="folio" value="'.$folio.'">
-					<input type="hidden" id="hijo" name="hijo" value="0">
-				
-					<td class="item-des"><br><p>'.$row[13].' ('.$row[1].' UDS)</p></td>
-					
-					<td>
-						<div class="col-md-12">
-							<div class="col-md-6">
-								<center><span>Ancho</span></center>
-								<input type="text" id="cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg('.$row[9].', this.value, '.$row[18].')" />
-							</div>
-
-							<div class="col-md-6">
-								<center><span>Alto</span></center>
-								<input type="text" id="cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg('.$row[9].', this.value, '.$row[18].')" />
-							</div>
-						</div>
-					</td>
-					
-					<td>
-						<div class="col-md-12">
-							<div class="col-md-6">
-								<center><span>Ancho</span></center>
-								<input type="text" id="pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm('.$row[9].', this.valu, '.$row[18].'e)"/>
-							</div>
-
-							<div class="col-md-6">
-								<center><span>Alto</span></center>
-								<input type="text" id="pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm('.$row[9].', this.value, '.$row[18].')" />
-							</div>
-						</div>
-					</td>
-					
-					<td>
-						<center><span>Uds</span></center>
-						<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
-					</td>
-
-					<td>
-						<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
-					</td>
-				</form>
 			</tr>
 			';
 
@@ -2833,7 +3718,7 @@
 							<input type="hidden" id="hijo" name="hijo" value="'.$item[0].'">
 							
 							<div class="col-md-6">
-							<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
+							<input type="number" step="1" id="unidades" name="unidades" placeholder="0" value ="1" min="1" /></p>		
 							</div>
 
 							<div class="col-md-6">
@@ -2842,57 +3727,6 @@
 						</form>
 					</div>
 					</td>
-				</tr>
-				';
-
-				$exist_cm .= '
-				<tr>
-					<form action="func/producst_add_sale.php" autocomplete="off" method="post">
-						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-						<input type="hidden" id="product" name="product" value="'.$row[9].'">
-						<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-						<input type="hidden" id="folio" name="folio" value="'.$folio.'">
-						<input type="hidden" id="hijo" name="hijo" value="'.$item[0].'">
-					
-						<td class="item-des"><br><p>'.$item[2].' ('.$item[3].' UDS)</p></td>
-						
-						<td>
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho</span></center>
-									<input type="text" id="hijos_cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto</span></center>
-									<input type="text" id="hijos_cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-						</td>
-						
-						<td>
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho</span></center>
-									<input type="text" id="hijos_pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm_hijos('.$row[9].', this.value, '.$row[18].')"/>
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto</span></center>
-									<input type="text" id="hijos_pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm_hijos('.$row[9].', this.value, '.$row[18].')" />
-								</div>
-							</div>
-						</td>
-						
-						<td>
-							<center><span>Uds</span></center>
-							<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
-						</td>
-
-						<td>
-							<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
-						</td>
-					</form>
 				</tr>
 				';
 
@@ -2981,113 +3815,104 @@
 								</div>
 							</div>
 						</div>
-					</div>';
+					</div>
+					
+					<!--Agragar producto a venta-->
+					<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        
 
-					if ($row[17] <= 0)
-					{
-						$body .= 
-						'
-						<!--Agragar producto a venta-->
-						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-							</button>
+
+				        
+	          <div class="row">
+				 <div class="col-md-12">
+					<div class="country-select shop-select col-md-6">
+						<p>Precio: '.$precio.'</p>
+					</div>
+					
+					<div class="country-select shop-select col-md-6">
+					 <p>Unidades disponibles: '.$stock.' UDS</>
+				  	</div>
+						<div class="col-md-12">
+							<div class="section-title-2 text-uppercase mb-40 text-center">
+								<h4>EXISTENCIAS</h4>
+							</div>
 						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="country-select shop-select col-md-6">
-										<p>Precio: '.$precio.'</p>
-									</div>
-									
-									<div class="country-select shop-select col-md-6">
-									<p>Unidades disponibles: '.$stock.' UDS</>
-									</div>
-										<div class="col-md-12">
-											<div class="section-title-2 text-uppercase mb-40 text-center">
-												<h4>EXISTENCIAS</h4>
-											</div>
-										</div>
-										
-										<table class="cart table">
-										<thead>
-											<tr>
-												<th class="table-head th-name uppercase">ALMACEN</th>
-												<th class="table-head th-name uppercase">STOCK</th>
-												<th class="table-head th-name uppercase">AGREGAR</th>
-											</tr>
-										</thead>
-										<tbody>
-											'.$exist.'
-										</tbody>
-										</table>
-										</div>
-										</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-										</div>
-									</div>
-									</div>
-									</div>
-						';
-					}else
-					{
-						$body .= 
-						'
-						<!--Agregar producto a venta-->
-						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-										<div class="col-md-12">
-											<div class="section-title-2 text-uppercase mb-40 text-center">
-												<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-											</div>
-										</div>
-										
-										<table class="cart table">
-										<thead>
-											<tr>
-												<th class="table-head th-name uppercase text-center">INFO</th>
-												<th class="table-head th-name uppercase text-center">CM</th>
-												<th class="table-head th-name uppercase text-center">PULGADAS</th>
-												<th class="table-head th-name uppercase text-center">AGREGAR</th>
-												<th class="table-head th-name uppercase"></th>
-											</tr>
-										</thead>
-										<tbody>
-											'.$exist_cm.'
-										</tbody>
-										</table>
-										</div>
-										</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-										</div>
-									</div>
-									</div>
-									</div>
-						';
-					}
+						
+						<table class="cart table">
+						<thead>
+							<tr>
+								<th class="table-head th-name uppercase">ALMACEN</th>
+								<th class="table-head th-name uppercase">STOCK</th>
+								<th class="table-head th-name uppercase">AGREGAR</th>
+							</tr>
+						</thead>
+						<tbody>
+							'.$exist.'
+						</tbody>
+						</table>
+						
+				</div>
+	          </div>
+  		      </div>
+		      <div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+		      </div>
+		    </div>
+		  </div>
+		  </div>';
 		}
 		
 		return $body;
 	}
 
 
-	function _getProductsModal_sale_search_order ($txt, $folio)
+	function _getProductsModal_sale_search_order ($txt, $folio, $pagina)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2 FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.`no. De parte` like '%$txt%' or p.nombre like '%$txt%' or p.descripcion like '%$txt%' or p.marca like '%$txt%'or p.proveedor like '%$txt%' order by p.id asc");
+		$TAMANO_PAGINA = 16;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
+		$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+		$c_s = str_replace("p.almacen","s.almacen",$c);
+		$c_p = str_replace("p.almacen","p.almacen",$c);
+		$data = mysqli_query(db_conectar(),"
+		SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+		p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		or
+		p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+		( 
+				$c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+		)
+		LIMIT $inicio, $TAMANO_PAGINA");
+
+		
 		$select = "";
 
 		
@@ -3143,7 +3968,7 @@
 												<div class="product-content text-uppercase">
 													<p>Parte NO: '.$row[12].' | '.$row[0].'</p>
 													<div class="rating-icon pb-20 mt-10">
-														<p>Unidades disponibles: '.$stock.' UDS</>
+														
 													</div>
 													<div class="product-price pb-20">
 														'.$precio.'
@@ -3180,93 +4005,9 @@
 								</div>
 							</div>
 						</div>
-					</div>';
-
-		 if ($row[17] > 0)
-		  {
-			$body .= 
-			'
-			<!--Agragar producto a venta-->
-				  <div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-dialog-centered" role="document">
-				  <div class="modal-content">
-					<div class="modal-header">
-					  <h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-					  </button>
 					</div>
-					<div class="modal-body">
-			<div class="row">
-			   <div class="col-md-12">
-				  <div class="country-select shop-select col-md-6">
-				  	<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-				  </div>
-				  
-				  <div class="country-select shop-select col-md-6">
-				   <p>Unidades disponibles: '.$stock.' UDS</>
-					</div>
-					  <div class="col-md-12">
-						  <div class="section-title-2 text-uppercase mb-40 text-center">
-							  <h4>Agregar</h4>
-						  </div>
-					  </div>
-					  <form action="func/producst_add_sale_order.php" autocomplete="off" method="post">
-						  <input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-						  <input type="hidden" id="product" name="product" value="'.$row[9].'">
-						  <input type="hidden" id="costo" name="costo" value="'.$precio_.'">
-						  <input type="hidden" id="folio" name="folio" value="'.$folio.'">
-						  
-							<div class="col-md-12">
-								<div class="col-md-6">
-									<center><span>Ancho cm</span></center>
-									<input type="text" id="cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg('.$row[9].', this.value,'.$row[18].')" />
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto cm</span></center>
-									<input type="text" id="cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg('.$row[9].', this.value,'.$row[18].')" />
-								</div>
-							</div>
-							
-							<div class="col-md-12">
-								<br>
-								<div class="col-md-6">
-									<center><span>Ancho pulgadas</span></center>
-									<input type="text" id="pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm('.$row[9].', this.value,'.$row[18].')"/>
-								</div>
-
-								<div class="col-md-6">
-									<center><span>Alto pulgadas</span></center>
-									<input type="text" id="pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm('.$row[9].', this.value,'.$row[18].')" />
-								</div>
-							</div>
-						
 					
-						  <div class="col-md-12">
-							  <br>
-							  <center><span>Unidades</span></center>
-							  <input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
-						  </div>
-
-						  <div class="col-md-12 text-center">
-							  <button type="submit" class="btn btn-primary">Agregar</button>
-						  </div>
-
-					  </form>
-			  </div>
-			</div>
-			  </div>
-			<div class="modal-footer">
-				  <button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-			</div>
-		  </div>
-		</div>
-		</div>
-			';
-		  }else
-		  {
-			  $body .= 
-			  '
-			  <!--Agragar producto a venta-->
+					<!--Agragar producto a venta-->
 					<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 				    <div class="modal-content">
@@ -3275,6 +4016,10 @@
 				        </button>
 				      </div>
 				      <div class="modal-body">
+				        
+
+
+				        
 	          <div class="row">
 				 <div class="col-md-12">
 					<div class="country-select shop-select col-md-6">
@@ -3286,9 +4031,10 @@
 				  	</div>
 						<div class="col-md-12">
 							<div class="section-title-2 text-uppercase mb-40 text-center">
-								<h4>Agregar</h4>
+								<h4>AGREGAR</h4>
 							</div>
 						</div>
+						
 						<form action="func/producst_add_sale_order.php" autocomplete="off" method="post">
 							<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
 							<input type="hidden" id="product" name="product" value="'.$row[9].'">
@@ -3296,7 +4042,7 @@
 							<input type="hidden" id="folio" name="folio" value="'.$folio.'">
 							
 							<div class="col-md-4">
-								<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
+								<input type="number" step="1"  id="unidades" name="unidades" placeholder="0" value ="1" min="1" " style="text-align: center;"></p>		
 							</div>
 
 							<div class="col-md-8">
@@ -3304,6 +4050,7 @@
 							</div>
 
 						</form>
+						
 				</div>
 	          </div>
   		      </div>
@@ -3312,18 +4059,48 @@
 		      </div>
 		    </div>
 		  </div>
-		  </div>
-			  ';
-		  }
+		  </div>';
 		}
 		
 		return $body;
 	}
 
-	function _getProductsModalDepartment ($departamento)
+	function _getProductsModalDepartment ($departamento, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
 
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.departamento = $departamento order by p.id asc ");
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$login = false;
+		$icons_edit = "";
+
+		if (isset($_SESSION['users_id'])){ $login = true;}
+		
+        if ($login)
+		{
+			$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, 
+			p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, 
+			p.loc_almacen FROM productos p, almacen a, departamentos d where
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = '$departamento' and ( $c_p ) or 
+			p.almacen = a.id and p.departamento = d.id  and p.departamento = '$departamento' and (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 
+			order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.departamento = $departamento order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+
+		
+		
 		
 		$con_hijos  = db_conectar();
 
@@ -3514,12 +4291,98 @@
 		return $body;
 	}
 
-	function _getProductsModalSearch ($txt)
+	function _getProductsModalSearch ($txt, $pagina)
 	{
+		$login = false;
+		$TAMANO_PAGINA = 16;
 
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.`no. De parte` like '%$txt%' and p.almacen = a.id and p.departamento = d.id
-		or p.nombre like '%$txt%'  and p.almacen = a.id and p.departamento = d.id or p.descripcion like '%$txt%'  and p.almacen = a.id and p.departamento = d.id or p.marca like '%$txt%'  and p.almacen = a.id and p.departamento = d.id or p.proveedor like '%$txt%'  and p.almacen = a.id and p.departamento = d.id ORDER by p.id desc");
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
 		
+		if (isset($_SESSION['users_id'])){ $login = true;}
+		
+		if ($login)
+		{
+			$c = "( " . str_replace("almacen","p.almacen",substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2)) . " )";
+			$c_s = str_replace("p.almacen","s.almacen",$c);
+		    $c_p = str_replace("p.almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			LIMIT $inicio, $TAMANO_PAGINA");
+			
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			)
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' and 
+			( 
+				 $c_p or ( SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and $c_s ) > 0  
+			) ");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' 
+			LIMIT $inicio, $TAMANO_PAGINA");
+			
+			$datatmp = mysqli_query(db_conectar(),"
+			SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where 
+
+			p.almacen = a.id and p.departamento = d.id and p.nombre like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.descripcion like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.marca like '%$txt%' 
+			or
+			p.almacen = a.id and p.departamento = d.id and p.proveedor like '%$txt%' ");
+		}
+
 		$con_hijos  = db_conectar();
 
 		$body = "";
@@ -3710,16 +4573,42 @@
 	}
 
 
-	function _getProductsModalAlmacen ($almacen)
+	function _getProductsModalAlmacen ($almacen, $pagina)
 	{
+		$TAMANO_PAGINA = 16;
 
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.almacen = '$almacen' order by p.id asc ");
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$login = false;
+		
+		if (isset($_SESSION['users_id'])){ $login = true;}
+		
+        if ($login)
+		{
+			$c = substr(GetFilterAlmacen($_SESSION['sucursal']), 0, -2);
+		    $c_s = str_replace("almacen","s.almacen",$c);
+		    $c_p = str_replace("almacen","p.almacen",$c);
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.almacen = '$almacen' and ( $c_p) or p.almacen = a.id and p.departamento = d.id and (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0 order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.almacen = '$almacen' and ( $c_s) or p.almacen = a.id and p.departamento = d.id and (SELECT COUNT(s.id) as id  FROM productos_sub s WHERE s.padre = p.id and ( $c_s ) ) > 0");
+		}else 
+		{
+			$data = mysqli_query(db_conectar(),"SELECT nombre, stock, oferta, precio_normal, precio_oferta, foto0, foto1, foto2, foto3, id, `no. De parte` FROM productos order by id asc LIMIT $inicio, $TAMANO_PAGINA");
+			$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id and p.almacen = $almacen order by p.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		
+		
 		$con_hijos  = db_conectar();
 
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
-	        $fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
+	        //$fb_share = 'https://www.ascgar.com/products_detail_nosesion.php?id='.$row[9];
 	        
 			// Add hijos
 			$stock = $row[1];
@@ -4234,8 +5123,8 @@
 	{
 		$permiso_gest_products = $_SESSION['product_gest'];
 		
-		$data = mysqli_query(db_conectar(),"SELECT v.unidades, if (v.ancho > 0, concat(_p.nombre,' ', ROUND(v.ancho / 2.54, 2 ), ' X ', ROUND(v.alto / 2.54, 2 ), ' PULG'), _p.nombre) as nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_venta v, productos _p WHERE v.product = _p.id and v.folio_venta = '$folio' ");
-		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
+		$data = mysqli_query(db_conectar(),"SELECT v.unidades, _p.nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_venta v, productos _p WHERE v.product = _p.id and v.folio_venta = '$folio' ");
+		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva  FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
 		$genericos = mysqli_query(db_conectar(),"SELECT unidades, p_generico, precio, id FROM product_venta v WHERE p_generico != '' and folio_venta = '$folio'");
 
 		$total = 0;
@@ -4244,7 +5133,6 @@
 		$vendedor = "";
 		$cliente = "";
 		$descuento = 0;
-		$fecha = "";
 
 		$body = '<!-- Start Wishlist Area -->
 		<div class="wishlist-area" style="background-color: #f5f5f5;">
@@ -4312,7 +5200,7 @@
 				<div class="col-md-12">
 					<div class="col-md-8">
 					<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-					<input type="number" name="unidades" id="unidades" min="1" max="'.$row[9].'" value="'.$row[0].'" style="text-align:center;">
+					<input type="number" step="1" name="unidades" id="unidades" min="1" max="'.$row[9].'" value="'.$row[0].'" style="text-align:center;">
 					</div>
 					<div class="col-md-4">
 					<button type="submit" class="btn btn-primary"><i class="zmdi zmdi-upload"></i></button>
@@ -4369,7 +5257,7 @@
 				<div class="col-md-12">
 					<div class="col-md-8">
 					<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
-					<input type="number" name="unidades" id="unidades" min="1" " value="'.$row[0].'" style="text-align:center;">
+					<input type="number" step="1" name="unidades" id="unidades" min="1" " value="'.$row[0].'" style="text-align:center;">
 					</div>
 					<div class="col-md-4">
 					<button type="submit" class="btn btn-primary"><i class="zmdi zmdi-upload"></i></button>
@@ -4388,7 +5276,7 @@
 		
 		$ivac = '.'.$iva;
 
-		$total_ = number_format($total,2,".",",");
+		$total_ = number_format($total,GetNumberDecimales(),".",",");
 
 		$pagar = $total * ($descuento / 100);
 
@@ -4398,13 +5286,51 @@
 
         $pagarUsd = GetUsdToMXN($pagar);
         
-		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+		$subtotal = number_format(($pagar / 1.160000),GetNumberDecimales(),".",",");
 
-		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		$iva_ = number_format($pagar - ($pagar / 1.160000),GetNumberDecimales(),".",",");
 		
-		$pagar = number_format($pagar,2,".",",");
+		$pagar = number_format($pagar,GetNumberDecimales(),".",",");
 		
-		$pagarUsd = number_format($pagarUsd,2,".",",");
+		$pagarUsd = number_format($pagarUsd,GetNumberDecimales(),".",",");
+
+		$ShowTotalDesc = "";
+
+		if ($total_desc > 0)
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-total">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> - '.$descuento.' % Desc.</th>
+				<td>$ '.$total_desc.' MXN</td>
+			</tr>';
+		}else
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-shipping">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>';
+		}
+		
+		$ShowIva = "";
+
+		if (DesglosarReportIva())
+		{
+			$ShowIva = '
+			<tr class="cart-total">
+				<th>Subtotal</th>
+				<td>$ '.$subtotal.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> iva '.$iva.' %</th>
+				<td>$ '.$iva_.' MXN</td>
+			</tr>
+			';
+		}
 
 		$body = $body . '
 			</tbody>
@@ -4424,7 +5350,8 @@
 					</div>
 					<p>CLIENTE: '.$cliente.'</p>
 					<p>VENDEDOR: '.$vendedor.'</p>
-					<p>CREADO: '.$fecha.'</p>                                      
+					<p>CREADO: '.GetFechaText($fecha).'</p>
+					
 				</div>
 			</div> 
 			<div class="col-md-offset-0 col-md-4 col-sm-offset-3 col-sm-6 clearfix">
@@ -4438,30 +5365,11 @@
 						<th>Productos</th>
 						<td>'.$total_productos.' Unidades</td>
 					</tr>
+						'.$ShowTotalDesc.'
+						'.$ShowIva.'
 						<tr class="cart-total">
-							<th>Total</th>
-							<td>$ '.$total_.' MXN</td>
-						</tr>
-						<tr class="cart-shipping">
-							<th> - '.$descuento.' % Desc.</th>
-							<td>$ '.$total_desc.' MXN</td>
-						</tr>
-						<tr class="cart-total">
-							<th>Subtotal</th>
-							<td>$ '.$subtotal.' MXN</td>
-						</tr>
-						<tr class="cart-shipping">
-							<th> iva '.$iva.' %</th>
-							<td>$ '.$iva_.' MXN</td>
-						</tr>
-						<tr class="cart-total">
-							<th>Pagar</th>
-							<td>$ '.$pagar.' MXN</td>
-						</tr>
-						<tr class="cart-total">
-							<th>Pagar</th>
-							<td>$ '.$pagarUsd.' USD</td>
-						</tr>
+							<th><b>Pagar</b></th>
+							<td><b>$ '.$pagar.' MXN</b></td>
 						</tbody>
 					</table> 
 				</div>
@@ -4471,7 +5379,8 @@
 	</div>                            
 	</div>
 	</div>
-	</div>
+
+	</div><br>
 	</div>
 		';
 		return $body;
@@ -4577,7 +5486,7 @@
 		
 		$ivac = '0.'.$iva;
 
-		$total_ = number_format($total,2,".",",");
+		$total_ = number_format($total,GetNumberDecimales(),".",",");
 
 		$pagar = $total * ($descuento / 100);
 
@@ -4585,11 +5494,11 @@
 
 		$pagar = $total - $pagar;
 
-		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+		$subtotal = number_format(($pagar / 1.160000),GetNumberDecimales(),".",",");
 
-		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		$iva_ = number_format($pagar - ($pagar / 1.160000),GetNumberDecimales(),".",",");
 		
-		$pagar = number_format($pagar,2,".",",");
+		$pagar = number_format($pagar,GetNumberDecimales(),".",",");
 
 		$body = $body . '
 			</tbody>
@@ -4660,7 +5569,7 @@
 
 	function table_sale_products_finaly_order ($folio)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT v.unidades, if (v.ancho > 0, concat(_p.nombre,' ', ROUND(v.ancho / 2.54, 2 ), ' X ', ROUND(v.alto / 2.54, 2 ), ' PULG'), _p.nombre) as nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_pedido v, productos _p WHERE v.product = _p.id and  v.folio_venta = '$folio' ");
+		$data = mysqli_query(db_conectar(),"SELECT v.unidades, _p.nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_pedido v, productos _p WHERE v.product = _p.id and  v.folio_venta = '$folio' ");
 		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
 		$genericos = mysqli_query(db_conectar(),"SELECT unidades, p_generico, precio, id FROM product_pedido v WHERE p_generico != '' and folio_venta = '$folio'");
 		$abonos = mysqli_query(db_conectar(),"SELECT folio, cobrado, fecha_venta FROM folio_venta WHERE folio_venta_ini = '$folio'");
@@ -4808,7 +5717,7 @@
 		
 		$ivac = '0.'.$iva;
 
-		$total_ = number_format($total,2,".",",");
+		$total_ = number_format($total,GetNumberDecimales(),".",",");
 
 		$pagar = $total * ($descuento / 100);
 
@@ -4818,15 +5727,52 @@
 
 		$tt = $pagar - $total_abono;
 
-		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+		$subtotal = number_format(($pagar / 1.160000),GetNumberDecimales(),".",",");
 
-		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		$iva_ = number_format($pagar - ($pagar / 1.160000),GetNumberDecimales(),".",",");
 		
-		$pagar = number_format($pagar,2,".",",");
+		$pagar = number_format($pagar,GetNumberDecimales(),".",",");
 		
-		$tt = number_format($tt,2,".",",");
+		$tt = number_format($tt,GetNumberDecimales(),".",",");
 		
-		
+		$ShowTotalDesc = "";
+
+		if ($total_desc > 0)
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-total">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> - '.$descuento.' % Desc.</th>
+				<td>$ '.$total_desc.' MXN</td>
+			</tr>';
+		}else
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-shipping">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>';
+		}
+
+		$ShowIva = "";
+
+		if (DesglosarReportIva())
+		{
+			$ShowIva = '
+			<tr class="cart-total">
+				<th>Subtotal</th>
+				<td>$ '.$subtotal.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> iva '.$iva.' %</th>
+				<td>$ '.$iva_.' MXN</td>
+			</tr>
+			';
+		}
+
 		$body = $body . '
 			</tbody>
 			</table>
@@ -4868,33 +5814,15 @@
 						<th>Productos</th>
 						<td>'.$total_productos.' Unidades</td>
 					</tr>
+						'.$ShowTotalDesc.'
+						'.$ShowIva.'
 						<tr class="cart-total">
-							<th>Total</th>
-							<td>$ '.$total_.' MXN</td>
-						</tr>
-						<tr class="cart-shipping">
-							<th> - '.$descuento.' % Desc.</th>
-							<td>$ '.$total_desc.' MXN</td>
-						</tr>
-						<tr class="cart-total">
-							<th>Subtotal</th>
-							<td>$ '.$subtotal.' MXN</td>
-						</tr>
-						<tr class="cart-shipping">
-							<th> iva '.$iva.' %</th>
-							<td>$ '.$iva_.' MXN</td>
-						</tr>
-						<tr class="cart-total">
-							<th>Total</th>
-							<td>$ '.$pagar.' MXN</td>
-						</tr>
-						<tr class="cart-shipping">
 							<th>Abonos</th>
 							<td>$ '.$total_abono.' MXN</td>
 						</tr>
 						<tr class="cart-total">
-							<th>Adeudo</th>
-							<td>$ '.$tt.' MXN</td>
+							<th><b>Adeudo</b></th>
+							<td><b>$ '.$tt.' MXN</b></td>
 						</tr>
 						</tbody>
 					</table>
@@ -5030,7 +5958,7 @@
 		
 		$ivac = '1.'.$iva;
 
-		$total_ = number_format($total,2,".",",");
+		$total_ = number_format($total,GetNumberDecimales(),".",",");
 
 		$pagar = $total * ($descuento / 100);
 
@@ -5040,13 +5968,13 @@
 
 		$tt = $pagar - $total_abono;
 
-		$subtotal = number_format($pagar / $ivac,2,".",",");
+		$subtotal = number_format($pagar / $ivac,GetNumberDecimales(),".",",");
 
-		$iva_ = number_format($pagar - ($pagar / $ivac),2,".",",");
+		$iva_ = number_format($pagar - ($pagar / $ivac),GetNumberDecimales(),".",",");
 		
-		$pagar = number_format($pagar,2,".",",");
+		$pagar = number_format($pagar,GetNumberDecimales(),".",",");
 		
-		$tt = number_format($tt,2,".",",");
+		$tt = number_format($tt,GetNumberDecimales(),".",",");
 		
 		
 		$body = $body . '
@@ -5138,7 +6066,7 @@
 	{
 		$permiso_gest_products = $_SESSION['product_gest'];
 		
-		$data = mysqli_query(db_conectar(),"SELECT v.unidades, if (v.ancho > 0, concat(_p.nombre,' ', ROUND(v.ancho / 2.54, 2 ), ' X ', ROUND(v.alto / 2.54, 2 ), ' PULG'), _p.nombre) as nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_venta v, productos _p WHERE v.product = _p.id and v.folio_venta = '$folio' ");
+		$data = mysqli_query(db_conectar(),"SELECT v.unidades, _p.nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_venta v, productos _p WHERE v.product = _p.id and v.folio_venta = '$folio' ");
 		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
 		$genericos = mysqli_query(db_conectar(),"SELECT unidades, p_generico, precio, id FROM product_venta v WHERE p_generico != '' and folio_venta = '$folio'");
 		
@@ -5298,7 +6226,7 @@
 
 		$ivac = '.'.$iva;
 
-		$total_ = number_format($total,2,".",",");
+		$total_ = number_format($total,GetNumberDecimales(),".",",");
 
 		$pagar = $total * ($descuento / 100);
 
@@ -5308,14 +6236,52 @@
         
         $PagarUsd = GetUsdToMXN($pagar);
         
-		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+		$subtotal = number_format(($pagar / 1.160000),GetNumberDecimales(),".",",");
 
-		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		$iva_ = number_format($pagar - ($pagar / 1.160000),GetNumberDecimales(),".",",");
 		
-		$pagar = number_format($pagar,2,".",",");
+		$pagar = number_format($pagar,GetNumberDecimales(),".",",");
 		
-		$PagarUsd = number_format($PagarUsd,2,".",",");
+		$PagarUsd = number_format($PagarUsd,GetNumberDecimales(),".",",");
 		
+		$ShowTotalDesc = "";
+
+		if ($total_desc > 0)
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-total">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> - '.$descuento.' % Desc.</th>
+				<td>$ '.$total_desc.' MXN</td>
+			</tr>';
+		}else
+		{
+			$ShowTotalDesc = '
+			<tr class="cart-shipping">
+				<th>Total</th>
+				<td>$ '.$total_.' MXN</td>
+			</tr>';
+		}
+
+		$ShowIva = "";
+
+		if (DesglosarReportIva())
+		{
+			$ShowIva = '
+			<tr class="cart-total">
+				<th>Subtotal</th>
+				<td>$ '.$subtotal.' MXN</td>
+			</tr>
+			<tr class="cart-shipping">
+				<th> iva '.$iva.' %</th>
+				<td>$ '.$iva_.' MXN</td>
+			</tr>
+			';
+		}
+
 		$body = $body . '
 			</tbody>
 			</table>
@@ -5348,29 +6314,11 @@
 								<th>Productos</th>
 								<td>'.$total_productos.' Unidades</td>
 							</tr>
+							'.$ShowTotalDesc.'
+							'.$ShowIva.'
 							<tr class="cart-total">
-								<th>Total</th>
-								<td>$ '.$total_.' MXN</td>
-							</tr>
-							<tr class="cart-shipping">
-								<th> - '.$descuento.' % Desc.</th>
-								<td>$ '.$total_desc.' MXN</td>
-							</tr>
-							<tr class="cart-total">
-								<th>Subtotal</th>
-								<td>$ '.$subtotal.' MXN</td>
-							</tr>
-							<tr class="cart-shipping">
-								<th> iva '.$iva.' %</th>
-								<td>$ '.$iva_.' MXN</td>
-							</tr>
-							<tr class="cart-total">
-								<th>Pagar</th>
-								<td>$ '.$pagar.' MXN</td>
-							</tr>
-							<tr class="cart-total">
-								<th>Pagar</th>
-								<td>$ '.$PagarUsd.' USD</td>
+								<th><b>Pagar</b></th>
+								<td><b>$ '.$pagar.' MXN </b></td>
 							</tr>
 						</tbody>
 					</table> 
@@ -5389,7 +6337,7 @@
 
 	function table_clientes ($pagina)
 	{
-		$TAMANO_PAGINA = 15;
+		$TAMANO_PAGINA = 10;
 
 		if (!$pagina) {
 			$inicio = 0;
@@ -5402,9 +6350,9 @@
 		$data = mysqli_query(db_conectar(),"SELECT id, nombre, if (direccion = '' , 'DIRECCION DESCONOCIDA', direccion) as  direccion, if (telefono = '' , 'TELEFONO DESCONOCIDO', telefono) AS telefono, if (razon_social  = '' , 'RAZON SOCIAL DESCONOCIDA', razon_social  ) AS razon_social FROM `clients` ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
 		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -5415,16 +6363,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -5434,9 +6405,13 @@
 									</div>
 									</div>
 									</div><p>';
+		
+		$hoy = date("Y-m-d");
+		
 		$body = '<br>
 		<form class="header-search-box" action="clients.php">
 			<div>
+				<input type="hidden" id="pagina" name="pagina" value="1">
 				<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
@@ -5448,6 +6423,7 @@
               ">
 			</div>
 		</form><br>
+		'.$pagination.'
 		<table class="cart table">
 					<thead>
 						<tr>
@@ -5456,7 +6432,6 @@
 							<th class="table-head item-nam">TELEFONO</th>
 							<th class="table-head item-nam">RAZON SOCIAL</th>
 							<th class="table-head item-nam">EMAIL</th>
-							<th class="table-head item-nam">ANUALIDAD</th>
 							<th class="table-head item-nam">EDITAR</th>
 							<th class="table-head item-nam">ELIMINAR</th>
 						</tr>
@@ -5470,7 +6445,6 @@
 			{
 				$boton = '
 				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mailcliente'.$row[0].'"><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></a></center></td>
-				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#annuitycliente'.$row[0].'"><i class="zmdi zmdi-plus zmdi-hc-2x"></i></a></center></td>
 				<td class="item-des"><center><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalclient_edit'.$row[0].'" ><span> Editar</span> </a></p></center></td>
 				<td class="item-des"><center><p><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalclient_delete'.$row[0].'" ><span> Eliminar</span> </a></p></center></td>
 				';
@@ -5478,7 +6452,6 @@
 				// No pueden editar
 				$boton = '
 				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mailcliente'.$row[0].'"><i class="zmdi zmdi-plus zmdi-hc-2x"></i></a></center></td>
-				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal"><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></a></center></td>
 				<td class="item-des"><center><a class="button extra-small button-black mb-20" data-toggle="modal"><span> Editar</span> </a></p></center></td>
 				<td class="item-des"><center><p><a class="button extra-small button-black mb-20"><span> Eliminar</span> </a></p></center></td>
 				';
@@ -5487,7 +6460,7 @@
 
 			$body = $body.'
 			<tr>
-			<td class="item-quality">'.$row[1].'</td>
+			<td class="item-quality"><a href="/finance_clients.php?inicio=2013-05-29&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'">'.$row[1].'</a></td>
 			<td class="item-des"><p>'.$row[2].'</p></td>
 			<td class="item-des"><p>'.$row[3].'</p></td>
 			<td class="item-des"><p>'.$row[4].'</p></td>
@@ -5503,12 +6476,80 @@
 		return $body;
 	}
 
-    function table_facturas_search ($txt)
+    function table_facturas_search ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 8;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, f.serie, f.estatus, c.nombre FROM facturas f, clients c where f.cliente = c.id and f.folio LIKE '%$txt%' or f.cliente = c.id and c.nombre LIKE '%$txt%'  LIMIT $inicio, $TAMANO_PAGINA ");
+		$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM facturas f, clients c where f.cliente = c.id and f.folio LIKE '%$txt%' or f.cliente = c.id and c.nombre LIKE '%$txt%'");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, f.serie, f.estatus, c.nombre FROM facturas f, clients c where f.cliente = c.id and f.folio LIKE '%$txt%' or f.cliente = c.id and c.nombre LIKE '%$txt%'");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
 		
-        $body = '
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+		$body .= $pagination;
+
+        $body .= '
 		<div class="table-responsive compare-wraper mt-30">
 				<table class="cart table">
 					<thead>
@@ -5527,7 +6568,7 @@
 			$body = $body.'
 			<tr>
 			<td class="item-des"><p>'.$row[3].'</p></td>
-            <td class="item-des"><p>'.$row[0].'</p></td>
+            <td class="item-des"><p><a href="/sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></p></td>
 			<td class="item-des"><p><center>'.$row[1].'</center></p></td>
 			<td class="item-quality"><center>'.$row[2].'</center></td>
             <td class="item-des">
@@ -5559,7 +6600,8 @@
 
     function table_facturas ($pagina)
 	{
-		$TAMANO_PAGINA = 10;
+		
+		$TAMANO_PAGINA = 8;
 
 		if (!$pagina) {
 			$inicio = 0;
@@ -5572,9 +6614,9 @@
 		$data = mysqli_query(db_conectar(),"SELECT f.folio, f.serie, f.estatus, c.nombre FROM facturas f, clients c where f.cliente = c.id LIMIT $inicio, $TAMANO_PAGINA");
 		$datatmp = mysqli_query(db_conectar(),"SELECT folio FROM facturas");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -5585,16 +6627,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -5605,7 +6670,7 @@
 									</div>
 									</div><p>';
 		$body = '
-		<div class="table-responsive compare-wraper mt-0">
+		<div class="compare-wraper mt-0">
 				<table class="cart table">
 					<thead>
 						<tr>
@@ -5624,7 +6689,7 @@
 			$body = $body.'
 			<tr>
 			<td class="item-des"><p>'.$row[3].'</p></td>
-            <td class="item-des"><p>'.$row[0].'</p></td>
+            <td class="item-des"><p><a href="/sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></p></td>
 			<td class="item-des"><p><center>'.$row[1].'</center></p></td>
 			<td class="item-quality"><center>'.$row[2].'</center></td>
             <td class="item-des">
@@ -6268,6 +7333,7 @@
 							<th class="table-head th-name uppercase">cliente</th>
 							<th class="table-head th-name uppercase">creado</th>
 							<th class="table-head th-name uppercase">Ver</th>
+							<th class="table-head th-name uppercase">Credito</th>
 							<th class="table-head th-name uppercase">Enviar</th>
 							<th class="table-head th-name uppercase">opciones</th>
 						</tr>
@@ -6281,13 +7347,17 @@
 			<tr>
 			<td class="item-des"><a href="/sale_finaly_report_cotizacion.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p>'.$row[1].'</p></td>
-			<td class="item-des"><a href="/clients.php?search='.$row[2].'">'.$row[2].'</a></td>
+			<td class="item-des"><a href="/clients.php?pagina=1&search='.$row[2].'">'.$row[2].'</a></td>
 			<td class="item-des">'.GetFechaText($row[3]).'</td>
 			
 			<td class="item-des">
 				<center><a href="/sale_cot.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-eye zmdi-hc-2x"></i></a></center>
 			</td>
 			
+			<td class="item-des">
+				<center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#credit'.$row[0].'"><i class="zmdi zmdi-money zmdi-hc-2x"></i></a></center>
+			</td>
+
 			<td class="item-des">
 				<center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mail'.$row[0].'"><i class="zmdi zmdi-email zmdi-hc-2x"></i></a></center>
 			</td>
@@ -6381,7 +7451,7 @@
                 	<tbody>
                 		<tr>
                 			<td style="text-align: left;">'.$red.'$</font></td>
-                			<td style="text-align: right;">&nbsp;'.$red.number_format($row[3],2,".",",").'</font></td>
+                			<td style="text-align: right;">&nbsp;'.$red.number_format($row[3],GetNumberDecimales(),".",",").'</font></td>
                 		</tr>
                 	</tbody>
                 </table>
@@ -6410,8 +7480,8 @@
 		$body = $body . '
 		</tbody>
 			</table><br>
-			<h4 style="text-align: center;"><strong>INGRESO $ '.number_format($total,2,".",",").' | EGRESO $ '.number_format(7200,2,".",",").'</strong></h4>
-			<h3 style="text-align: center;"><strong>UTILIDAD $ '.number_format($utilidad,2,".",",").' MXN, DE UN TOTAL DE '.$cont.' ITEMS.</strong></h3>
+			<h4 style="text-align: center;"><strong>INGRESO $ '.number_format($total,GetNumberDecimales(),".",",").' | EGRESO $ '.number_format(7200,GetNumberDecimales(),".",",").'</strong></h4>
+			<h3 style="text-align: center;"><strong>UTILIDAD $ '.number_format($utilidad,GetNumberDecimales(),".",",").' MXN, DE UN TOTAL DE '.$cont.' ITEMS.</strong></h3>
 			';
 
 		
@@ -6589,6 +7659,7 @@
 							<th class="table-head th-name uppercase">cliente</th>
 							<th class="table-head th-name uppercase">creado</th>
 							<th class="table-head th-name uppercase">Ver</th>
+							<th class="table-head th-name uppercase">Credito</th>
 							<th class="table-head th-name uppercase">enviar</th>
 							<th class="table-head th-name uppercase">opciones</th>
 						</tr>
@@ -6602,14 +7673,17 @@
 			<tr>
 			<td class="item-des"><a href="/sale_finaly_report_cotizacion.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p>'.$row[1].'</p></td>
-			<td class="item-des"><a href="/clients.php?search='.$row[2].'">'.$row[2].'</a></td>
+			<td class="item-des"><a href="/clients.php?pagina=1&search='.$row[2].'">'.$row[2].'</a></td>
 			<td class="item-des">'.GetFechaText($row[3]).'</td>
-			
 			
 			<td class="item-des">
 				<center><a href="/sale_cot.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-eye zmdi-hc-2x"></i></a></center>
 			</td>
 			
+			<td class="item-des">
+				<center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#credit'.$row[0].'"><i class="zmdi zmdi-money zmdi-hc-2x"></i></a></center>
+			</td>
+
 			<td class="item-des">
 				<center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mail'.$row[0].'"><i class="zmdi zmdi-email zmdi-hc-2x"></i></a></center>
 			</td>
@@ -6640,31 +7714,29 @@
 
 	function view_move($usuario, $sucursal)
 	{
-		if ($_SESSION['finanzas'] == 1)
+		if ($usuario == 0 && $sucursal == 0)
 		{
-			if ($usuario > 0 && $sucursal > 0)
-			{
-				$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut = 0 and v.cut_global = 0 and s.id = '$sucursal' and u.id = '$usuario' order by v.fecha_venta desc  ");
-			}
-			elseif ($usuario == 0 && $sucursal == 0)
-			{
-				$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut = 0 and v.cut_global = 0 order by v.fecha_venta desc ");
-			}
-			elseif ($usuario > 0 && $sucursal == 0)
-			{
-				$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut = 0 and v.cut_global = 0 and u.id = '$usuario' order by v.fecha_venta desc ");
-			}
-			elseif ($usuario == 0 && $sucursal > 0)
-			{
-				$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut = 0 and v.cut_global = 0 and s.id = '$sucursal' order by v.fecha_venta desc ");
-			}
-		}else
+			$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut_global = 0 order by s.nombre asc, v.fecha_venta desc");
+		}
+		
+		else if ($usuario > 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto, v.pedido  FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut = 0 and v.vendedor = $_SESSION[users_id] order by v.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut_global = 0 and v.vendedor = $usuario and v.sucursal = $sucursal order by v.fecha_venta desc");
 		}
 
+		else if ($usuario > 0 && $sucursal == 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut_global = 0 and v.vendedor = $usuario order by v.fecha_venta desc");
+		}
+
+		else if ($usuario == 0 && $sucursal > 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.open, v.cobrado, v.fecha_venta, v.cut, s.nombre, v.t_pago, v.concepto , v.pedido FROM folio_venta v, sucursales s, users u, clients c where v.sucursal = s.id and v.vendedor = u.id and v.client = c.id and v.open = 0 and v.cut_global = 0 and v.sucursal = $sucursal order by v.fecha_venta desc");
+		}
+
+
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="table-responsive">
 				<table class="cart table">
 					<thead>
 						<tr>
@@ -6672,9 +7744,9 @@
 							<th class="table-head th-name uppercase">CLIENTE</th>
 							<th class="table-head th-name uppercase">FOLIO</th>
 							<th class="table-head th-name uppercase">SUCURSAL</th>
-							<th class="table-head th-name uppercase">FECHA VENTA</th>
+							<th class="table-head th-name uppercase txt-center">FECHA_VENTA_FECHA&HORA</th>
 							<th class="table-head th-name uppercase">concepto</th>
-							<th class="table-head th-name uppercase"><center>cantidad</center></th>
+							<th class="table-head th-name uppercase"><center>cantidad_$_0.00_MXN</center></th>
 						</tr>
 					</thead>
 					<tbody>';
@@ -6683,39 +7755,38 @@
 		
 		while($row = mysqli_fetch_array($data))
 	    {
+			if (!$row[11])
+			{
+				$row[11] = "Venta";
+				if ($row[12] == 1)
+				{
+					$folio = '<td class="item-des"><a href="sale_finaly_report_order.php?folio='.$row[0].'">'.$row[0].'</a></td>';
+				}else
+				{
+					$folio = '<td class="item-des"><a href="sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>';
+				}
+			}else
+			{
+				$folio = '<td class="item-des">'.$row[0].'</td>';
+			}
+
+			$body = $body.'
+			<tr>
+			<td class="item-des">'.$row[1].'</td>
+			<td class="item-des"><a href="/clients.php?pagina=1&search='.$row[2].'">'.$row[2].'</a></td>
+			'.$folio.'
+			<td class="item-des"><p>'.$row[9].'</p></td>
+			<td class="item-des"><center>'.GetFechaText($row[4]).'</center></td>
+			<td class="item-des uppercase"><p><center>'.$row[11].'</center></p></td>
+			<td class="item-des text-right">$ '.number_format($row[6],GetNumberDecimales(),".",",").' MXN</td>
+			</tr>
+			';
+			$total = $total + $row[6];
+			
+
 			if ($row[10] == "efectivo")
 			{
 				$efectivo = $efectivo + $row[6];
-				
-				if (!$row[11])
-				{
-					$row[11] = "Venta";
-					if ($row[12] == 1)
-					{
-						$folio = '<td class="item-des"><a href="sale_finaly_report_order.php?folio='.$row[0].'">'.$row[0].'</a></td>';
-					}else
-					{
-						$folio = '<td class="item-des"><a href="sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>';
-					}
-				}else
-				{
-					$folio = '<td class="item-des">'.$row[0].'</td>';
-				}
-
-				
-
-				$body = $body.'
-				<tr>
-				<td class="item-des">'.$row[1].'</td>
-				<td class="item-des">'.$row[2].'</td>
-				'.$folio.'
-				<td class="item-des"><p>'.$row[9].'</p></td>
-				<td class="item-des"><p>'.$row[4].'</p></td>
-				<td class="item-des uppercase"><p><center>'.$row[11].'</center></p></td>
-				<td class="item-des"><p><center>$ '.$row[6].' MXN</center></p></td>
-				</tr>
-				';
-				$total = $total + $row[6];
 			}
 			elseif ($row[10] == "transferencia")
 			{
@@ -6724,6 +7795,14 @@
 			elseif ($row[10] == "tarjeta")
 			{
 				$cheque = $cheque + $row[6];
+			}
+			elseif ($row[10] == "deposito")
+			{
+				$deposito = $deposito + $row[6];
+			}
+			elseif ($row[10] == "cheque")
+			{
+				$cheque0 = $cheque0 + $row[6];
 			}
 		}
 
@@ -6735,69 +7814,162 @@
 		<div align="right">
 		';
 
-		/*if ($transferencia > 0)
+		if ($efectivo > 0)
 		{
-			$body = $body . '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+			$cajatmp = $cajatmp . '
+			<h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+
+		if ($transferencia > 0)
+		{
+			$cajatmp = $cajatmp . '
+			<h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($cheque > 0)
 		{
-			$body = $body . '
-			<h5>Tarjeta: $ '.number_format($cheque,2,".",",").' MXN</h5>
-			';
-		}*/
-		if ($efectivo > 0)
-		{
-			$cajatmp = '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+			$cajatmp = $cajatmp . '
+			<h5>Tarjeta: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
+
+		if ($deposito > 0)
+		{
+			$cajatmp = $cajatmp . '
+			<h5>Deposito: $ '.number_format($deposito,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+		if ($cheque0 > 0)
+		{
+			$cajatmp = $cajatmp . '
+			<h5>Cheques: $ '.number_format($cheque0,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+
 		$body = '</div>
 		<br>
 		<div align="right">
 			'.$cajatmp.'
-			<h4>TOTAL RECAUDADO: $ '.number_format($efectivo,2,".",",").' MXN</h4>
+			<h4>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
 		</div>
 		' . $body;
-
 		
-
 		return $body;
 	}
 
-	function table_finance($inicio, $finaliza, $folio, $vendedor, $sucursal)
+	function table_finance($inicio, $finaliza, $folio, $vendedor, $sucursal, $pagina)
 	{
 		//$inicio = '2018-07-18 00:00:00';
 		//$finaliza = '2018-07-18 23:59:59';
-		$inicio .= ' 00:00:00';
-		$finaliza .= ' 23:59:59';
+		$inicio_old = $inicio;
+		$f_inicio = $inicio_old . ' 00:00:00';
+		
+		$finaliza_old = $finaliza;
+		$f_finaliza = $finaliza_old . ' 23:59:59';
+		
 		$total = 0;
-        $porcent_comision = 0;
+		$porcent_comision = 0;
+		
+		$TAMANO_PAGINA = 10;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
         
 		if ($folio != "" && $vendedor == 0 && $sucursal == 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.folio like '%$folio%'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.folio like '%$folio%'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.folio like '%$folio%'  order by c.id desc ");
+			$data_total = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.folio like '%$folio%'  order by c.id desc");
 		}
 		elseif ($folio == "" && $vendedor > 0 && $sucursal == 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.vendedor = '$vendedor'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.vendedor = '$vendedor'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.vendedor = '$vendedor'  order by c.id desc");
+			$data_total = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.vendedor = '$vendedor'  order by c.id desc");
 		}
 		elseif ($folio == "" && $vendedor == 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.sucursal = '$sucursal'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal'  order by c.id desc ");
+			$data_total = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal'  order by c.id desc");
 		}
 		elseif ($folio == "" && $vendedor > 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor'  order by f.fecha_venta desc  ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor'  order by c.id desc  LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor'  order by c.id desc");
+			$data_total = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor'  order by c.id desc");
 		}
 		else
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza'  order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza'  order by f.fecha_venta desc");
+			$data_total = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, v.comision, f.comision_pagada FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza'  order by f.fecha_venta desc");
 		}
 		
-		$body = '
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&folio='.$folio.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+		$body .= $pagination . '
 		<div class="table-responsive compare-wraper mt-30">
 				<table class="cart table">
 					<thead>
@@ -6807,7 +7979,6 @@
 							<th class="table-head th-name uppercase">F.VENTA</th>
 							<th class="table-head th-name uppercase">COBRADO</th>
 							<th class="table-head th-name uppercase">DETALLES</th>
-                            <th class="table-head th-name uppercase">ENTREGAR</th>
                             <th class="table-head th-name uppercase">ELIMINAR</th>
                             <th class="table-head th-name uppercase">FACTURAR</th>
 						</tr>
@@ -6818,6 +7989,50 @@
 		$con = db_conectar();  
 		
 		while($row = mysqli_fetch_array($data))
+	    {
+			if ($row[9] == 1)
+			{
+				$folio_ = '<td class="item-des"><a href="sale_finaly_report_order.php?folio='.$row[0].'">'.$row[0].'</a></td>';
+				$facturar = '
+				<a href="/facturar.php?folio='.$row[0].'&stocck=0" target="_blank" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-shield-check zmdi-hc-lg"></i></a>
+				';
+			}else
+			{
+				$folio_ = '<td class="item-des"><a href="sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>';
+				$facturar = '
+				<a href="/facturar.php?folio='.$row[0].'&stocck=1" target="_blank" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-shield-check zmdi-hc-lg"></i></a>
+				';
+			}
+
+			$body = $body.'
+			<tr>
+			'.$folio_.'
+			<td class="item-des"><p>'.$row[1].'</p></td>
+			<td class="item-des"><p>'.GetFechaText($row[6]).'</p></td>
+			<td class="item-des"><p>$ '.$row[5].' MXN</p></td>
+			<td class="item-des uppercase"><center>
+				<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#details'.$row[0].'" ><i class="zmdi zmdi-eye zmdi-hc-lg"></i></a>
+			</center></td>
+			<td class="item-des uppercase"><center>
+				<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#delete'.$row[0].'" ><i class="zmdi zmdi-close zmdi-hc-lg"></i></a>
+			</center></td>
+			<td class="item-des uppercase"><center>
+				'.$facturar.'
+			</center></td>
+			</tr>
+			';
+		}
+		$body = $body . '
+		</tbody>
+			</table>
+		</div>
+		'.$pagination.'
+		<br>
+		<div align="right">
+		';
+		
+		// Totales
+		while($row = mysqli_fetch_array($data_total))
 	    {
 	        //Utilidad
 	        $porcent_comision = $row[11]; $folio_comision_pagada = $row[12];
@@ -6843,7 +8058,7 @@
                 }    
 	        }
 	       
-			if (!$row[10])
+			if (!empty($row[8]))
 			{
 				if ($row[8] == "efectivo")
 				{
@@ -6861,42 +8076,276 @@
 				{
 					$deposito = $deposito + $row[5];
 				}
-				
-				if ($row[9] == 1)
+				elseif ($row[8] == "cheque")
 				{
-					$folio_ = '<td class="item-des"><a href="sale_finaly_report_order.php?folio='.$row[0].'">'.$row[0].'</a></td>';
-                    $facturar = '
-                    <a href="/facturar.php?folio='.$row[0].'&stocck=0" target="_blank" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-shield-check zmdi-hc-lg"></i></a>
-                    ';
-				}else
-				{
-					$folio_ = '<td class="item-des"><a href="sale_finaly_report.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>';
-                    $facturar = '
-                    <a href="/facturar.php?folio='.$row[0].'&stocck=1" target="_blank" class="button extra-small button-black mb-20" ><i class="zmdi zmdi-shield-check zmdi-hc-lg"></i></a>
-                    ';
+					$cheque0 = $cheque0 + $row[5];
 				}
 
-				$body = $body.'
+			}
+			$total = $total + $row[5];
+		}
+		//Finaliza totales
+		
+        if ($vendedor > 0 && $utilidad > 0)
+        {
+            $body = $body . '
+			<h5>Utilidad: $ '.number_format( $utilidad,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+			
+			$body = $body . '
+			<h5>Comision: '.$porcent_comision.' % $ '.number_format( $utilidad* ($porcent_comision / 100),GetNumberDecimales(),".",",").' MXN</h5>
+			';
+        }
+		if ($efectivo > 0)
+		{
+			$body = $body . '
+			<h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+
+		if ($transferencia > 0)
+		{
+			$body = $body . '
+			<h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+
+		if ($cheque > 0)
+		{
+			$body = $body . '
+			<h5>Tarjeta: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+
+		if ($deposito > 0)
+		{
+			$body = $body . '
+			<h5>Deposito: $ '.number_format($deposito,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+		if ($cheque0 > 0)
+		{
+			$body .= '
+			<h5>Cheques: $ '.number_format($cheque0,GetNumberDecimales(),".",",").' MXN</h5>
+			';
+		}
+		
+		$body = $body . '
+			<h4>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
+		</div>
+		';
+
+		return $body;
+	}
+
+	function table_credits($client, $sucursal)
+	{
+		if ($client > 0)
+		{
+			if ($sucursal > 0)
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id  and c.client =  '$client' and c.sucursal = '$sucursal' ORDER by  f_vencimiento asc");
+			}else
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id  and c.client =  '$client' ORDER by  f_vencimiento ascc");
+			}
+		}else{
+			if ($sucursal > 0)
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id and c.pay = 0 and c.sucursal = '$sucursal' ORDER by  f_vencimiento asc");
+			}else
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id and c.pay = 0 ORDER by  f_vencimiento asc");
+			}
+		}
+		
+		$num_total_registros = mysqli_num_rows($data);
+
+		$body = '
+		
+		<div class="table-responsive compare-wraper mt-30">
+		</div>
+		
+			<div class="col-md-6">
+				<br><label>Seleccione cliente</label><br>
+				<select id="select_client" name="select_client" onchange="loadclient()">
+						'.Select_clients($client).'
+				</select> 
+			</div>
+
+			<div class="col-md-6">
+				<br><label>Seleccione sucursal</label>
+				<select id="select_sucursal" name="select_sucursal" onchange="loadclient()">
+						'.Select_sucursales_selected($sucursal).'
+				</select>
+			</div>
+
+			<br>
+
+				<table class="cart table">
+					<thead>
+						<tr>
+							<th class="table-head th-name uppercase">NOMBRE</th>
+							<th class="table-head th-name uppercase">F. VENCIMIENTO</th>
+							<th class="table-head th-name uppercase">DIAS_RESTANTES</th>
+							<th class="table-head th-name uppercase">FACTURA</th>
+							<th class="table-head th-name uppercase">CREDITO_TOTAL</th>
+							<th class="table-head th-name uppercase">PENDIENTE_DE_PAGO</th>
+							<th class="table-head th-name uppercase">DETALLES</th>
+							<th class="table-head th-name uppercase">MAIL</th>
+							<th class="table-head th-name uppercase">LIQUIDAR</th>
+							<th class="table-head th-name uppercase">ELIMINAR</th>
+						</tr>
+					</thead>
+					<tbody>';
+		
+		$con = db_conectar();  
+		
+		//Variables a detalle 
+		$plus_lastID = 0;
+		$plus_last_client = "";
+        $plus_contador = 0;
+        $plus_total = 0;
+		$plus_cont = 0;
+		$plus_total_g = 0;
+		
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($plus_lastID != $row[10] && $plus_lastID != 0)
+			{
+			    
+			    $body = $body.'
 				<tr>
-				'.$folio_.'
-				<td class="item-des"><p>'.$row[1].'</p></td>
-				<td class="item-des"><p>'.GetFechaText($row[6]).'</p></td>
-				<td class="item-des"><p>$ '.$row[5].' MXN</p></td>
-				<td class="item-des uppercase"><center>
-					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#details'.$row[0].'" ><i class="zmdi zmdi-eye zmdi-hc-lg"></i></a>
-				</center></td>
-				<td class="item-des uppercase"><center>
-					<a class="button extra-small button-black mb-20"  data-toggle="modal" data-target="#deliver'.$row[0].'" ><i class="zmdi zmdi-local-shipping zmdi-hc-lg"></i></a>
-				</center></td>
-				<td class="item-des uppercase"><center>
-					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#delete'.$row[0].'" ><i class="zmdi zmdi-close zmdi-hc-lg"></i></a>
-				</center></td>
-                <td class="item-des uppercase"><center>
-					'.$facturar.'
-				</center></td>
+					<td><b>CLIENTE</b></td>
+					<td><b>TOTAL CREDITOS</b></td>
+					<td><b>CREDITO TOTAL</b></td>
+					<td><b>ADEUDO PENDIENTE</b></td>
+				</tr>
+
+                <tr>
+					<td><i><a href="/clients.php?pagina=1&search='.$plus_last_client.'">'.$plus_last_client.'</a></i></td>
+					<td><i>'.$plus_contador.' CREDITOS</i></td>
+					<td><i>$ '.number_format($plus_total_g,GetNumberDecimales(),".",",").' MXN</i></td>
+					<td><i>$ '.number_format($plus_total,GetNumberDecimales(),".",",").' MXN</i></td>
+				</tr>
+
+
+				<tr>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+					<td><br><br><br></td>
+				</tr>
+				
+				<tr>
+					<td><b>NOMBRE</b></td>
+					<td><b>F. VENCIMIENTO</b></td>
+					<td><b>DIAS_RESTANTES</b></td>
+					<td><b>FACTURA</b></td>
+					<td><b><center>CREDITO_TOTAL</b></center></td>
+					<td><b><center>PENDIENTE_DE_PAGO</b></center></td>
+					<td><b><center>DETALLES</b></center></td>
+					<td><b><center>MAIL</b></center></td>
+					<td><b><center>LIQUIDAR</b></center></td>
+					<td><b><center>ELIMINAR</b></center></td>
 				</tr>
 				';
-				$total = $total + $row[5];
+                $plus_contador = 0;
+                $plus_total = 0;
+				$plus_total_g = 0;
+			}
+
+			$font = "";
+			
+			$fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+            $fecha_db = strtotime($row[3]);
+            
+		    if($fecha_actual > $fecha_db)
+        	{
+        	    $font = 'style="color: red;"';
+			}
+			
+			if ($row[7] <= 0)
+			{
+				$font = 'style="color: blue;"';
+			}
+
+			$body = $body.'
+				<tr>
+				<td class="item-des" '.$font.' >'.$row[1].'</td>
+				<td class="item-des" '.$font.' >'.GetFechaText($row[3]).'</td>
+				<td class="item-des" '.$font.' >'.$row[8].' DIAS</td>
+				<td class="item-des" '.$font.' ><a href="http://'.$_SERVER['HTTP_HOST'].'/sale_finaly_report_cotizacion.php?folio_sale='.$row[4].'">'.$row[4].'</a></td>
+				<td class="item-des" '.$font.' >$ '.number_format($row[5],GetNumberDecimales(),".",",").' MXN</td>
+				<td class="item-des" '.$font.' >$ '.number_format($row[7],GetNumberDecimales(),".",",").' MXN</td>
+				<td><center><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#details'.$row[0].'" ><i class="zmdi zmdi-eye zmdi-hc-lg"></i></a></center></td>
+				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mail'.$row[0].'"><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></a></center></td>
+				<td><center><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#liquid'.$row[0].'" ><i class="zmdi zmdi-check zmdi-hc-lg"></i></a></center></td>
+				<td><center><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#delete'.$row[0].'" ><i class="zmdi zmdi-close zmdi-hc-lg"></i></a></center></td>
+				</tr>
+				';
+			
+			if ($row[11] > 0)
+			{
+				$body = $body.'
+				<tr>
+					<td></td>
+					<td><b>ABONO: </b> '.number_format($row[11],GetNumberDecimales(),".",",").' MXN</td>
+					<td><b>FECHA: </b> '.GetFechaText($row[3]).'</td>
+				</tr>
+				';
+			}
+			
+			$data_log = mysqli_query(db_conectar(),"SELECT monto, fecha FROM `credit_pay` WHERE credito = $row[0]");
+			while($log = mysqli_fetch_array($data_log))
+			{
+				$body = $body.'
+				<tr>
+					<td></td>
+					<td><b>ABONO: </b> '.number_format($log[0],GetNumberDecimales(),".",",").' MXN</td>
+					<td><b>FECHA: </b> '.GetFechaText($log[1]).'</td>
+				</tr>
+				';
+			}
+
+			$total = $total + $row[7];
+
+
+			$plus_lastID = $row[10];
+			$plus_last_client = $row[1];
+			$plus_contador ++;
+			$plus_total = $plus_total + $row[7];
+			$plus_total_g = $plus_total_g + $row[5];
+			$plus_cont ++;
+
+			//Ultimo
+			if ($plus_cont == $TAMANO_PAGINA || $plus_cont == $num_total_registros)
+			{
+			    
+			    $body = $body.'
+				<tr>
+					<td><b>CLIENTE</b></td>
+					<td><b>TOTAL CREDITOS</b></td>
+					<td><b>CREDITO TOTAL</b></td>
+					<td><b>ADEUDO PENDIENTE</b></td>
+				</tr>
+
+                <tr>
+					<td><i><a href="/clients.php?pagina=1&search='.$plus_last_client.'">'.$plus_last_client.'</a></i></td>
+					<td><i>'.$plus_contador.' CREDITOS</i></td>
+					<td><i>$ '.number_format($plus_total_g,GetNumberDecimales(),".",",").' MXN</i></td>
+					<td><i>$ '.number_format($plus_total,GetNumberDecimales(),".",",").' MXN</i></td>
+				</tr>
+				';
+                $plus_contador = 0;
+                $plus_total = 0;
+				$plus_total_g = 0;
 			}
 		}
 		$body = $body . '
@@ -6907,76 +8356,144 @@
 		<div align="right">
 		';
 		
-			
-        if ($vendedor > 0 && $utilidad > 0)
-        {
-            $body = $body . '
-			<h5>Utilidad: $ '.number_format( $utilidad,2,".",",").' MXN</h5>
-			';
-			
-			$body = $body . '
-			<h5>Comision: '.$porcent_comision.' % $ '.number_format( $utilidad* ($porcent_comision / 100),2,".",",").' MXN</h5>
-			';
-        }
-		if ($efectivo > 0)
-		{
-			$body = $body . '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
-			';
-		}
-
-		if ($transferencia > 0)
-		{
-			$body = $body . '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
-			';
-		}
-
-		if ($cheque > 0)
-		{
-			$body = $body . '
-			<h5>Tarjeta: $ '.number_format($cheque,2,".",",").' MXN</h5>
-			';
-		}
-
-		if ($deposito > 0)
-		{
-			$body = $body . '
-			<h5>Deposito: $ '.number_format($deposito,2,".",",").' MXN</h5>
-			';
-		}
-		
 		$body = $body . '
-			<h4>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h4>
+			<h4>TOTAL POR COBRAR: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
+			
+			<a href="report_xls_credits.php?client='.$client.'&sucursal='.$sucursal.'"style="
+            background-color: #58ACFA;
+            border: none;
+            color: white;
+            padding: 18px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+			">GENERAR REPORTE XLS</a>
+			
+			<a href="report_pdf_credits.php?client='.$client.'&sucursal='.$sucursal.'"style="
+            background-color: #58ACFA;
+            border: none;
+            color: white;
+            padding: 18px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            ">GENERAR REPORTE PDF</a>
 		</div>
 		';
 
 		return $body;
 	}
 
-	function table_finance_client ($inicio, $finaliza, $vendedor, $sucursal, $client)
+	function table_finance_client ($inicio, $finaliza, $vendedor, $sucursal, $client, $pagina)
 	{
+		//$inicio = '2018-07-18 00:00:00';
+		//$finaliza = '2018-07-18 23:59:59';
+		$inicio_old = $inicio;
+		$f_inicio = $inicio_old . ' 00:00:00';
+		
+		$finaliza_old = $finaliza;
+		$f_finaliza = $finaliza_old . ' 23:59:59';
+		
 		$total = 0;
+		$porcent_comision = 0;
+		
+		$TAMANO_PAGINA = 50;
 
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
 		
 		if ($vendedor > 0 && $sucursal == 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		elseif ($vendedor == 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		elseif ($vendedor > 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' order by f.fecha_venta desc  ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		else
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client'  order by f.fecha_venta desc ");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		
-		$body = '
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?inicio='.$inicio_old.'&finaliza='.$finaliza_old.'&usuario='.$vendedor.'&sucursal='.$sucursal.'&client='.$client.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+		$body .= $pagination . '
 		<div class="table-responsive compare-wraper mt-30">
 				<table class="cart table">
 					<thead>
@@ -6998,23 +8515,6 @@
 	    {
 			if (!$row[10])
 			{
-				if ($row[8] == "efectivo")
-				{
-					$efectivo = $efectivo + $row[5];
-				}
-				elseif ($row[8] == "transferencia")
-				{
-					$transferencia = $transferencia + $row[5];
-				}
-				elseif ($row[8] == "tarjeta")
-				{
-					$cheque = $cheque + $row[5];
-				}
-				elseif ($row[8] == "deposito")
-				{
-					$deposito = $deposito + $row[5];
-				}
-				
 				if ($row[9] == 1)
 				{
 					$folio_ = '<td class="item-des"><a href="sale_finaly_report_order.php?folio='.$row[0].'">'.$row[0].'</a></td>';
@@ -7035,7 +8535,7 @@
 				<td class="item-des"><p>'.$row[1].'</p></td>
 				<td class="item-des"><p>'.$row[2].'</p></td>
 				<td class="item-des"><p>'.$row[7].'</p></td>
-				<td class="item-des"><p>'.$row[6].'</p></td>
+				<td class="item-des"><p>'.GetFechaText($row[6]).'</p></td>
 				<td class="item-des"><center><p>$ '.$row[5].' MXN</p></center></td>
 				<td class="item-des uppercase"><center><p>'.$row[8].'</p></center></td>
 				<td class="item-des uppercase"><center>
@@ -7046,40 +8546,99 @@
 				</center></td>
 				</tr>
 				';
-				$total = $total + $row[5];
 			}
 		}
 		$body = $body . '
 		</tbody>
 			</table>
 		</div>
-		<br>
+		'.$pagination.'
 		<div align="right">
 		';
+
+		// Totales
+		while($row = mysqli_fetch_array($dataTotal))
+	    {
+	        //Utilidad
+	        $porcent_comision = $row[11]; $folio_comision_pagada = $row[12];
+	        
+	        if (!$folio_comision_pagada)
+	        {
+	            $genericos = mysqli_query($con,"SELECT  unidades, precio FROM product_venta v WHERE p_generico != '' and folio_venta = $row[0] ");    
+            
+                while($temp0 = mysqli_fetch_array($genericos))
+                {
+                    $utilidad = $utilidad + ($temp0[0] * $temp0[1]);
+                }
+                
+                $products = mysqli_query($con,"SELECT v.unidades, p.precio_costo, p.precio_normal, p.oferta FROM product_venta v, productos p, almacen a WHERE v.product = p.id and p.almacen = a.id and v.folio_venta = $row[0]");                
+                while($temp1 = mysqli_fetch_array($products))
+                {
+                    if (!$temp1[3])
+                    {
+                        $costo = $temp1[0] * $temp1[1];   
+                        $precio_p = $temp1[0] * $temp1[2];   
+                        $utilidad = $utilidad + ($precio_p - $costo);
+                   }
+                }    
+	        }
+	       
+			if (!empty($row[8]))
+			{
+				if ($row[8] == "efectivo")
+				{
+					$efectivo = $efectivo + $row[5];
+				}
+				elseif ($row[8] == "transferencia")
+				{
+					$transferencia = $transferencia + $row[5];
+				}
+				elseif ($row[8] == "tarjeta")
+				{
+					$cheque = $cheque + $row[5];
+				}
+				elseif ($row[8] == "deposito")
+				{
+					$deposito = $deposito + $row[5];
+				}
+				elseif ($row[8] == "cheque")
+				{
+					$cheque0 = $cheque0 + $row[5];
+				}
+
+			}
+			$total = $total + $row[5];
+		}
+		//Finaliza totales
 
 		if ($efectivo > 0)
 		{
 			$body = $body . '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+			<h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($transferencia > 0)
 		{
 			$body = $body . '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+			<h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($deposito > 0)
 		{
 			$body = $body . '
-			<h5>Depositos: $ '.number_format($deposito,2,".",",").' MXN</h5>
+			<h5>Depositos: $ '.number_format($deposito,GetNumberDecimales(),".",",").' MXN</h5>
 			';
+		}
+		if ($cheque > 0)
+		{
+			$body = $body . '
+			<h5>Tarjeta: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>';
 		}
 		
 		$body = $body . '
-			<h4>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h4>
+			<h4>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
 		</div>
 		';
 
@@ -7181,26 +8740,26 @@
 		if ($efectivo > 0)
 		{
 			$body = $body . '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+			<h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($transferencia > 0)
 		{
 			$body = $body . '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+			<h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($cheque > 0)
 		{
 			$body = $body . '
-			<h5>Tarjeta: $ '.number_format($cheque,2,".",",").' MXN</h5>
+			<h5>Tarjeta: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 		
 		$body = $body . '
-			<h4>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h4>
+			<h4>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
 		</div>
 		';
 
@@ -7298,26 +8857,26 @@
 		if ($efectivo > 0)
 		{
 			$body = $body . '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+			<h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($transferencia > 0)
 		{
 			$body = $body . '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+			<h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 
 		if ($cheque > 0)
 		{
 			$body = $body . '
-			<h5>Tarjeta: $ '.number_format($cheque,2,".",",").' MXN</h5>
+			<h5>Tarjeta: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>
 			';
 		}
 		
 		$body = $body . '
-			<h4>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h4>
+			<h4>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h4>
 		</div>
 		';
 
@@ -7336,13 +8895,13 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		
 		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -7353,16 +8912,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -7373,9 +8955,10 @@
 									</div>
 									</div><p>';
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_sale.php">
 					<div>
+						<input type="hidden" name="pagina" id="pagina" value="1">
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
@@ -7399,23 +8982,7 @@
 					<tbody>';
 		$body = $body . $pagination;
 
-        // Publico en general
-        $body = $body.'
-		<tr>
-		<td class="item-des"><p>PUBLICO EN GENERAL</p></td>
-		<td class="item-des"><p>PUBLICO EN GENERAL</p></td>
-		<td class="item-des"><p>0 %</p></td>
-		<td class="item-des">
-		
-		<div class="col-md-12">
-		<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#select_client_sale1" ><span> Seleccionar</span> </a>
-		</div>
-		
-		</td>
-		</tr>
-		';
-			
-		while($row = mysqli_fetch_array($data))
+        while($row = mysqli_fetch_array($data))
 	    {
 			$body = $body.'
 			<tr>
@@ -7456,9 +9023,9 @@
 		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
 		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -7469,16 +9036,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -7489,7 +9079,7 @@
 									</div>
 									</div><p>';
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="gpc_finance.php">
 					<div>
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off">
@@ -7517,7 +9107,7 @@
 			<td class="item-des">
 			
 			<div class="col-md-12">
-				<a href="finance_clients.php?inicio='.$hoy.'&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
+				<a href="finance_clients.php?inicio=2013-05-29&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
 			</div>
 			
 			</td>
@@ -7648,12 +9238,12 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -7664,16 +9254,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -7683,8 +9296,9 @@
 									</div>
 									</div>
 									</div><p>';
+
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_order.php">
 					<div>
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off">
@@ -7712,7 +9326,7 @@
 			<td class="item-des">
 			
 			<div class="col-md-12">
-			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#select_client_sale'.$row[0].'" ><span> Seleccionar</span> </a>
+				<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#select_client_sale'.$row[0].'" ><span> Seleccionar</span> </a>
 			</div>
 			
 			</td>
@@ -7740,12 +9354,12 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
 
-		$pagination = '<div>
+		$pagination = '<div class="row">
 						<div class="col-md-12">
-						<div class="shop-pagination p-20 text-center">
+						<div class="shop-pagination p-10 text-center">
 							<ul>';
 
 		
@@ -7756,16 +9370,39 @@
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
 		}
-	
+		
+		
 		if ($total_paginas > 1) {
 
-			for ($i=1;$i<=$total_paginas;$i++) {
-				if ($pagina == $i)
-					$pagination = $pagination . '<li><a href="#">...</a></li>';
-				else
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
 					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 			}
 		}
+
 		if ($pagina < $total_paginas)
 		{
 			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
@@ -7775,10 +9412,12 @@
 									</div>
 									</div>
 									</div><p>';
+									
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_cotizacion.php">
 					<div>
+						<input type="hidden" name="pagina" id="pagina" value="1">
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
@@ -7787,7 +9426,7 @@
                   border: 3px solid #4A4A4A;
                   border-radius: 4px;
                   box-sizing: border-box;
- ">
+				   ">
 					</div>
 				</form>
 				<table class="cart table">
@@ -7828,15 +9467,82 @@
 		return $body;
 	}
 
-	function create_sale_SelectClientSearch ($txt)
+	function create_sale_SelectClientSearch ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(), "SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA ");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
 
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_sale.php">
 					<div>
+						<input type="hidden" name="pagina" id="pagina" value="1">
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
@@ -7845,10 +9551,11 @@
                   border: 3px solid #4A4A4A;
                   border-radius: 4px;
                   box-sizing: border-box;
- ">
+ 				  " value = "'.$txt.'">
 					</div>
 				</form>
 				<p>
+				'.$pagination.'
 				<table class="cart table">
 					<thead>
 						<tr>
@@ -7886,12 +9593,79 @@
 		return $body;
 	}
 
-	function create_sale_SelectClientSearch_client ($txt)
+	function create_sale_SelectClientSearch_client ($txt, $pagina)
 	{
-		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$TAMANO_PAGINA = 5;
 
-		$body = '
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+		$body = $pagination . '
 		<div class="table-responsive compare-wraper mt-30">
 				<form class="header-search-box" action="gpc_finance.php">
 					<div>
@@ -7920,7 +9694,7 @@
 			<td class="item-des">
 			
 			<div class="col-md-12">
-			<a href="finance_clients.php?inicio='.$hoy.'&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
+			<a href="finance_clients.php?inicio=2013-05-29&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
 			</div>
 			
 			</td>
@@ -7997,19 +9771,86 @@
 		return $body;
 	}
 
-	function create_sale_SelectClientSearchOrder ($txt)
+	function create_sale_SelectClientSearchOrder ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%'  ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
+
+
+        $pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
 
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_order.php">
 					<div>
 						<input type="text" placeholder="Buscar" name="search" autocomplete="off">
 					</div>
 				</form>
-				<p>
+				<p> '.$pagination.'
 				<table class="cart table">
 					<thead>
 						<tr>
@@ -8047,27 +9888,94 @@
 		return $body;
 	}
 
-	function create_sale_SelectClientSearchCot ($txt)
+	function create_sale_SelectClientSearchCot ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%'");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
 
 		$body = '
-		<div class="table-responsive compare-wraper mt-30">
+		<div class="compare-wraper mt-30">
 				<form class="header-search-box" action="create_cotizacion.php">
 					<div>
-						<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
+				  <input type="hidden" id="pagina" name="pagina" value="1">
+				  <input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
                   margin: 8px 0;
                   display: inline-block;
                   border: 3px solid #4A4A4A;
                   border-radius: 4px;
-                  box-sizing: border-box;
-     ">
+				  box-sizing: border-box;" value = "'.$txt.'">
 					</div>
 				</form>
 				<p>
+				'.$pagination.'
 				<table class="cart table">
 					<thead>
 						<tr>
@@ -9021,14 +10929,82 @@
 		return $body;
 	}
 
-	function table_clientes_search ($txt)
+	function table_clientes_search ($txt, $pagina)
 	{
 		
-		$data = mysqli_query(db_conectar(),"SELECT id, nombre, if (direccion = '' , 'DIRECCION DESCONOCIDA', direccion) as  direccion, if (telefono = '' , 'TELEFONO DESCONOCIDO', telefono) AS telefono, if (razon_social  = '' , 'RAZON SOCIAL DESCONOCIDA', razon_social  ) AS razon_social FROM `clients`  where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$TAMANO_PAGINA = 10;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, if (direccion = '' , 'DIRECCION DESCONOCIDA', direccion) as  direccion, if (telefono = '' , 'TELEFONO DESCONOCIDO', telefono) AS telefono, if (razon_social  = '' , 'RAZON SOCIAL DESCONOCIDA', razon_social  ) AS razon_social FROM `clients`  where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id, nombre, if (direccion = '' , 'DIRECCION DESCONOCIDA', direccion) as  direccion, if (telefono = '' , 'TELEFONO DESCONOCIDO', telefono) AS telefono, if (razon_social  = '' , 'RAZON SOCIAL DESCONOCIDA', razon_social  ) AS razon_social FROM `clients`  where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%'");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
 
 		$body = '<br>
 		<form class="header-search-box" action="clients.php">
 			<div>
+				<input type="hidden" id="pagina" name="pagina" value="1">
 				<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
 				  width: 100%;
                   padding: 24px 20px;
@@ -9037,7 +11013,7 @@
                   border: 3px solid #4A4A4A;
                   border-radius: 4px;
                   box-sizing: border-box;
-              ">
+              " value="'.$txt.'">
 			</div>
 		</form><br>
 		<table class="cart table">
@@ -9048,13 +11024,14 @@
 							<th class="table-head item-nam">TELEFONO</th>
 							<th class="table-head item-nam">RAZON SOCIAL</th>
 							<th class="table-head item-nam">EMAIL</th>
-							<th class="table-head item-nam">ANUALIDAD</th>
 							<th class="table-head item-nam">EDITAR</th>
 							<th class="table-head item-nam">ELIMINAR</th>
 						</tr>
 					</thead>
 					<tbody>';
 		$body = $body . $pagination;
+		
+		$hoy = date("Y-m-d");
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -9062,14 +11039,12 @@
 			{
 				$boton = '
 				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mailcliente'.$row[0].'"><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></a></center></td>
-				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#annuitycliente'.$row[0].'"><i class="zmdi zmdi-plus zmdi-hc-2x"></i></a></center></td>
 				<td class="item-des"><center><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalclient_edit'.$row[0].'" ><span> Editar</span> </a></p></center></td>
 				<td class="item-des"><center><p><a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalclient_delete'.$row[0].'" ><span> Eliminar</span> </a></p></center></td>
 				';
 			}else {
 				// No pueden editar
 				$boton = '
-				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal" data-target="#mailcliente'.$row[0].'"><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></a></center></td>
 				<td class="item-des"><center><a href="" class="button extra-small button-black mb-20" data-toggle="modal"><i class="zmdi zmdi-plus zmdi-hc-2x"></i></a></center></td>
 				<td class="item-des"><center><a class="button extra-small button-black mb-20"><span> Editar</span> </a></p></center></td>
 				<td class="item-des"><center><p><a class="button extra-small button-black mb-20"><span> Eliminar</span> </a></p></center></td>
@@ -9079,7 +11054,7 @@
 
 			$body = $body.'
 			<tr>
-			<td class="item-quality">'.$row[1].'</td>
+			<td class="item-quality"><a href="/finance_clients.php?inicio=2013-05-29&finaliza='.$hoy.'&usuario=0&sucursal=0&client='.$row[0].'">'.$row[1].'</a></td>
 			<td class="item-des"><p>'.$row[2].'</p></td>
 			<td class="item-des"><p>'.$row[3].'</p></td>
 			<td class="item-des"><p>'.$row[4].'</p></td>
@@ -9090,7 +11065,7 @@
 		$body = $body . '
 		</tbody>
 			</table>';
-	    return $body;
+	    return $body . $pagination;
 	}
 
 	function table_departamentoModal ()
@@ -9131,7 +11106,7 @@
 				</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					<button type="submit" class="btn btn-primary">Actualizar</button>
 					</form>
 				</div>
@@ -9374,7 +11349,7 @@
 
 	function UpdateSaleVTD ($folio)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT folio, descuento, iva, client, t_pago FROM `folio_venta` WHERE folio = $folio ");
+		$data = mysqli_query(db_conectar(),"SELECT folio, descuento, iva, client, t_pago, fecha FROM `folio_venta` WHERE folio = $folio ");
 		
 		$select_con = mysqli_query(db_conectar(),"SELECT id, nombre FROM clients ORDER by nombre asc");
 		$select = "<option value='0'>CLIENTE</option>";
@@ -9388,6 +11363,8 @@
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
+			$date = date_create($row[5]);
+
 			$body = $body.'
 			<form action="func/product_sale_update_descuento.php" method="post">
             <input type="hidden" id="folio" name="folio" value="'.$row[0].'">
@@ -9469,15 +11446,12 @@
             <div class="col-md-12">
             
             <div class="col-md-3">
-                <p></p>
             </div>
             
-            <div class="col-md-3">
-            </div>
+			<div class="col-md-9">
+	
+			</div>
             
-            <div class="col-md-3">
-            </div>
-
             <div class="col-md-3">
                 
             </div>
@@ -9627,6 +11601,38 @@
 				</div>
 			</div>
 			</div>
+
+
+
+
+
+
+			<div class="modal fade" id="credit'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">CREDITO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<center><span>Enviar esta cotizacion a credito para: <b>'.$row[2].'</b></span></center>
+					</div>
+				</div>
+				<div class="modal-footer">
+					
+					<form action="func/create_credit_cotizacion.php" autocomplete="off" method="post">
+						<input type="hidden" id="folio" name="folio" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+						<button type="sumbit" class="btn btn-success">Aceptar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
 			';
 			
 			//Se envia email
@@ -9652,7 +11658,7 @@
 							<div class="col-md-12">
 								<br>
 								<label>CABECERA</label>
-								<input type="text" name="header" id="header" placeholder="..."  value="VENTAS CLTA | GRUPO ASCGAR">
+								<input type="text" name="header" id="header" placeholder="..."  value="'.static_empresa_nombre().'">
 							</div>
 							
 							<input id="body" name="body" type="hidden" value="APRECIABLE <b>'.$row[2].'</b>. SE ADJUNTA <b>COTIZACION VIGENTE </b>%cot_cot%">
@@ -9680,13 +11686,56 @@
 		return $body;
 	}
 
-	function sales_delete_finance ()
+	function sales_delete_finance ($inicio, $finaliza, $folio, $vendedor, $sucursal, $pagina)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT v.folio, u.nombre, c.nombre, v.descuento, v.fecha, v.fecha_venta, v.t_pago, v.cobrado, c.correo FROM folio_venta v, users u, clients c, sucursales s where v.vendedor = u.id and v.client = c.id and v.sucursal = s.id and v.open = 0");
+		//$inicio = '2018-07-18 00:00:00';
+		//$finaliza = '2018-07-18 23:59:59';
+		$inicio_old = $inicio;
+		$f_inicio = $inicio_old . ' 00:00:00';
+		
+		$finaliza_old = $finaliza;
+		$f_finaliza = $finaliza_old . ' 23:59:59';
+		
+		$total = 0;
+		$porcent_comision = 0;
+		
+		$TAMANO_PAGINA = 10;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+        
+		if ($folio != "" && $vendedor == 0 && $sucursal == 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.fecha_venta, f.t_pago, f.cobrado, c.correo, f.titulo FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.folio like '%$folio%'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		elseif ($folio == "" && $vendedor > 0 && $sucursal == 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.fecha_venta, f.t_pago, f.cobrado, c.correo, f.titulo FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.vendedor = '$vendedor'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		elseif ($folio == "" && $vendedor == 0 && $sucursal > 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.fecha_venta, f.t_pago, f.cobrado, c.correo, f.titulo FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal'  order by c.id desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		elseif ($folio == "" && $vendedor > 0 && $sucursal > 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.fecha_venta, f.t_pago, f.cobrado, c.correo, f.titulo FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor'  order by c.id desc  LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		else
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.fecha_venta, f.t_pago, f.cobrado, c.correo, f.titulo FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza'  order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		
 		
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
+			$pdf = "";
 			
 			if ($_SESSION['super_pedidos'] == 1)
 			{
@@ -9698,6 +11747,30 @@
 				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';
 			}
 			
+			if (!empty($row[9]))
+			{
+				$pdf = '
+				<div class="row">
+					<div class="col-md-12">
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingThree">
+						<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<i class="zmdi zmdi-folder-outline"></i>
+							<span> Firma: Terminos y condiciones</span>
+							</a>
+						</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+								<embed src="/'.$row[9].'" type="application/pdf" width="100%" height="600px" />
+						</div>
+						</div>
+						</div>
+					</div>
+				</div>
+				';
+			}
 
 			$body = $body.'
 			<div class="modal fade" id="delete'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -9752,25 +11825,25 @@
 					
 					<div class="row">
     					<div class="col-md-6">
-    						<p><b>F. COTIZACION:</b> '.GetFechaText($row[4]).'</p>
+    						<p><b>FECHA REGISTRO:</b><br> '.GetFechaText($row[4]).'</p>
     					</div>
     					<div class="col-md-6">
-    						<p><b>F. COMPRA:</b> '.GetFechaText($row[5]).'</p>
+    						<p><b>FECHA REMISION:</b><br> '.GetFechaText($row[5]).'</p>
     					</div>
 					</div>
 					
 					<div class="row">
     					<div class="col-md-4">
-    						<p><b>COBRADO:</b> $ '.$row[7].' MXN</p>
+    						<p><b>COBRADO:</b><br> $ '.$row[7].' MXN</p>
     					</div>
     					<div class="col-md-4">
-    						<p><b>T. PAGO:</b> '.strtoupper($row[6]).'</p>
+    						<p><b>T. PAGO:</b><br> '.strtoupper($row[6]).'</p>
     					</div>
     					<div class="col-md-4">
-    						<p><b>DESCUENTO:</b> '.($row[3] / 10).' %</p>
+    						<p><b>DESCUENTO:</b><br> '.($row[3] / 10).' %</p>
     					</div>
 					</div>
-					
+					'.$pdf.'
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
@@ -9793,8 +11866,15 @@
 				<div class="modal-body">
 					<div class="row">
 						
-						<form action="func/entregar_sendmail.php" autocomplete="on" method="post">
+						<form action="func/entregar_sendmail.php" autocomplete="on" method="post" enctype="multipart/form-data">
+							
 							<div class="col-md-12">
+								<label>Ingrese documento probatorio<span class="required">*</span></label>
+                				<input type="file" name="titulo" id="titulo" accept="file/pdf" required>
+							</div>
+
+							<div class="col-md-12">
+								<br>
 								<label>Ingrese el correo del cliente</label>
 								<input type="text" name="mail" id="mail" placeholder="correo1,Correo2,..."  value="'.$row[8].'" required>
 							</div>
@@ -9802,7 +11882,7 @@
 							<div class="col-md-12">
 								<br>
 								<label>CABECERA</label>
-								<input type="text" name="header" id="header" placeholder="..."  value="EMISION LICENCIAS CLTA | GRUPO ASCGAR" required>
+								<input type="text" name="header" id="header" placeholder="..."  value="'.static_empresa_nombre().'" required>
 							</div>
 							
 							<input id="body" name="body" type="hidden" value="APRECIABLE <b>'.$row[2].'</b>. SE ADJUNTA <b>LICENCIA</b> Y ENLACE DE <b>DESCARGA</b>">
@@ -9830,10 +11910,402 @@
 		return $body;
 	}
 
-    function table_facturas_options_modal ()
+	function sales_delete_finance_clients ($inicio, $finaliza, $client, $vendedor, $sucursal, $pagina)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, c.correo, f.serie FROM facturas f, clients c where f.cliente = c.id");
+		//$inicio = '2018-07-18 00:00:00';
+		//$finaliza = '2018-07-18 23:59:59';
+		$inicio_old = $inicio;
+		$f_inicio = $inicio_old . ' 00:00:00';
 		
+		$finaliza_old = $finaliza;
+		$f_finaliza = $finaliza_old . ' 23:59:59';
+		
+		$total = 0;
+		$porcent_comision = 0;
+		
+		$TAMANO_PAGINA = 50;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+        
+		if ($vendedor > 0 && $sucursal == 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		elseif ($vendedor == 0 && $sucursal > 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		elseif ($vendedor > 0 && $sucursal > 0)
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		else
+		{
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+		}
+		
+		
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+			
+			if ($_SESSION['super_pedidos'] == 1)
+			{
+				$eliminar = '
+				<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
+				<button type="sumbit" class="btn btn-danger">Si eliminar</button>';
+			}else
+			{
+				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';
+			}
+			
+
+			$body = $body.'
+			<div class="modal fade" id="delete'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Elimnar registro</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+				
+					<div class="col-md-12">
+						<p>Tome en cuenta que al eliminar el registro, el folio sera elimnado de la base de datos y no existira mas, al igual que los productos asociados seran afectados.</p>
+					</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					
+					<form action="func/delete_f_venta.php" autocomplete="off" method="post">
+						<input type="hidden" id="folio" name="folio" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						'.$eliminar.'
+					</form>
+					
+				</div>
+				</div>
+			</div>
+			</div>
+			
+			';
+		}
+		
+		return $body;
+	}
+
+	function sales_delete_credits ($client, $sucursal)
+	{
+		if ($client > 0)
+		{
+			if ($sucursal > 0)
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono, cc.correo FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id  and c.client =  '$client' and c.sucursal = '$sucursal' ORDER by  f_vencimiento asc");
+			}else
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono, cc.correo FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id  and c.client =  '$client' ORDER by  f_vencimiento asc");
+			}
+		}else{
+			if ($sucursal > 0)
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono, cc.correo FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id and c.pay = 0 and c.sucursal = '$sucursal' ORDER by  f_vencimiento asc");
+			}else
+			{
+				$data = mysqli_query(db_conectar(),"SELECT c.id, cc.nombre, c.f_registro, INTERVAL c.dias_credit DAY + c.f_registro as f_vencimiento, c.factura, c.adeudo, (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) ) as abono, (c.adeudo - (c.abono + (SELECT COALESCE(SUM(monto), 0) as total FROM credit_pay WHERE credito = c.id) )) as pd_pago, DATEDIFF(DATE_ADD(c.f_registro,INTERVAL (c.dias_credit) DAY), NOW()) as dias_credit, s.nombre, cc.id, c.abono, cc.correo FROM credits c, clients cc, sucursales s WHERE c.client = cc.id and c.sucursal = s.id and c.pay = 0 ORDER by  f_vencimiento asc");
+			}
+		}
+		
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+			
+			if ($_SESSION['super_pedidos'] == 1)
+			{
+				$eliminar = '
+				<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
+				<button type="sumbit" class="btn btn-danger">Si eliminar</button>';
+			}else
+			{
+				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';
+			}
+			
+
+			$body = $body.'
+			<!-- Enviar mail a cliente-->
+			<div class="modal fade" id="mail'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">ENVIAR CORREO ELECTRONICO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						
+						<form action="func/sendmail_normal.php" autocomplete="on" method="post">
+							<div class="col-md-12">
+								<label>Ingrese el correo del cliente</label>
+								<input type="text" name="mail_cliente" id="mail_cliente" placeholder="correo1,Correo2,..."  value="'.$row[12].'">
+							</div>
+
+							<div class="col-md-12">
+								<br>
+								<label>ASUNTO</label>
+								<input type="text" name="asunto" id="asunto" placeholder="..."  value="Notificacion de adeudo">
+							</div>
+							<div class="col-md-12">
+							<br>
+								<label>Mensaje</label>
+								<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, LE RECORDAMOS QUE USTED TIENE UN ADEUDO POR LA CANTIDAD <b>'.number_format($row[7],GetNumberDecimales(),".",",").' MXN</b> CON FOLIO: <a href="'.$_SERVER['HTTP_HOST'].'/sale_finaly_report_cotizacion.php?folio_sale='.$row[4].'">'.$row[4].'</textarea>
+								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
+							</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						<button type="sumbit" class="btn btn-success" onclick="javascript:this.form.submit(); this.disabled= true;">Enviar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+			
+
+			<div class="modal fade" id="delete'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Elimnar registro</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+				
+					<div class="col-md-12">
+						<p>Tome en cuenta que al eliminar el registro, el folio sera elimnado de la base de datos y no existira mas.</p>
+					</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form action="func/delete_credit.php" autocomplete="off" method="post">
+						<input type="hidden" id="id" name="id" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						'.$eliminar.'
+					</form>
+					
+				</div>
+				</div>
+			</div>
+			</div>
+			
+			<!-- Detalles -->
+			<div class="modal fade" id="details'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">INFORMACION CREDITICIA # '.$row[0].'</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+    					<div class="col-md-6">
+    						<p><b>CLIENTE:</b><br> '.$row[1].'</p>
+						</div>
+
+						<div class="col-md-6">
+    						<p><b>FACTURA:</b><br> '.$row[4].'</p>
+    					</div>
+					</div>
+
+					<div class="row">
+    					<div class="col-md-12">
+    						<p><b>SUCURSAL:</b><br> '.$row[9].'</p>
+						</div>
+					</div>
+					
+					<div class="row">
+    					<div class="col-md-4">
+    						<p><b>FECHA REGISTRO:</b><br> '.GetFechaText($row[2]).'</p>
+    					</div>
+    					<div class="col-md-4">
+    						<p><b>FECHA VENCIMIENTO:</b><br> '.GetFechaText($row[3]).'</p>
+						</div>
+						<div class="col-md-4">
+    						<p><b>DIAS DE CREDITO:</b><br> '.$row[8].' DIAS</p>
+    					</div>
+					</div>
+					
+					<div class="row">
+    					<div class="col-md-4">
+    						<p><b>TOTAL:</b><br> $ '.number_format($row[5],GetNumberDecimales(),".",",").' MXN</p>
+    					</div>
+    					<div class="col-md-4">
+    						<p><b>ABONO:</b><br>$ '.number_format($row[6],GetNumberDecimales(),".",",").' MXN</p>
+    					</div>
+    					<div class="col-md-4">
+    						<p><b>PENDIENTE PAGO:</b><br> '.number_format($row[7],GetNumberDecimales(),".",",").' MXN</p>
+    					</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+				</div>
+				</div>
+			</div>
+			</div>
+
+			<div class="modal fade" id="liquid'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">ADEUDO TOTAL: $ '.number_format($row[7],GetNumberDecimales(),".",",").' MXN</h5>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+					
+					<form action="func/update_abono_credit.php" autocomplete="off" method="post">
+						<div class="col-md-12">
+							<br>
+							<input type="hidden" id="folio" name="folio" value="'.$row[4].'">
+							<label>Ingrese abono</label>
+							<input type="number" step="0.0001"  name="abono" id="abono" placeholder="0.0" value= "'.$row[7].'" max= "'.$row[7].'" required >
+						</div>
+						
+						</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" id="id" name="id" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+						<button type="sumbit" class="btn btn-success">ABONAR</button>;
+					</form>
+					
+				</div>
+				</div>
+			</div>
+			</div>
+
+			';
+		}
+		
+		return $body;
+	}
+
+    function table_facturas_options_modal ($pagina)
+	{
+		$TAMANO_PAGINA = 8;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, c.correo, f.serie FROM facturas f, clients c where f.cliente = c.id LIMIT $inicio, $TAMANO_PAGINA");
+
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $body.'
+			<div class="modal fade" id="sendmail'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Reenviar factura: '.$row[2].$row[0].'</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="func/resendmail.php" autocomplete="off" method="post">
+                    <div class="row">
+				
+					<div class="col-md-12">
+						<p>Si desea agregar 1 o mas correos deberan ir separados por comas (,)</p>
+                        <input type="text" name="cfdi_cliente_correo" id="cfdi_cliente_correo" placeholder="correo@empresa.com" required value="'.$row[1].'">
+					</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" id="folio" name="folio" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+                        <input type="hidden" id="cfdi_serie" name="cfdi_serie" value="'.$row[2].$row[0].'">
+                        <button type="sumbit" class="btn btn-primary" onclick="javascript:this.form.submit(); this.disabled= true;">Enviar</button>
+					</form>
+					
+				</div>
+				</div>
+			</div>
+			</div>
+            
+            
+            <div class="modal fade" id="cancelcfdi33'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Cancelar factura: '.$row[2].$row[0].'</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="func/cancelar_cfdi33.php" autocomplete="off" method="post">
+                    <div class="row">
+				
+					<div class="col-md-12">
+						<center><p>Se realizara la cancelacion de la factura: '.$row[2].$row[0].', Es correcto ?</p></center>
+					</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<input type="hidden" id="folio" name="folio" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+                        <button type="sumbit" class="btn btn-danger" onclick="javascript:this.form.submit(); this.disabled= true;">Si, cancelar</button>
+                </form>
+					
+				</div>
+				</div>
+			</div>
+			</div>
+			';
+		}
+		
+		return $body;
+	}
+
+	function table_facturas_options_modal_Search ($txt, $pagina)
+	{
+		$TAMANO_PAGINA = 8;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, c.correo, f.serie FROM facturas f, clients c where f.cliente = c.id and f.folio LIKE '%$txt%' or f.cliente = c.id and c.nombre LIKE '%$txt%'  LIMIT $inicio, $TAMANO_PAGINA ");
+		$datatmp = mysqli_query(db_conectar(),"SELECT f.folio, c.correo, f.serie FROM facturas f, clients c where f.cliente = c.id and f.folio LIKE '%$txt%' or f.cliente = c.id and c.nombre LIKE '%$txt%'");
+
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -10062,9 +12534,19 @@
 		return $body;
 	}
 
-	function table_ClientesModal_search ($txt)
+	function table_ClientesModal_search ($txt, $pagina)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$TAMANO_PAGINA = 10;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
+		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc LIMIT $inicio, $TAMANO_PAGINA");
 		
 		$body = "";
 		while($row = mysqli_fetch_array($data))
@@ -10125,7 +12607,7 @@
       
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					<button type="submit" class="btn btn-primary">Actualizar</button>
 					</form>
 				</div>
@@ -10185,13 +12667,13 @@
 							<div class="col-md-12">
 								<br>
 								<label>ASUNTO</label>
-								<input type="text" name="asunto" id="asunto" placeholder="..."  value="CLTA | GRUPO ASCGAR">
+								<input type="text" name="asunto" id="asunto" placeholder="..."  value="'.static_empresa_nombre().'">
 							</div>
 							<div class="col-md-12">
 							<br>
 								<label>Mensaje</label>
-								<textarea placeholder="Escriba aqui un texto html si es necesario" name="body_msg" id="body_msg" class="custom-textarea">HOLA ! <b>'.$row[1].'</b>
-								</textarea>
+								<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</textarea>
+								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
 							</div>
 					</div>
 				</div>
@@ -10247,7 +12729,7 @@
 
 	function table_ClientesModal ($pagina)
 	{
-		$TAMANO_PAGINA = 15;
+		$TAMANO_PAGINA = 10;
 		
 		if (!$pagina) {
 			$inicio = 0;
@@ -10313,7 +12795,7 @@
       
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					<button type="submit" class="btn btn-primary">Actualizar</button>
 					</form>
 				</div>
@@ -10372,13 +12854,13 @@
 							<div class="col-md-12">
 								<br>
 								<label>ASUNTO</label>
-								<input type="text" name="asunto" id="asunto" placeholder="..."  value="CLTA | GRUPO ASCGAR">
+								<input type="text" name="asunto" id="asunto" placeholder="..."  value="'.static_empresa_nombre().'">
 							</div>
 							<div class="col-md-12">
 							<br>
 								<label>Mensaje</label>
-								<textarea placeholder="Escriba aqui un texto html si es necesario" name="body_msg" id="body_msg" class="custom-textarea">HOLA ! <b>'.$row[1].'</b>
-								</textarea>
+								<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</textarea>
+								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
 							</div>
 					</div>
 				</div>
@@ -10432,8 +12914,18 @@
 	}
 
 
-	function select_client_sale_modal ()
+	function select_client_sale_modal ($pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
 		$desc = "";
 		$disabled = "";
 		
@@ -10455,7 +12947,7 @@
 			}
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT * FROM clients");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM clients ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -10537,8 +13029,19 @@
 		return $body;
 	}
 
-	function select_client_sale_modal_order ()
+	function select_client_sale_modal_order ($pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		
 		$desc = "";
 		$disabled = "";
 		
@@ -10560,7 +13063,7 @@
 			}
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT * FROM clients");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM clients ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -10642,8 +13145,18 @@
 		return $body;
 	}
 
-	function select_client_sale_modal_cot ()
+	function select_client_sale_modal_cot ($pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
 		$desc = "";
 		$disabled = "";
 		
@@ -10665,7 +13178,7 @@
 			}
 		}
 		
-		$data = mysqli_query(db_conectar(),"SELECT * FROM clients");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM clients ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -10747,8 +13260,18 @@
 		return $body;
 	}
 
-	function select_client_sale_modal_search ($txt)
+	function select_client_sale_modal_search ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
 		$desc = "";
 		$disabled = "";
 		
@@ -10770,7 +13293,7 @@
 			}
 		}
 
-		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -10860,8 +13383,18 @@
 	}
 
 
-	function select_client_sale_modal_search_order ($txt)
+	function select_client_sale_modal_search_order ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
 		$desc = "";
 		$disabled = "";
 		
@@ -10883,7 +13416,7 @@
 			}
 		}
 
-		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -10972,8 +13505,18 @@
 		return $body;
 	}
 
-	function select_client_sale_modal_search_cot ($txt)
+	function select_client_sale_modal_search_cot ($txt, $pagina)
 	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
 		$desc = "";
 		$disabled = "";
 		
@@ -10995,7 +13538,7 @@
 			}
 		}
 
-		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by nombre asc ");
+		$data = mysqli_query(db_conectar(),"SELECT * FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA ");
 		$m_pago_ = Metodo_Pago_ListBox();
 
 		$body = "";
@@ -11126,6 +13669,8 @@
 			<td class="item-des">
 			
 			<div class="col-md-12">
+			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalsucursal_v_almacenes'.$row[0].'" ><span> V. Almacenes</span> </a>
+			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalsucursal_a_almacen'.$row[0].'" ><span> A. Almacen</span> </a>
 			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalsucursal_edit'.$row[0].'" ><span> Editar</span> </a>
 			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#modalalsucursal_delete'.$row[0].'" ><span> Eliminar</span> </a>
 			</div>
@@ -11181,7 +13726,7 @@
 				</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					<button type="submit" class="btn btn-primary">Actualizar</button>
 					</form>
 				</div>
@@ -11227,6 +13772,8 @@
 	{
 		$data = mysqli_query(db_conectar(),"SELECT * FROM `sucursales` ORDER by nombre asc");
 		
+		$select_almacen = Select_Almacen();
+
 		$body = "";
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -11271,7 +13818,7 @@
 				</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					<button type="submit" class="btn btn-primary">Actualizar</button>
 					</form>
 				</div>
@@ -11302,6 +13849,52 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 					<button type="submit" class="btn btn-primary">Eliminar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+
+
+			<!-- Agregar almacen -->
+			<div class="modal fade" id="modalsucursal_a_almacen'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<div class="modal-body">
+					<form action="../func/sucursal_add_almacen.php" autocomplete="off" method="post">
+					<div class="row">
+						
+						<input type="hidden" name="id" id="id" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+
+						<div class="col-md-12">
+						
+						<label> Seleccione Almacen <span class="required">*</span></label>
+						<select id="almacen" name="almacen">
+							'.$select_almacen.'
+						</select>                                       
+					
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-primary" onclick="javascript:this.form.submit(); this.disabled= true;" >Agregar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+
+			<!-- ver almacenes -->
+			<div class="modal fade" id="modalsucursal_v_almacenes'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<div class="modal-body">
+				'.GetAlmacen($row[0]).'
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					</form>
 				</div>
 				</div>
@@ -11768,6 +14361,7 @@
 						$_SESSION['cfdi_cer'] = $row[17];
 						$_SESSION['cfdi_key'] = $row[18];
 						$_SESSION['cfdi_pass'] = $row[19];
+						$_SESSION['token'] = $row[20];
 						}
 						setcookie('clta_session', 'yes', time() + (86400 * 30), "/");
 						setcookie('clta_session_user', $user, time() + (86400 * 30), "/");
@@ -11842,6 +14436,7 @@
 						$_SESSION['cfdi_cer'] = $row[17];
 						$_SESSION['cfdi_key'] = $row[18];
 						$_SESSION['cfdi_pass'] = $row[19];
+						$_SESSION['token'] = $row[20];
 						}
 						setcookie('clta_session', 'yes', time() + (86400 * 30), "/");
 						setcookie('clta_session_user', $user, time() + (86400 * 30), "/");
@@ -11864,10 +14459,12 @@
 		<option value="transferencia">Tranferencia</option>
 		<option value="tarjeta">Tarjeta</option>
 		<option value="deposito">Deposito</option>
+		<option value="cheque">Cheque</option>
+		<option value="oxxo">Oxxo</option>
 		';
 	}
 	
-	function SendMailLog ($folio)
+	function SendMailLog ($folio, $open)
 	{
 	    $cliente = "";
 	    $correo = "";
@@ -11881,12 +14478,12 @@
 	        $correo = $row[1];
 	    }
 	    
-	    $correo .= ',contacto@cyberchoapas.com';
-	
+	    $correo .= ','.static_empresa_email().'';
+	    
 	    $correo = str_replace("", ",,", $correo);
 	    
 	    
-        $message = '<center><br>APRECIABLE <b>'.$cliente.'</b>, SE EMITE <b>REMISION</b> DE SU COMPRA, <a href="https://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">VISUALIZAR</a><br><br></center>';
+        $message = '<center><br>APRECIABLE <b>'.$cliente.'</b>, SE EMITE <b>REMISION</b> DE SU COMPRA, <a href="'.GetDominio().'/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">VISUALIZAR</a><br><br></center>';
         
         $formato = '
         <html>
@@ -12023,7 +14620,7 @@
 					<div class="opps-info">
 						<div class="opps-reference">
 							<h4>FOLIO</h4>
-					<h3><a href="https://www.ascgar.com/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
+					<h3><a href="'.GetDominio().'/sale_finaly_report.php?folio_sale='.$folio.'" target="_blank">'.$folio.'</a></h3>
 								</div>
 						</div>
                   		<span>'.$message.'</span>
@@ -12031,8 +14628,7 @@
 						<div class="opps-instructions">
 							<h2>Servicio post venta</h2>
 							<ol>
-								<li>Soporte tecnico <a href="mailto:soporte@cyberchoapas.com" target="_blank">Enviar correo</a></li>
-								<li>Contacto xpres por <a href="https://api.whatsapp.com/send?phone=5219231200505&text=&source=&data=" target="_blank">whatsapp</a></li>
+								<li>Contacto xpres por <a href="'.urlWhatsapp().'" target="_blank">whatsapp</a></li>
 							</ol>
 							<div class="opps-footnote"><strong>AGRADECEMOS SU COMPRA</strong></div>
 						</div>
@@ -12040,7 +14636,11 @@
 				</body>
 			</html>
         ';
-        require '../phpmailer/PHPMailerAutoload.php';
+		
+		if ($open)
+		{
+			require '../phpmailer/PHPMailerAutoload.php';
+		}
     
         //Create a new PHPMailer instance
         $mail = new PHPMailer;
@@ -12055,8 +14655,8 @@
         
         $mail->Username = "documentos@cyberchoapas.com";
         $mail->Password = "8b19e87ff57efaace42006fb1d6ba6c8";
-        $mail->setFrom('contacto@cyberchoapas.com', 'CLTA | GRUPO ASCGAR');
-        $mail->AddReplyTo('ventas@cyberchoapas.com', 'VENTAS CLTA | GRUPO ASCGAR');
+        $mail->setFrom(static_empresa_email(), static_empresa_nombre() );
+        $mail->AddReplyTo(static_empresa_email(), static_empresa_nombre() );
         
         //Email receptor
         $ArrMail = explode(",",$correo);
@@ -12086,19 +14686,19 @@
         while($row = mysqli_fetch_array($venta))
         {
             $vendedor = $row[0];
-        $cliente = $row[1];
-        $descuento = $row[2];
-        $fecha_ini = $row[3];
-        $cobrado = $row[4];
-        $fecha_fini = $row[5];
-        $sucursal = $row[6];
-        $direccion = $row[7];
-        $tel = $row[8];
-        $iva = $row[9];
-        $bodysucursal = $row[7] . '
-        <br><span style="font-size: 14px;">RESPONSABLE: ' . $vendedor . '</span>';
-        $r_social = $row[10];
-        $cliente_direccion = $row[11];
+			$cliente = $row[1];
+			$descuento = $row[2];
+			$fecha_ini = $row[3];
+			$cobrado = $row[4];
+			$fecha_fini = $row[5];
+			$sucursal = $row[6];
+			$direccion = $row[7];
+			$tel = $row[8];
+			$iva = $row[9];
+			$bodysucursal = $row[7] . '
+			<br><span style="font-size: 14px;">RESPONSABLE: ' . $vendedor . '</span>';
+			$r_social = $row[10];
+			$cliente_direccion = $row[11];
         }
     
         $genericos = mysqli_query($con,"SELECT unidades, p_generico, precio, id FROM product_venta v WHERE p_generico != '' and folio_venta = '$folio'");
@@ -12124,9 +14724,9 @@
     
         $iva_ = $total_pagar - $subtotal;
     
-        $subtotal = number_format($subtotal,2,".",",");
-        //$total_pagar = number_format($total_pagar,2,".",",");
-        $iva_ = number_format($iva_,2,".",",");
+        $subtotal = number_format($subtotal,GetNumberDecimales(),".",",");
+        //$total_pagar = number_format($total_pagar,GetNumberDecimales(),".",",");
+        $iva_ = number_format($iva_,GetNumberDecimales(),".",",");
         
         return $total_pagar;
 	}
@@ -12171,7 +14771,7 @@
       $minuto = date('i', strtotime($time));
       $segundo = date('s', strtotime($time));
       
-      return strtoupper($nombredia)." ".$numeroDia."/".strtoupper($nombreMes)."/".$anio .' '. $hora .':'. $minuto .':'. $segundo;
+      return strtoupper($nombredia)." ".$numeroDia."-".strtoupper($nombreMes)."-".$anio .' '. $hora .':'. $minuto .':'. $segundo;
     }
     
     function MailConfig ()
@@ -12191,9 +14791,9 @@
         
         $mail->Username = "documentos@cyberchoapas.com";
         $mail->Password = "8b19e87ff57efaace42006fb1d6ba6c8";
-        $mail->setFrom('contacto@cyberchoapas.com', 'CLTA | GRUPO ASCGAR');
-        $mail->AddReplyTo('ventas@cyberchoapas.com', 'VENTAS CLTA | GRUPO ASCGAR');
-        return $mail;
+        $mail->setFrom(static_empresa_email(), static_empresa_nombre() );
+		$mail->AddReplyTo(static_empresa_email(), static_empresa_nombre() );
+		return $mail;
     }
     
     function GetUsd ()
@@ -12250,5 +14850,249 @@
         	    mysqli_query($con,"UPDATE annuities SET active = 0 WHERE id = '$row[0]';");
         	}
 	    }
+	}
+
+	function table_service_support($pagina, $folio, $url)
+	{		
+		$data = mysqli_query(db_conectar(),"SELECT * FROM `soporte` ORDER BY id DESC");
+
+		$body = '
+		<div class="country-select shop-select col-md-12">
+		<center><br><label>SERVICIOS DISPONIBLES A AGREGAR</label></center>
+
+		<form action="func/producst_add_sale_soport.php" autocomplete="off" method="post">
+        
+        <input type="hidden" id="url" name="url" value="'.$url.'">
+        <input type="hidden" id="folio" name="folio" value="'.$folio.'">
+			<select id="soporte_id" name = "soporte_id">
+		';
+		while($row = mysqli_fetch_array($data))
+		{
+			$body .='
+			<option value="'.$row[0].'">'.'['.$row[0].'] '.$row[1].' ($ '.number_format($row[2],GetNumberDecimales(),".",",").' MXN)</option>
+			';
+		}
+
+		$body .= '
+			</select>                                       
+		</div>
+		<div class="col-lg-12 col-md-12 text-center">
+			<button type="submit" class="btn btn-primary mb-20">Agregar</button>
+			</form>
+		</div>
+		';
+
+		return $body;
+	}
+	
+	function SendMailPayOxxo ($mail, $referencia)
+	{
+	    $correo = $mail.','.static_empresa_email().'';
+		$correo = str_replace("", ",,", $correo);
+	    
+	    
+        $message = '<center><br /><strong>PAGO</strong>&nbsp;ACREDITADO<br /><br /></center>';
+        
+        $formato = '
+        <html>
+			<head>
+				<meta charset="utf-8">
+				<link href="styles.css" media="all" rel="stylesheet" type="text/css" />
+			<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+			<style>
+				/* Reset -------------------------------------------------------------------- */
+			* 	 { margin: 0;padding: 0; }
+				body { font-size: 14px; }
+				/* OPPS --------------------------------------------------------------------- */
+				h3 {
+					margin-bottom: 10px;
+					font-size: 13px;
+					font-weight: 600;
+					text-transform: uppercase;
+				}
+				.opps {
+					width: 496px; 
+					border-radius: 4px;
+					box-sizing: border-box;
+					padding: 0 45px;
+					margin: 40px auto;
+					overflow: hidden;
+					border: 1px solid #b0afb5;
+					font-family: "Open Sans", sans-serif;
+					color: #4f5365;
+				}
+				.opps-reminder {
+					position: relative;
+					top: -1px;
+					padding: 9px 0 10px;
+					font-size: 11px;
+					text-transform: uppercase;
+					text-align: center;
+					color: #ffffff;
+					background: #000000;
+				}
+				.opps-info {
+					margin-top: 26px;
+					position: relative;
+				}
+				.opps-info:after {
+					visibility: hidden;
+					display: block;
+					font-size: 0;
+					content: " ";
+					clear: both;
+					height: 0;
+				}
+				.opps-brand {
+					width: 45%;
+					float: left;
+				}
+				.opps-brand img {
+					max-width: 150px;
+					margin-top: 2px;
+				}
+				.opps-ammount {
+					width: 100%;
+					float: right;
+				}
+				.opps-ammount h2 {
+					font-size: 36px;
+					color: #000000;
+					line-height: 24px;
+					margin-bottom: 15px;
+				}
+				.opps-ammount h2 sup {
+					font-size: 16px;
+					position: relative;
+					top: -2px
+				}
+				.opps-ammount p {
+					font-size: 10px;
+					line-height: 14px;
+				}
+				.opps-reference {
+					margin-top: 14px;
+				}
+				h1 {
+					font-size: 27px;
+					color: #000000;
+					text-align: center;
+					margin-top: -1px;
+					padding: 6px 0 7px;
+					border: 1px solid #b0afb5;
+					border-radius: 4px;
+					background: #f8f9fa;
+				}
+				.opps-instructions {
+					margin: 32px -45px 0;
+					padding: 32px 45px 45px;
+					border-top: 1px solid #b0afb5;
+					background: #f8f9fa;
+				}
+				ol {
+					margin: 17px 0 0 16px;
+				}
+				li + li {
+					margin-top: 10px;
+					color: #000000;
+				}
+				a {
+					color: #1155cc;
+				}
+				.opps-footnote {
+					margin-top: 22px;
+					padding: 22px 20 24px;
+					color: #108f30;
+					text-align: center;
+					border: 1px solid #108f30;
+					border-radius: 4px;
+					background: #ffffff;
+				}
+				</style>
+					</head>
+					<body>
+						<div class="opps">
+							<div class="opps-header">
+								<div class="opps-reminder">SOFTBOXZAC</div>
+								<div class="opps-info">
+						
+						<div class="opps-ammount">
+						<center><h3>PAGO CON REF: '.$referencia.' ACREDITADO.</h3></center>
+									</div>
+						<hr><br>
+					</body>
+				</html>
+        ';
+        //require '../phpmailer/PHPMailerAutoload.php';
+    
+        //Create a new PHPMailer instance
+        $mail = new PHPMailer;
+        //Tell PHPMailer to use SMTP
+        
+        $mail->isSMTP();
+        //$mail->SMTPDebug = 2;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->SMTPSecure = 'tls';
+        $mail->SMTPAuth = true;
+        
+        $mail->Username = "documentos@cyberchoapas.com";
+        $mail->Password = "8b19e87ff57efaace42006fb1d6ba6c8";
+        $mail->setFrom(static_empresa_email(), static_empresa_nombre() );
+        $mail->AddReplyTo(static_empresa_email(), static_empresa_nombre() );
+        
+        //Email receptor
+        $ArrMail = explode(",",$correo);
+        
+        foreach ($ArrMail as $valor) {
+            $mail->addAddress($valor);
+        }
+    
+        
+        //Asunto
+        $mail->Subject = 'OXXO PAY ACREDITADO';
+      
+        $mail->msgHTML(file_get_contents($formato), __DIR__);
+        //Replace the plain text body with one created manually  
+        $mail->Body = $formato;
+        
+        $mail->send();
+	}
+	
+	function GetToken ()
+	{
+		$data = mysqli_query(db_conectar(),"SELECT token FROM `empresa`  where id = 1");
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $row[0];
+	    }
+		return $body;
+	}
+	
+	function MailLogText ($txt, $asunto)
+	{
+		$mail = MailConfig();
+		
+		//Email receptor
+		$ArrMail = explode(",",static_empresa_email());
+		
+		foreach ($ArrMail as $valor) {
+			$mail->addAddress($valor);
+		}
+
+		//Asunto
+		$mail->Subject = $asunto;
+	
+		$mail->msgHTML(file_get_contents($txt), __DIR__);
+		//Replace the plain text body with one created manually  
+		$mail->Body = $txt;
+		
+		$mail->send();
+	}
+	
+	function UpdateAdeudoCredits ($folio)
+	{
+	    $total = Return_TotalPagar_Folio($folio);
+	    mysqli_query(db_conectar(),"UPDATE credits SET adeudo = $total WHERE factura = $folio ");
 	}
 ?>

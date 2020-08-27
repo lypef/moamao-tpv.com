@@ -66,25 +66,25 @@
     if ($efectivo > 0)
 		{
 			$codigoHTML .= '
-			<h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+			<h5>Efectivo: $ '.number_format($efectivo,4,".",",").' MXN</h5>
 			';
 		}
 
 		if ($transferencia > 0)
 		{
 			$codigoHTML .= '
-			<h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+			<h5>Tranferencia: $ '.number_format($transferencia,4,".",",").' MXN</h5>
 			';
 		}
 
 		if ($cheque > 0)
 		{
 			$codigoHTML .= '
-			<h5>Tarjeta: $ '.number_format($cheque,2,".",",").' MXN</h5>
+			<h5>Tarjeta: $ '.number_format($cheque,4,".",",").' MXN</h5>
 			';
 		}
     
-    $codigoHTML .= '<h3>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h3>
+    $codigoHTML .= '<h3>TOTAL RECAUDADO: $ '.number_format($total,4,".",",").' MXN</h3>
     </div>
     <br>
     <footer>

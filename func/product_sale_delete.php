@@ -1,6 +1,6 @@
 <?php
     include 'db.php';
-    db_sessionValidarNO();
+    
     
     $url = $_POST['url'];
     $id = $_POST['id'];

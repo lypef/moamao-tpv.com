@@ -1,6 +1,7 @@
 <?php
     include 'func/header.php';
     validateFolioVenta($_GET["folio"]);
+    UpdateAdeudoCredits($_GET["folio"]);
 ?>
 <!-- Start page content -->
 <section id="page-content" class="page-wrapper">
@@ -39,7 +40,9 @@
     <a class="button small button-black mb-20" href="#" data-toggle="modal" data-target="#success_sale"><span>Remisionar</span> </a>
     <a class="button small button-black mb-20" href="/facturar.php?folio=<?php echo $_GET["folio"] ?>&stocck=1"><span>Facturar</span> </a>
     <a class="button small button-black mb-20" href="/sale_finaly_report_cotizacion.php?folio_sale=<?php echo $_GET["folio"] ?>"><span>Imprimir</span> </a>
+    <a class="button small button-black mb-20" href="#" data-toggle="modal" data-target="#credit<?php echo $_GET["folio"] ?>"><span>Credito</span> </a>
     <a class="button small button-black mb-20" href="#" data-toggle="modal" data-target="#mail<?php echo $_GET["folio"] ?>"><span>Enviar</span> </a>
+    
 </div>
 <!-- Start page content -->
 <section id="page-content" class="page-wrapper">
@@ -52,7 +55,7 @@
                         <?php 
                             if ($_GET["search"])
                             {
-                                echo _getProducts_CotSearch($_GET["search"], $_GET["folio"]);
+                                echo _getProducts_CotSearch($_GET["search"], $_GET["folio"],$_GET["pagina"]);
                             }
                             else
                             {
@@ -103,7 +106,7 @@
     
     if ($_GET["search"])
     {
-        echo _getProductsModal_sale_search($_GET["search"], $_GET["folio"]);
+        echo _getProductsModal_sale_search($_GET["search"], $_GET["folio"],$_GET["pagina"]);
     }
     else
     {
@@ -148,7 +151,7 @@
 
             <div class="col-md-6">
                 <label>Numero de Unidades<</label>
-                <input type="number" name="unidades" id="unidades" placeholder="Ingrese las unidades" required value="1">
+                <input type="number" step="1" name="unidades" id="unidades" placeholder="Ingrese las unidades" required value="1">
             </div>
 
             <div class="col-md-12">
@@ -209,6 +212,8 @@
       </div>
       <div class="modal-body">
         <p>Al REMISIONAR la cotizacion, el sistema disminuira las existencias de cada producto agregado y posteriomente tomara la sumatoria como un ingreso.</p>
+
+        
       </div>
       <div class="modal-footer">
         <form action="func/product_sale_finaly.php" method="post">

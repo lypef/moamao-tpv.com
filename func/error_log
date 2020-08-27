@@ -1,0 +1,46 @@
+[04-Aug-2020 17:28:47 America/Mexico_City] PHP Fatal error:  <br>The encoded file <b>/home/softboxz/public_html/func/SDK2/lib/nodos/cfdi/funciones56.php</b> is corrupt. in Unknown on line 0
+[04-Aug-2020 18:28:21 America/Mexico_City] PHP Warning:  file_get_contents(SE REENVIA PDF Y XML DE SU FACTURA VALIDA ANTE EL SAT. &lt;br&gt;&lt;br&gt;Fichero XML: &lt;a href=&quot;https://www.ascgar.com/func/SDK2/timbrados/120200730214058.xml&quot; target=&quot;_blank&quot;&gt;Factura XML&lt;/a&gt;&lt;br&gt;&lt;br&gt;Fichero PDF: &lt;a href=&quot;https://www.ascgar.com/func/SDK2/timbrados/120200730214058.pdf&quot; target=&quot;_blank&quot;&gt;Factura PDF&lt;/a&gt;): failed to open stream: No such file or directory in /home/softboxz/public_html/func/resendmail.php on line 38
+[04-Aug-2020 18:30:15 America/Mexico_City] PHP Warning:  file_get_contents(SE REENVIA PDF Y XML DE SU FACTURA VALIDA ANTE EL SAT. &lt;br&gt;&lt;br&gt;Fichero XML: &lt;a href=&quot;http://www.softboxzac.mx/func/SDK2/timbrados/120200730214058.xml&quot; target=&quot;_blank&quot;&gt;Factura XML&lt;/a&gt;&lt;br&gt;&lt;br&gt;Fichero PDF: &lt;a href=&quot;http://www.softboxzac.mx/func/SDK2/timbrados/120200730214058.pdf&quot; target=&quot;_blank&quot;&gt;Factura PDF&lt;/a&gt;): failed to open stream: No such file or directory in /home/softboxz/public_html/func/resendmail.php on line 38
+[04-Aug-2020 18:35:17 America/Mexico_City] PHP Warning:  file_get_contents(SE REENVIA PDF Y XML DE SU FACTURA VALIDA ANTE EL SAT. &lt;br&gt;&lt;br&gt;Fichero XML: &lt;a href=&quot;http://www.softboxzac.mx/func/SDK2/timbrados/120200730214058.xml&quot; target=&quot;_blank&quot;&gt;Factura XML&lt;/a&gt;&lt;br&gt;&lt;br&gt;Fichero PDF: &lt;a href=&quot;http://www.softboxzac.mx/func/SDK2/timbrados/120200730214058.pdf&quot; target=&quot;_blank&quot;&gt;Factura PDF&lt;/a&gt;): failed to open stream: No such file or directory in /home/softboxz/public_html/func/resendmail.php on line 38
+[05-Aug-2020 02:20:08 America/Mexico_City] PHP Notice:  Undefined index: delete_img_1 in /home/softboxz/public_html/func/product_update.php on line 18
+[05-Aug-2020 02:20:08 America/Mexico_City] PHP Notice:  Undefined index: delete_img_2 in /home/softboxz/public_html/func/product_update.php on line 28
+[05-Aug-2020 02:20:08 America/Mexico_City] PHP Notice:  Undefined index: delete_img_3 in /home/softboxz/public_html/func/product_update.php on line 38
+[05-Aug-2020 02:20:08 America/Mexico_City] PHP Notice:  Undefined index: delete_img_4 in /home/softboxz/public_html/func/product_update.php on line 48
+[05-Aug-2020 02:21:07 America/Mexico_City] PHP Notice:  A session had already been started - ignoring session_start() in /home/softboxz/public_html/func/create_sale.php on line 4
+[05-Aug-2020 02:22:13 America/Mexico_City] PHP Warning:  file_get_contents(
+        &lt;html&gt;
+				&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+					
+					
+					&lt;link href=&quot;styles.css&quot; media=&quot;all&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+					&lt;link href=&quot;https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&quot; rel=&quot;stylesheet&quot;&gt;
+					&lt;style&gt;
+					/* Reset -------------------------------------------------------------------- */
+					* 	 { margin: 0;padding: 0; }
+					body { font-size: 14px; }
+			
+					/* OPPS --------------------------------------------------------------------- */
+			
+					h4 {
+						margin-bottom: 8px;
+						font-size: 12px;
+						font-weight: 600;
+						text-transform: uppercase;
+					}
+			
+					.opps {
+						width: 100%; 
+						border-radius: 4px;
+						box-sizing: border-box;
+						padding: 0 45px;
+						margin: 40px auto;
+						overflow: hidden;
+						border: 1px solid #b0afb5;
+						font-family: &quot;Open in /home/softboxz/public_html/func/db.php on line 14678
+[05-Aug-2020 02:23:47 America/Mexico_City] PHP Notice:  A session had already been started - ignoring session_start() in /home/softboxz/public_html/func/cut_x_view.php on line 5
+[05-Aug-2020 02:23:47 America/Mexico_City] PHP Notice:  A session had already been started - ignoring session_start() in /home/softboxz/public_html/func/cut_x_view.php on line 27
+[05-Aug-2020 02:23:48 America/Mexico_City] PHP Notice:  Undefined variable: total_sin in /home/softboxz/public_html/func/cut_x_view.php on line 36
+[05-Aug-2020 02:23:48 America/Mexico_City] PHP Notice:  Undefined variable: iva in /home/softboxz/public_html/func/cut_x_view.php on line 135
+[05-Aug-2020 02:23:48 America/Mexico_City] PHP Notice:  Undefined variable: descuento in /home/softboxz/public_html/func/cut_x_view.php on line 137
+[05-Aug-2020 02:23:48 America/Mexico_City] PHP Notice:  Undefined variable: descuento in /home/softboxz/public_html/func/cut_x_view.php on line 151
+[05-Aug-2020 02:23:48 America/Mexico_City] PHP Notice:  Undefined variable: body in /home/softboxz/public_html/func/db.php on line 4974

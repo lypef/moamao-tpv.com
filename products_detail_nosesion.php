@@ -421,29 +421,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Instrucciones de uso para visitantes, Como buscar y/o Como comprar</h4>
+        <h4 class="modal-title">Instrucciones para realizar proceso de compra</h4>
       </div>
       <div class="modal-body">
-      <p> Para buscar un producto escriba la descripción o el número de
-            parte del producto que busca en la barra de búsqueda situada en la
-            parte superior izquierda <br><br>
-            También puede buscar por departamentos, sitúe el puntero en la
-            palabra departamentos y de clic en el departamento
-            correspondiente, le desplegará un listado de productos
-            relacionados con dicho departamento.<br><br>
-            Elija su producto.<br>
-            Elija la sucursal donde tengan existencia o la que a ud. le convenga
-            mejor.<br><br>
-            Llame a la sucursal elegida para que separen su mercancía
-            Deposite o transfiera el pago a nuestras cuentas bancarias
-            Envíe el comprobante bancario y los datos de facturación y envío.
-            Espere su mercancía<br><br>
-            También puede hacer la compra y pasar a recoger su mercancía o
-            mandar por ella a la sucursal elegida.<br><br>
-            Si tiene dudas o necesita asesoría, o no conoce el número de parte,
-            llame o envíenos un mensaje a cualquiera de nuestros teléfonos
-            También puede comprar vía telefónica o por medio del chat, un
-            representante lo atenderá.</p>
+      <p>
+      1.- Nos proporciona nombre y correo electrónico (datos de facturación en caso que requiera factura + Iva )
+      <br><br>
+      2.- Se genera su cotización.  (Su cotización trae los métodos de pago por transferencias, Oxxo, PayPal, MercadoPago o depósitos en ventanilla)
+      <br><br>
+      3.-  Una vez generada en cuanto realice su pago, remisionamos o facturamos su compra. 
+      <br><br>
+      4.- En ese momento el sistema genera licencia y le proporcionamos su sistema para que ustedes lo instalen o nos dan acceso para que nosotros lo instalemos.
+      </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>

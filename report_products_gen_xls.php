@@ -1,15 +1,15 @@
-<?php
+s<?php
     header("Content-type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=reporte_adicionales.xls");
     
     require_once 'func/db.php';
     // Dompdf php 7
-    require_once 'dompdf_php7.1/autoload.inc.php';
-    use Dompdf\Dompdf;
+    //require_once 'dompdf_php7.1/autoload.inc.php';
+    //use Dompdf\Dompdf;
 
     // Dompdf php 5
-    //require_once("dompdf/dompdf_config.inc.php");
-    
+    require_once("dompdf_php5.6/dompdf_config.inc.php");
+
     session_start();
     
     $inicio = $_GET["inicio"] . ' 00:00:00';
@@ -83,7 +83,7 @@
         '.$body.'
     </table>
     <br>';    
-    $print .=  '<h3>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h3>
+    $print .=  '<h3>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h3>
     <br>
     ';
 

@@ -35,6 +35,7 @@
     
     $addpregunta = false;
 
+    
     for($i=0;$i<strlen($url);$i++)
     {
         if ($url[$i] == "?")

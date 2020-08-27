@@ -1,12 +1,11 @@
 <?php
     require_once 'func/db.php';
     // Dompdf php 7
-    require_once 'dompdf_php7.1/autoload.inc.php';
-    use Dompdf\Dompdf;
+    //require_once 'dompdf_php7.1/autoload.inc.php';
+    //use Dompdf\Dompdf;
 
     // Dompdf php 5
-    //require_once("dompdf/dompdf_config.inc.php");
-    
+    require_once("dompdf_php5.6/dompdf_config.inc.php");
     session_start();
     
     $inicio = $_GET["inicio"] . ' 00:00:00';
@@ -20,26 +19,25 @@
     $total = 0;
     $tarjeta = 0;
 
-    $con = db_conectar();  
     if ($vendedor > 0 && $sucursal == 0)
     {
-        $sales = mysqli_query($con,"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.vendedor = '$vendedor' and f.client = '$client' order by  f.fecha_venta desc ");
+        $data = mysqli_query(db_conectar(),"select f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' order by f.fecha_venta desc");
     }
     elseif ($vendedor == 0 && $sucursal > 0)
     {
-        $sales = mysqli_query($con,"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.sucursal = '$sucursal' and f.client = '$client' order by  f.fecha_venta desc ");
+        $data = mysqli_query(db_conectar(),"select f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' order by f.fecha_venta desc ");
     }
     elseif ($vendedor > 0 && $sucursal > 0)
     {
-        $sales = mysqli_query($con,"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' order by  f.fecha_venta desc ");
+        $data = mysqli_query(db_conectar(),"select f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' order by f.fecha_venta desc");
     }
     else
     {
-        $sales = mysqli_query($con,"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' and f.sucursal = s.id  and f.client = '$client' order by  f.fecha_venta desc ");
+        $data = mysqli_query(db_conectar(),"select f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$inicio' and f.fecha_venta <= '$finaliza' order by f.fecha_venta desc ");
     }
-    
+        
     $body = '';
-    while($row = mysqli_fetch_array($sales))
+    while($row = mysqli_fetch_array($data))
     {
         if ($row[8] == "efectivo")
         {
@@ -57,15 +55,16 @@
         {
             $tarjeta = $tarjeta + $row[5];
         }
+        elseif ($row[8] == "cheque")
+        {
+            $cheque = $cheque + $row[5];
+        }
             
         $body = $body.'
         <tr>
         <td class="item-des">'.$row[0].'</td>
-        <td class="item-des"><p>'.$row[1].'</p></td>
         <td class="item-des"><p>'.$row[2].'</p></td>
-        <td class="item-des"><p>'.$row[7].'</p></td>
-        <td class="item-des"><p>'.$row[6].'</p></td>
-        <td class="item-des"><center><p>'.$row[3].' %</p></center></td>
+        <td class="item-des"><p>'.GetFechaText($row[4]).'</p></td>
         <td class="item-des"><center><p>$ '.$row[5].' MXN</p></center></td>
         <td class="item-des uppercase"><center><p>'.strtoupper($row[8]).'</p></center></td>
         </tr>
@@ -83,11 +82,8 @@
     <table style="width:100%">
         <tr>
         <th class="table-head th-name uppercase">FOLIO</th>
-        <th class="table-head th-name uppercase">VENDEDOR</th>
         <th class="table-head th-name uppercase">CLIENTE</th>
-        <th class="table-head th-name uppercase">SUCURSAL</th>
-        <th class="table-head th-name uppercase">F.VENTA</th>
-        <th class="table-head th-name uppercase">DESCUENTO</th>
+        <th class="table-head th-name uppercase">FECHA</th>
         <th class="table-head th-name uppercase">COBRADO</th>
         <th class="table-head th-name uppercase">M. PAGO</th>
         </tr>
@@ -101,32 +97,37 @@
     if ($efectivo > 0)
     {
         $codigoHTML .= '
-        <h5>Efectivo: $ '.number_format($efectivo,2,".",",").' MXN</h5>
+        <h5>Efectivo: $ '.number_format($efectivo,GetNumberDecimales(),".",",").' MXN</h5>
         ';
     }
 
     if ($transferencia > 0)
     {
         $codigoHTML .= '
-        <h5>Tranferencia: $ '.number_format($transferencia,2,".",",").' MXN</h5>
+        <h5>Tranferencia: $ '.number_format($transferencia,GetNumberDecimales(),".",",").' MXN</h5>
         ';
     }
 
     if ($tarjeta > 0)
     {
         $codigoHTML .=  '
-        <h5>Tarjeta: $ '.number_format($tarjeta,2,".",",").' MXN</h5>
+        <h5>Tarjeta: $ '.number_format($tarjeta,GetNumberDecimales(),".",",").' MXN</h5>
         ';
     }
 
     if ($deposito > 0)
     {
         $codigoHTML .= '
-        <h5>Depositos: $ '.number_format($deposito,2,".",",").' MXN</h5>
+        <h5>Depositos: $ '.number_format($deposito,GetNumberDecimales(),".",",").' MXN</h5>
         ';
     }
-    
-    $codigoHTML .= '<h3>TOTAL RECAUDADO: $ '.number_format($total,2,".",",").' MXN</h3>
+    if ($cheque > 0)
+    {
+        $codigoHTML = $codigoHTML . '
+        <h5>Cheques: $ '.number_format($cheque,GetNumberDecimales(),".",",").' MXN</h5>';
+    }
+        
+    $codigoHTML .= '<h3>TOTAL RECAUDADO: $ '.number_format($total,GetNumberDecimales(),".",",").' MXN</h3>
     </div>
     <br>
     <footer>
