@@ -35,7 +35,7 @@ class SMTP
     /**
      * SMTP line break constant.
      * @var string
-     */s
+     */
     const CRLF = "\r\n";
 
     /**
