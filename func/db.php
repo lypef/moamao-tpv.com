@@ -2637,7 +2637,7 @@
 		
 		$con = db_conectar();
 
-		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des FROM productos where id = $id ");
+		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des, cc2, vc2 FROM productos where id = $id ");
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -2668,26 +2668,36 @@
 	                <input type="text" name="cv" id="cv" placeholder="Clave del producto" value="'.$row[21].'">
 	              </div>
 	              
-	              <div class="col-md-3">
-	                <label>Unidad de medida</label>
+	              <div class="col-md-2">
+	                <label>U. Medida</label>
 	                <input type="text" name="um" id="um" placeholder="U. Medida sat" value="'.$row[22].'">
 				  </div>
 
-				  <div class="col-md-3">
-	                <label>Unidad de medida des</label>
+				  <div class="col-md-2">
+	                <label>U. Descripcion</label>
 	                <input type="text" name="um_des" id="um_des" placeholder="U. Medida sat" value="'.$row[23].'">
 				  </div>
                   
-                  <div class="col-md-3">
+                  <div class="col-md-2">
 	                <label>Stock minimo<span class="required">*</span></label>
-	                <input type="number" name="stock_minimo" id="stock_minimo" placeholder="Stock minimo" value="'.$row[18].'">
+	                <input type="text" name="stock_minimo" id="stock_minimo" placeholder="Stock minimo" value="'.$row[18].'">
 				  </div>
 				  
-				  <div class="col-md-3">
+				  <div class="col-md-2">
 				  <label>Stock maximo<span class="required">*</span></label>
-				  <input type="number" name="stock_maximo" id="stock_maximo" placeholder="Stock minimo" value="'.$row[19].'">
+				  <input type="text" name="stock_maximo" id="stock_maximo" placeholder="Stock minimo" value="'.$row[19].'">
 				 </div>
 				
+				 <div class="col-md-2">
+					<label>Costo CM2</label>
+					<input type="text" name="cc2" id="cc2" value="'.$row[24].'" required>
+				</div>
+				
+				<div class="col-md-2">
+					<label>Venta CM2</label>
+					<input type="text" name="vc2" id="vc2" value="'.$row[25].'" required>
+				</div>
+			  
 				<div class="col-md-6">
 	                <label>Precio normal<span class="required">*</span></label>
 	                <input type="text" name="precio" id="precio" placeholder="Precio al publico" value="'.$row[2].'">
