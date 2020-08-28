@@ -544,14 +544,14 @@
                                                       <li><a href="/func/create_sale_cot_xpress.php">Cotizacion Xpress</a></li>
                                                   </ul>
                                                   
-                                                  <!--<ul class="single-mega-item">
+                                                  <ul class="single-mega-item">
                                                       <li><h2 class="mega-menu-title mb-15">Pedidos</h2></li>
                                                       <li>
                                                       <li><a href="create_order.php?pagina=1">Crear pedido</a></li>
                                                       <li><a href="orders.php">Ver pedidos</a></li>
                                                       <li></li>
                                                       <li></li>
-                                                  </ul>-->
+                                                  </ul>
                                                   <ul class="single-mega-item">
                                                       <li><h2 class="mega-menu-title mb-15">Ventas / Abiertas</h2></li>
                                                       <?php

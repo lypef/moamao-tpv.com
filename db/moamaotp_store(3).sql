@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-08-2020 a las 09:14:11
+-- Tiempo de generación: 28-08-2020 a las 08:33:31
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -39,7 +39,8 @@ CREATE TABLE `almacen` (
 --
 
 INSERT INTO `almacen` (`id`, `nombre`, `ubicacion`, `telefono`) VALUES
-(3, 'CENTRAL 101', '101', '544');
+(3, 'CENTRAL 101', '101', '544'),
+(12, 'b', '', '');
 
 -- --------------------------------------------------------
 
@@ -331,8 +332,8 @@ CREATE TABLE `folio_venta` (
 --
 
 INSERT INTO `folio_venta` (`folio`, `vendedor`, `client`, `descuento`, `fecha`, `open`, `cobrado`, `fecha_venta`, `cut`, `sucursal`, `cut_global`, `iva`, `t_pago`, `pedido`, `folio_venta_ini`, `cotizacion`, `concepto`, `comision_pagada`, `oxxo_pay`, `titulo`) VALUES
-('120200827091030', 1, 1, 0, '2020-08-27 09:10:30', 0, 17869.5, '2020-08-27 09:11:31', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', ''),
-('120200827091349', 1, 1, 0, '2020-08-27 09:13:49', 1, NULL, NULL, 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '');
+('120200828073304', 1, 1, 0, '2020-08-28 07:33:04', 0, 99913.5, '2020-08-28 08:06:08', 0, 10, 0, 16, 'transferencia', 0, '120200828073304', 0, NULL, 0, '0', ''),
+('120200828080631', 1, 1, 0, '2020-08-28 08:06:31', 0, 15347, '2020-08-28 08:12:11', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '');
 
 -- --------------------------------------------------------
 
@@ -374,8 +375,9 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`, `cv`, `um`, `um_des`, `cc2`, `vc2`) VALUES
-(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, 2, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00'),
-(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1500, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66');
+(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, -7, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00'),
+(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1493, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66'),
+(64, '15151515', '151515151', '15', 12, 33, '51', '51', '', '', '', '', '', 0, 51, 5, 15, '15', 51, 51, 51, '5151', '51', '51', '51.00', '51.00');
 
 -- --------------------------------------------------------
 
@@ -406,8 +408,8 @@ CREATE TABLE `product_pedido` (
   `unidades` int(11) NOT NULL,
   `precio` float NOT NULL,
   `p_generico` varchar(254) DEFAULT NULL,
-  `ancho` decimal(64,2) NOT NULL,
-  `alto` decimal(64,2) NOT NULL
+  `ancho` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `alto` decimal(64,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -424,8 +426,8 @@ CREATE TABLE `product_venta` (
   `precio` float NOT NULL,
   `product_sub` int(11) DEFAULT NULL,
   `p_generico` varchar(254) DEFAULT NULL,
-  `ancho` decimal(64,2) NOT NULL,
-  `alto` decimal(64,2) NOT NULL
+  `ancho` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `alto` decimal(64,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -433,7 +435,10 @@ CREATE TABLE `product_venta` (
 --
 
 INSERT INTO `product_venta` (`id`, `folio_venta`, `product`, `unidades`, `precio`, `product_sub`, `p_generico`, `ancho`, `alto`) VALUES
-(1475, '120200827091030', 63, 1, 17869.5, NULL, NULL, '15.00', '55.00');
+(1480, '120200828073304', 63, 1, 91513.5, NULL, NULL, '65.00', '65.00'),
+(1481, '120200828073304', 47, 3, 2800, NULL, NULL, '0.00', '0.00'),
+(1487, '120200828080631', 63, 2, 4873.5, NULL, NULL, '15.00', '15.00'),
+(1488, '120200828080631', 47, 2, 2800, NULL, NULL, '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -483,7 +488,8 @@ CREATE TABLE `sucursales` (
 --
 
 INSERT INTO `sucursales` (`id`, `nombre`, `direccion`, `telefono`, `cfdi_serie`) VALUES
-(10, 'SUCURSAL 1', 'AVENIDA 20 DE NOVIEMBRE 306, CENTRO', '+52 55 4163 0891', 'B');
+(10, 'SUCURSAL 1', 'AVENIDA 20 DE NOVIEMBRE 306, CENTRO', '+52 55 4163 0891', 'B'),
+(12, 'b', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -502,7 +508,8 @@ CREATE TABLE `sucursal_almacen` (
 --
 
 INSERT INTO `sucursal_almacen` (`id`, `sucursal`, `almacen`) VALUES
-(9, 10, 3);
+(9, 10, 3),
+(13, 12, 12);
 
 -- --------------------------------------------------------
 
@@ -681,7 +688,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `annuities`
@@ -723,7 +730,7 @@ ALTER TABLE `empresa`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_sub`
@@ -735,13 +742,13 @@ ALTER TABLE `productos_sub`
 -- AUTO_INCREMENT de la tabla `product_pedido`
 --
 ALTER TABLE `product_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `product_venta`
 --
 ALTER TABLE `product_venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1476;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1489;
 
 --
 -- AUTO_INCREMENT de la tabla `soporte`
@@ -753,13 +760,13 @@ ALTER TABLE `soporte`
 -- AUTO_INCREMENT de la tabla `sucursales`
 --
 ALTER TABLE `sucursales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `sucursal_almacen`
 --
 ALTER TABLE `sucursal_almacen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

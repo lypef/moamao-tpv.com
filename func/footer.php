@@ -1273,6 +1273,124 @@
     }
 
     </script>
+
+<script>
+    function ancho_cm_pulg() 
+    {
+        document.getElementById("pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
+        
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function ancho_pulg_cm() 
+    {
+        document.getElementById("cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
+        
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_cm_pulg() 
+    {
+        document.getElementById("pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_pulg_cm() 
+    {
+        document.getElementById("cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    
+
+
+    function ancho_cm_pulg_hijos() 
+    {
+        document.getElementById("hijos_pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function ancho_pulg_cm_hijos() 
+    {
+        document.getElementById("hijos_cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_cm_pulg_hijos() 
+    {
+        document.getElementById("hijos_pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_pulg_cm_hijos() 
+    {
+        document.getElementById("hijos_cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+        var cm_ancho = document.getElementById("hijos_cm_ancho"+arguments[0]).value;
+        var cm_alto = document.getElementById("hijos_cm_alto"+arguments[0]).value;
+        var total = (cm_ancho * cm_alto) * arguments[2];
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+</script>
 </body>
 
 </html>

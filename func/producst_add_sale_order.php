@@ -15,9 +15,19 @@
     $url = str_replace("?noadd_product_sale=true", "", $url);
 
     $con = db_conectar();  
-        
-    mysqli_query($con,"INSERT INTO `product_pedido` (`folio_venta`, `product`, `unidades`, `precio`) VALUES ('$folio', '$product', '$unidades', '$precio');");
-    
+      
+    if (isset($_POST['cm_ancho'.$product]))
+    {
+        $price = returnVc2($product);
+        $ancho = $_POST['cm_ancho'.$product];
+        $alto = $_POST['cm_alto'.$product];
+        $total = ($ancho * $alto) * $price;
+
+        mysqli_query($con,"INSERT INTO `product_pedido` (`folio_venta`, `product`, `unidades`, `precio`, `ancho`, `alto`) VALUES ('$folio', '$product', '$unidades', '$total', '$ancho', '$alto');");
+    }else
+    {
+        mysqli_query($con,"INSERT INTO `product_pedido` (`folio_venta`, `product`, `unidades`, `precio`) VALUES ('$folio', '$product', '$unidades', '$precio');");
+    }  
 
     if (!mysqli_error($con))
     {
