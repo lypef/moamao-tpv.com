@@ -12,7 +12,7 @@
  * @author  Ryan H. Masten <ryan.masten@gmail.com>
  * @author  Brian Sweeney <eclecticgeek@gmail.com>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license Public Domain https://creativecommons.org/licenses/publicdomain/
+ * @license Public Domain http://creativecommons.org/licenses/publicdomain/
  * @package Cpdf
  */
 
@@ -198,7 +198,7 @@ class CPdf
     /**
      * @var array Store the information about the relationship between font families
      * this used so that the code knows which font is the bold version of another font, etc.
-     * the value of this array is initialised in the constuctor function.
+     * the value of this array is initialised in the constructor function.
      */
     public $fontFamilies = array();
 
@@ -352,7 +352,7 @@ class CPdf
     {
         $this->isUnicode = $isUnicode;
         $this->fontcache = $fontcache;
-        $this->tmp = $tmp;
+        $this->tmp = ($tmp === '') ? sys_get_temp_dir() : $tmp;
         $this->newDocument($pageSize);
 
         $this->compressionReady = function_exists('gzcompress');
@@ -760,7 +760,7 @@ class CPdf
                     // for more informaiton.
                     //
                     // All of this code is adapted from the excellent changes made to
-                    // transform FPDF to TCPDF (https://tcpdf.sourceforge.net/)
+                    // transform FPDF to TCPDF (http://tcpdf.sourceforge.net/)
 
                     $toUnicodeId = ++$this->numObj;
                     $this->o_contents($toUnicodeId, 'new', 'raw');
@@ -834,7 +834,7 @@ EOT;
                     // for more informaiton.
                     //
                     // All of this code is adapted from the excellent changes made to
-                    // transform FPDF to TCPDF (https://tcpdf.sourceforge.net/)
+                    // transform FPDF to TCPDF (http://tcpdf.sourceforge.net/)
 
                     $res = "\n$id 0 obj\n<</Type /Font\n/Subtype /Type0\n";
                     $res .= "/BaseFont /" . $o['info']['name'] . "\n";
@@ -1178,7 +1178,7 @@ EOT;
                 $this->objects[$id] = array(
                     't'    => 'info',
                     'info' => array(
-                        'Creator'      => 'R and OS php pdf writer, https://www.ros.co.nz',
+                        'Creator'      => 'R and OS php pdf writer, http://www.ros.co.nz',
                         'CreationDate' => $date
                     )
                 );
@@ -4173,7 +4173,7 @@ EOT;
             $bit_depth = $meta["bitDepth"];
             $color_type = $meta["colorType"];
 
-            // https://www.w3.org/TR/PNG/#11IHDR
+            // http://www.w3.org/TR/PNG/#11IHDR
             // 3 => indexed
             // 4 => greyscale with alpha
             // 6 => fullcolor with alpha

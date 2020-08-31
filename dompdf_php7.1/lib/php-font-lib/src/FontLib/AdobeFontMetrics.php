@@ -3,7 +3,7 @@
  * @package php-font-lib
  * @link    https://github.com/PhenX/php-font-lib
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
 namespace FontLib;
@@ -139,7 +139,7 @@ class AdobeFontMetrics {
       $this->endSection("CharMetrics");
 
       $kern = $font->getData("kern", "subtable");
-      $tree = $kern["tree"];
+      $tree = is_array($kern) ? $kern["tree"] : null;
 
       if (!$encoding && is_array($tree)) {
         $this->startSection("KernData");

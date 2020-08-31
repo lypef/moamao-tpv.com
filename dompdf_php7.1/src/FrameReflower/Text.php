@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\FrameReflower;
 
@@ -199,7 +199,7 @@ class Text extends AbstractFrameReflower
         $add_line = false;
 
         // Handle text transform:
-        // https://www.w3.org/TR/CSS21/text.html#propdef-text-transform
+        // http://www.w3.org/TR/CSS21/text.html#propdef-text-transform
         switch (strtolower($style->text_transform)) {
             default:
                 break;
@@ -215,7 +215,7 @@ class Text extends AbstractFrameReflower
         }
 
         // Handle white-space property:
-        // https://www.w3.org/TR/CSS21/text.html#propdef-white-space
+        // http://www.w3.org/TR/CSS21/text.html#propdef-white-space
         switch ($style->white_space) {
             default:
             case "normal":

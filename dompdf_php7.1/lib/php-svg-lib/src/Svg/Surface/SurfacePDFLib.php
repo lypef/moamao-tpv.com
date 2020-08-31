@@ -1,9 +1,9 @@
 <?php
 /**
  * @package php-svg-lib
- * @link    https://github.com/PhenX/php-svg-lib
+ * @link    http://github.com/PhenX/php-svg-lib
  * @author  Fabien M�nager <fabien.menager@gmail.com>
- * @license GNU LGPLv3+ https://www.gnu.org/copyleft/lesser.html
+ * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
 namespace Svg\Surface;
@@ -159,7 +159,7 @@ class SurfacePDFLib implements SurfaceInterface
             $data = file_get_contents($image);
         }
 
-        $image = tempnam("", "svg");
+        $image = tempnam(sys_get_temp_dir(), "svg");
         file_put_contents($image, $data);
 
         $img = $this->canvas->load_image("auto", $image, "");

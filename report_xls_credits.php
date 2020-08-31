@@ -4,11 +4,11 @@
     header("Content-Disposition: attachment; filename=reporte_crediticio.xls");
     
     // Dompdf php 7
-    //require_once 'dompdf_php7.1/autoload.inc.php';
-    //use Dompdf\Dompdf;
+    require_once 'dompdf_php7.1/autoload.inc.php';
+    use Dompdf\Dompdf;
 
     // Dompdf php 5
-    require_once("dompdf_php5.6/dompdf_config.inc.php");
+    //require_once("dompdf_php5.6/dompdf_config.inc.php");
     session_start();
     
     $client = $_GET["client"];

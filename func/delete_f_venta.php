@@ -17,7 +17,14 @@
 
     if (!CheckCreditExistCotizacion($folio))
     {
-        mysqli_query($con,"DELETE FROM folio_venta WHERE folio = '$folio';");
+        if (CheckIsPedido($folio))
+        {
+            mysqli_query($con,"DELETE FROM folio_venta WHERE pedido = 1 and  folio_venta_ini = '$folio';");
+        }else
+        {
+            mysqli_query($con,"DELETE FROM folio_venta WHERE folio = '$folio';");
+        }
+        
 
         if (!mysqli_error($con))
         {

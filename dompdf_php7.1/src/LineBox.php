@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf;
 
@@ -14,7 +14,7 @@ use Dompdf\FrameDecorator\Page;
  * The line box class
  *
  * This class represents a line box
- * https://www.w3.org/TR/CSS2/visuren.html#line-box
+ * http://www.w3.org/TR/CSS2/visuren.html#line-box
  *
  * @package dompdf
  */

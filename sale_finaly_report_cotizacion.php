@@ -1,11 +1,12 @@
 <?php
     require_once 'func/db.php';
+    
     // Dompdf php 7
-    //require_once 'dompdf_php7.1/autoload.inc.php';
-    //use Dompdf\Dompdf;
+    require_once 'dompdf_php7.1/autoload.inc.php';
+    use Dompdf\Dompdf;
 
     // Dompdf php 5
-    require_once("dompdf_php5.6/dompdf_config.inc.php");
+    //require_once("dompdf_php5.6/dompdf_config.inc.php");
 	
     $ColorBarr = ColorBarrReport();
 
@@ -438,5 +439,4 @@
     $dompdf->render();
     $dompdf->stream("cotizacion".$_GET["folio_sale"].".pdf");
     // instantiate and use the dompdf class
-    
 ?>

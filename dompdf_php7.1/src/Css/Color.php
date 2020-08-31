@@ -2,10 +2,10 @@
 
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
 namespace Dompdf\Css;
@@ -252,7 +252,7 @@ class Color
         }
 
         // cmyk( c,m,y,k ) format
-        // https://www.w3.org/TR/css3-gcpm/#cmyk-colors
+        // http://www.w3.org/TR/css3-gcpm/#cmyk-colors
         else if (mb_strpos($color, "cmyk") !== false) {
             $i = mb_strpos($color, "(");
             $j = mb_strpos($color, ")");

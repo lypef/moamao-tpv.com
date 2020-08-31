@@ -5,7 +5,7 @@
     use Dompdf\Dompdf;
 
     // Dompdf php 5
-    //require_once("dompdf/dompdf_config.inc.php");
+    //require_once("dompdf_php5.6/dompdf_config.inc.php");
 
     session_start();
     

@@ -127,6 +127,21 @@
 		return $b;
 	}
 
+	function CheckIsPedido ($folio)
+	{
+		$b = false;
+
+		$con = db_conectar();  
+		
+		$data = mysqli_query($con,"SELECT * from folio_venta WHERE pedido = 1 and  folio_venta_ini = '$folio';");
+		if ($row = mysqli_fetch_array($data))
+	    {
+			$b = true;
+		}
+		
+		return $b;
+	}
+
 	function GetOxxoPayFolio ($folio)
 	{
 		$data = mysqli_query(db_conectar(),"SELECT oxxo_pay FROM `folio_venta` where folio= $folio");

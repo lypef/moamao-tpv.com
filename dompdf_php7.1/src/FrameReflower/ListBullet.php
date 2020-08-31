@@ -1,9 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\FrameReflower;
 

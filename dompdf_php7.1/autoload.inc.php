@@ -1,15 +1,14 @@
 <?php
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
 // HMLT5 Parser
-//FIXME: replace with masterminds HTML5
-//require_once __DIR__ . '/lib/html5lib/Parser.php';
+require_once __DIR__ . '/lib/html5lib/Parser.php';
 
 // Sabberworm
 spl_autoload_register(function($class)

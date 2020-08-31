@@ -12,9 +12,9 @@ use Dompdf\Frame;
 
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
 /**
@@ -51,7 +51,7 @@ class FrameTree
     /**
      * The main DomDocument
      *
-     * @see https://ca2.php.net/manual/en/ref.dom.php
+     * @see http://ca2.php.net/manual/en/ref.dom.php
      * @var DOMDocument
      */
     protected $_dom;

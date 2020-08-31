@@ -1,10 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    https://dompdf.github.com/
+ * @link    http://dompdf.github.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license https://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 namespace Dompdf\FrameReflower;
 
@@ -37,7 +37,7 @@ class Block extends AbstractFrameReflower
 
     /**
      *  Calculate the ideal used value for the width property as per:
-     *  https://www.w3.org/TR/CSS21/visudet.html#Computing_widths_and_margins
+     *  http://www.w3.org/TR/CSS21/visudet.html#Computing_widths_and_margins
      *
      * @param float $width
      *
@@ -85,7 +85,7 @@ class Block extends AbstractFrameReflower
         if ($diff > 0) {
             if ($absolute) {
                 // resolve auto properties: see
-                // https://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-width
+                // http://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-width
 
                 if ($width === "auto" && $left === "auto" && $right === "auto") {
                     if ($lm === "auto") {
@@ -267,7 +267,7 @@ class Block extends AbstractFrameReflower
 
         if ($frame->is_absolute()) {
 
-            // see https://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-height
+            // see http://www.w3.org/TR/CSS21/visudet.html#abs-non-replaced-height
 
             $dims = [$top !== "auto" ? $top : 0,
                 $style->margin_top !== "auto" ? $style->margin_top : 0,
@@ -424,7 +424,7 @@ class Block extends AbstractFrameReflower
 
     /**
      * Adjust the justification of each of our lines.
-     * https://www.w3.org/TR/CSS21/text.html#propdef-text-align
+     * http://www.w3.org/TR/CSS21/text.html#propdef-text-align
      */
     protected function _text_align()
     {
