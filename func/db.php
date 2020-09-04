@@ -127,6 +127,21 @@
 		return $b;
 	}
 
+	function GetStatusPedido ($folio)
+	{
+		$b = "COMPLETADO";
+
+		$con = db_conectar();  
+		
+		$data = mysqli_query($con,"SELECT * FROM `product_pedido` WHERE folio_venta = '$folio' and completado = 0");
+		if ($row = mysqli_fetch_array($data))
+	    {
+			$b = "EN PROCESO";
+		}
+		
+		return $b;
+	}
+
 	function CheckIsPedido ($folio)
 	{
 		$b = false;
@@ -7440,7 +7455,7 @@
 
 	function table_orders()
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.fecha FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id order by c.nombre desc, f.f_entrega asc");
 		$body = '
 		<form class="header-search-box" action="orders.php">
 			<div>
@@ -7454,7 +7469,8 @@
 					<th class="table-head th-name uppercase">FOLIO PEDIDO</th>
 					<th class="table-head th-name uppercase">vendedor</th>
 					<th class="table-head th-name uppercase">cliente</th>
-					<th class="table-head th-name uppercase">creado</th>
+					<th class="table-head th-name uppercase">entregar</th>
+					<th class="table-head th-name uppercase">ESTADO</th>
 					<th class="table-head th-name uppercase">opciones</th>
 				</tr>
 			</thead>
@@ -7468,7 +7484,8 @@
 			<td class="item-des"><a href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p>'.$row[1].'</p></td>
 			<td class="item-des">'.$row[2].'</td>
-			<td class="item-des">'.$row[3].'</td>
+			<td class="item-des">'.GetFechaText($row[3]).'</td>
+			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
 			
 			<td class="item-des">
 				<div class="col-md-12">
@@ -7769,7 +7786,7 @@
 	
 	function table_orders_search($txt)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.fecha FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and f.folio like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and c.nombre like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and u.nombre like '%$txt%'");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and f.folio like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and c.nombre like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and u.nombre like '%$txt%' order by c.nombre desc, f.f_entrega asc");
 		$body = '
 		<form class="header-search-box" action="orders.php">
 			<div>
@@ -7783,7 +7800,8 @@
 							<th class="table-head th-name uppercase">FOLIO PEDIDO</th>
 							<th class="table-head th-name uppercase">vendedor</th>
 							<th class="table-head th-name uppercase">cliente</th>
-							<th class="table-head th-name uppercase">creado</th>
+							<th class="table-head th-name uppercase">ENTREGAR</th>
+							<th class="table-head th-name uppercase">ESTADO</th>
 							<th class="table-head th-name uppercase">opciones</th>
 						</tr>
 					</thead>
@@ -7797,7 +7815,8 @@
 			<td class="item-des"><a href="/sale_finaly_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p>'.$row[1].'</p></td>
 			<td class="item-des">'.$row[2].'</td>
-			<td class="item-des">'.$row[3].'</td>
+			<td class="item-des">'.GetFechaText($row[3]).'</td>
+			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
 			<td class="item-des">
 				<div class="col-md-12">
 					
@@ -8179,7 +8198,7 @@
 							<th class="table-head th-name uppercase">F.VENTA</th>
 							<th class="table-head th-name uppercase">COBRADO</th>
 							<th class="table-head th-name uppercase">DETALLES</th>
-                            <th class="table-head th-name uppercase">ELIMINAR</th>
+                            <th class="table-head th-name uppercase">CANCELAR</th>
                             <th class="table-head th-name uppercase">FACTURAR</th>
 						</tr>
 					</thead>
@@ -8394,7 +8413,7 @@
 							<th class="table-head th-name uppercase">DETALLES</th>
 							<th class="table-head th-name uppercase">MAIL</th>
 							<th class="table-head th-name uppercase">LIQUIDAR</th>
-							<th class="table-head th-name uppercase">ELIMINAR</th>
+							<th class="table-head th-name uppercase">CANCELAR</th>
 						</tr>
 					</thead>
 					<tbody>';
@@ -8615,27 +8634,27 @@
 		
 		if ($vendedor > 0 && $sucursal == 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
-			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
-			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		elseif ($vendedor == 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
-			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
-			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		elseif ($vendedor > 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
-			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
-			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		else
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
-			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
-			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$datatmp = mysqli_query(db_conectar(),"SELECT f.folio FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
+			$dataTotal = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto, f.cancelado, f.pedido FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc");
 		}
 		
 		$pagination = '<div class="row">
@@ -8704,8 +8723,9 @@
 							<th class="table-head th-name uppercase">SUCURSAL</th>
 							<th class="table-head th-name uppercase">F.VENTA</th>
 							<th class="table-head th-name uppercase">COBRADO</th>
-							<th class="table-head th-name uppercase">m. pago</th>
-							<th class="table-head th-name uppercase">Eliminar</th>
+							<th class="table-head th-name uppercase">m.pago</th>
+							<th class="table-head th-name uppercase">ESTADO</th>
+							<th class="table-head th-name uppercase">CANCELAR</th>
                             <th class="table-head th-name uppercase">facturar</th>
 						</tr>
 					</thead>
@@ -8729,6 +8749,11 @@
                     ';
 				}
 
+				$estado = "FINALIZADO";
+				
+				if ($row[11] == "1"){ 	$estado = "CANCELADO";}
+				if ($row[12] == "1"){ 	$estado = "EN PROCESO";}
+
 				$body = $body.'
 				<tr>
 				'.$folio_.'
@@ -8738,6 +8763,7 @@
 				<td class="item-des"><p>'.GetFechaText($row[6]).'</p></td>
 				<td class="item-des"><center><p>$ '.$row[5].' MXN</p></center></td>
 				<td class="item-des uppercase"><center><p>'.$row[8].'</p></center></td>
+				<td class="item-des uppercase"><center><p>'.$estado.'</p></center></td>
 				<td class="item-des uppercase"><center>
 					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#delete'.$row[0].'" ><span> X</span> </a>
 				</center></td>
@@ -11818,7 +11844,7 @@
 			{
 				$eliminar = '
 				<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
-				<button type="sumbit" class="btn btn-danger">Si eliminar</button>';
+				<button type="sumbit" class="btn btn-danger">Si Cancelar</button>';
 			}else
 			{
 				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';
@@ -11854,7 +11880,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Elimnar registro</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Cancelar registro</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
@@ -11863,7 +11889,7 @@
 					<div class="row">
 				
 					<div class="col-md-12">
-						<p>Tome en cuenta que al eliminar el registro, el folio sera elimnado de la base de datos y no existira mas, al igual que los productos asociados seran afectados.</p>
+						<p>Tome en cuenta que al cancelar el registro, el folio sera cancelado de la base de datos, al igual que los productos asociados seran afectados.</p>
 					</div>
 					</div>
 				</div>
@@ -12013,19 +12039,19 @@
         
 		if ($vendedor > 0 && $sucursal == 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.vendedor = '$vendedor' and f.client = '$client'  and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
 		}
 		elseif ($vendedor == 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido , f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
 		}
 		elseif ($vendedor > 0 && $sucursal > 0)
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.sucursal = '$sucursal' and f.vendedor = '$vendedor' and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
 		}
 		else
 		{
-			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.open = 0 and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
+			$data = mysqli_query(db_conectar(),"SELECT f.folio, v.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.t_pago, f.pedido, f.concepto FROM folio_venta f, clients c, users v, sucursales s  WHERE f.vendedor = v.id and f.client = c.id and f.sucursal = s.id and f.client = '$client' and f.fecha_venta >= '$f_inicio' and f.fecha_venta <= '$f_finaliza' order by f.fecha_venta desc LIMIT $inicio, $TAMANO_PAGINA");
 		}
 		
 		
@@ -12037,7 +12063,7 @@
 			{
 				$eliminar = '
 				<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
-				<button type="sumbit" class="btn btn-danger">Si eliminar</button>';
+				<button type="sumbit" class="btn btn-danger">Si Cancelar</button>';
 			}else
 			{
 				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';
@@ -12049,7 +12075,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Elimnar registro</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Cancelar registro</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
@@ -12058,7 +12084,7 @@
 					<div class="row">
 				
 					<div class="col-md-12">
-						<p>Tome en cuenta que al eliminar el registro, el folio sera elimnado de la base de datos y no existira mas, al igual que los productos asociados seran afectados.</p>
+						<p>Tome en cuenta que al cancelar el registro, el folio sera cancelado de la base de datos, al igual que los productos asociados seran afectados.</p>
 					</div>
 					</div>
 				</div>
@@ -12110,7 +12136,7 @@
 			{
 				$eliminar = '
 				<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>
-				<button type="sumbit" class="btn btn-danger">Si eliminar</button>';
+				<button type="sumbit" class="btn btn-danger">Si Cancelar</button>';
 			}else
 			{
 				$eliminar = '<button type="button" class="btn btn-success" data-dismiss="modal">NO</button>';

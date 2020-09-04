@@ -1085,7 +1085,7 @@
         body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
         body +="<span aria-hidden='true'>&times;</span>";
         body +="</button>";
-        body +="<strong>HECHO!</strong> Venta eliminada.";
+        body +="<strong>HECHO!</strong> Venta cancelada.";
         body +="</div>";
         document.getElementById("message").innerHTML = body;
     }
