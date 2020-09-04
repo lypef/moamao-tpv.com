@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 28-08-2020 a las 08:33:31
+-- Tiempo de generación: 04-09-2020 a las 07:04:36
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -67,7 +67,7 @@ INSERT INTO `annuities` (`id`, `client`, `concepto`, `price`, `date_ini`, `date_
 (6, 212, 'Anualidad CFDI', 1900, '2019-03-29 12:00:00', '2020-06-30 14:40:36', 1),
 (7, 213, 'Anualidad CFDI', 1900, '2019-04-17 12:00:00', '2020-05-13 10:40:01', 1),
 (8, 214, 'Anualidad CFDI', 1700, '2019-05-30 12:00:00', '2019-05-30 12:00:00', 0),
-(9, 215, 'Anualidad CFDI', 1900, '2019-09-01 12:00:00', '2019-09-01 12:00:00', 1),
+(9, 215, 'Anualidad CFDI', 1900, '2019-09-01 12:00:00', '2019-09-01 12:00:00', 0),
 (10, 199, 'Anualidad CFDI', 1900, '2019-10-30 14:37:47', '2019-10-30 14:37:47', 1),
 (12, 154, 'Anualidad SendMAil', 100, '2019-11-14 09:45:02', '2019-11-14 09:45:02', 1),
 (13, 277, 'Anualidad CFDI , CABB891111CL8', 1900, '2020-02-21 11:02:15', '2020-02-21 11:02:15', 1),
@@ -98,7 +98,9 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `nombre`, `direccion`, `telefono`, `descuento`, `rfc`, `razon_social`, `correo`) VALUES
-(1, 'PUBLICO EN GENERAL', 'Dirección de cliente demo ', '923120050', 0, 'XAXX010101000', 'PUBLICO EN GENERAL', 'ventas@cyberchoapas.com');
+(1, 'PUBLICO EN GENERAL', 'Dirección de cliente demo ', '923120050', 0, 'XAXX010101000', 'PUBLICO EN GENERAL', 'ventas@cyberchoapas.com'),
+(306, 'FULAA', '', '', 0, '', '', ''),
+(307, 'MERENGANO', '', '', 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -213,7 +215,7 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`id`, `nombre`, `nombre_corto`, `direccion`, `correo`, `telefono`, `mision`, `vision`, `contacto`, `facebook`, `twitter`, `youtube`, `iva`, `footer`, `cfdi_lugare_expedicion`, `cfdi_rfc`, `cfdi_regimen`, `cfdi_cer`, `cfdi_key`, `cfdi_pass`, `token`) VALUES
-(1, 'GRUPO ASCGAR', 'GA', 'Veracruz, Mexico', 'contacto@cyberchoapa.scom', '+52 55 4163 0891 ', 'Somos una empresa fundada físicamente el 29 de mayo del año 2013 en el estado de Veracruz, México. Dedicada al desarrollo, distribución y venta de software, soluciones en Internet, venta de equipos (Hardware) y servicios varios. Ofreciendo una solución global a empresas, profesionales, administraciones, usuarios particulares y al publico en general, en todo el territorio nacional e internacional .', 'Pretendemos ser un referente en el mercado nacional en el sector de las TIC, y para ello abarcaremos todos los servicios que ofrecemos actualmente incrementando los que vayan surgiendo debido a la necesidad de cambio provocado por los avances tecnológicos. Esto es así ya que somos una empresa en constante innovación ya que el sector de la tecnología así lo requiere.', 'Telefono\r\n<br>\r\n+52 55 4163 0891\r\n<br><br>\r\nVentas | Informacion \r\n<br>\r\nventas@cyberchoapas.com', '', '', '', 16, '<h5 style=\"background-color: #1a4f7d; text-align: center;\"><span style=\"background-color: #1a4f7d; color: #ffffff;\"><em><strong>| www.cyberchoapas.com | ::: GRUPO ASCGAR ::: | www.ascgar.com |</strong></em></span><span style=\"background-color: #1a4f7d; color: #ffffff;\"><em><strong><br /></strong></em></span></h5>', '96980', 'AEDF9201245G3', '621', 'SDK2/certificados/CER.cer  ', 'SDK2/certificados/KEY.key', 'AEDF9201', 'g4UW4c0gIkyX2yH90bOHlCx8ivt0lD3/Eyh7AnLuSrmVeBiyFbjEmdlFBs0uaaeVOxQRjz5DPTmXzuZrWdVZs/bsVoQ8Tc4BWo/XDDG+EvA');
+(1, 'PROMARCO', 'PM', 'Veracruz, Mexico', 'contacto@cyberchoapas.com', '+52 55 4163 0891 ', 'Somos una empresa fundada físicamente el 29 de mayo del año 2013 en el estado de Veracruz, México. Dedicada al desarrollo, distribución y venta de software, soluciones en Internet, venta de equipos (Hardware) y servicios varios. Ofreciendo una solución global a empresas, profesionales, administraciones, usuarios particulares y al publico en general, en todo el territorio nacional e internacional .', 'Pretendemos ser un referente en el mercado nacional en el sector de las TIC, y para ello abarcaremos todos los servicios que ofrecemos actualmente incrementando los que vayan surgiendo debido a la necesidad de cambio provocado por los avances tecnológicos. Esto es así ya que somos una empresa en constante innovación ya que el sector de la tecnología así lo requiere.', 'Telefono\r\n<br>\r\n+52 55 4163 0891\r\n<br><br>\r\nVentas | Informacion \r\n<br>\r\nventas@cyberchoapas.com', '', '', '', 16, '<h5 style=\"background-color: #1a4f7d; text-align: center;\"><span style=\"background-color: #1a4f7d; color: #ffffff;\"><em><strong>| www.cyberchoapas.com | ::: GRUPO ASCGAR ::: | www.ascgar.com |</strong></em></span><span style=\"background-color: #1a4f7d; color: #ffffff;\"><em><strong><br /></strong></em></span></h5>', '96980', 'AEDF9201245G3', '621', 'SDK2/certificados/CER.cer  ', 'SDK2/certificados/KEY.key', 'AEDF9201', 'g4UW4c0gIkyX2yH90bOHlCx8ivt0lD3/Eyh7AnLuSrmVeBiyFbjEmdlFBs0uaaeVOxQRjz5DPTmXzuZrWdVZs/bsVoQ8Tc4BWo/XDDG+EvA');
 
 -- --------------------------------------------------------
 
@@ -324,16 +326,26 @@ CREATE TABLE `folio_venta` (
   `concepto` varchar(254) DEFAULT NULL,
   `comision_pagada` tinyint(1) NOT NULL DEFAULT 0,
   `oxxo_pay` varchar(254) NOT NULL DEFAULT '0',
-  `titulo` varchar(254) DEFAULT ''
+  `titulo` varchar(254) DEFAULT '',
+  `cancelado` tinyint(1) NOT NULL DEFAULT 0,
+  `f_entrega` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `folio_venta`
 --
 
-INSERT INTO `folio_venta` (`folio`, `vendedor`, `client`, `descuento`, `fecha`, `open`, `cobrado`, `fecha_venta`, `cut`, `sucursal`, `cut_global`, `iva`, `t_pago`, `pedido`, `folio_venta_ini`, `cotizacion`, `concepto`, `comision_pagada`, `oxxo_pay`, `titulo`) VALUES
-('120200828073304', 1, 1, 0, '2020-08-28 07:33:04', 0, 99913.5, '2020-08-28 08:06:08', 0, 10, 0, 16, 'transferencia', 0, '120200828073304', 0, NULL, 0, '0', ''),
-('120200828080631', 1, 1, 0, '2020-08-28 08:06:31', 0, 15347, '2020-08-28 08:12:11', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '');
+INSERT INTO `folio_venta` (`folio`, `vendedor`, `client`, `descuento`, `fecha`, `open`, `cobrado`, `fecha_venta`, `cut`, `sucursal`, `cut_global`, `iva`, `t_pago`, `pedido`, `folio_venta_ini`, `cotizacion`, `concepto`, `comision_pagada`, `oxxo_pay`, `titulo`, `cancelado`, `f_entrega`) VALUES
+('120200831082425', 1, 1, 0, '2020-08-31 08:24:25', 1, 1, '2020-09-03 22:08:48', 0, 10, 0, 16, 'transferencia', 1, '120200831082425', 0, 'CANCELADA', 0, '0', '', 1, '2020-09-24 23:15:06'),
+('120200904044020', 1, 1, 0, '2020-09-04 04:40:20', 0, 0, '2020-09-03 04:40:51', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 1, '2020-09-01 23:15:06'),
+('120200904044154', 1, 1, 0, '2020-09-04 04:41:54', 0, 0, '2020-09-03 04:42:11', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 1, '2020-09-15 23:15:06'),
+('120200904044221', 1, 1, 0, '2020-09-04 04:42:21', 1, 0, '2020-09-03 22:08:51', 0, 10, 0, 16, 'efectivo', 1, '120200904044221', 0, NULL, 0, '0', '', 0, '2020-09-15 23:15:06'),
+('120200904044440', 1, 1, 0, '2020-09-04 04:44:40', 0, 541.5, '2020-09-03 04:44:55', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 0, '2020-09-09 23:15:06'),
+('120200904055453', 1, 1, 0, '2020-08-31 08:24:25', 0, 1500, '2020-09-03 05:54:53', 0, 10, 0, 16, 'efectivo', 1, '120200831082425', 0, NULL, 0, '0', '', 0, '2020-09-17 23:15:06'),
+('120200904061812', 1, 306, 0, '2020-09-04 06:18:12', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061812', 0, NULL, 0, '0', '', 0, '2020-09-01 23:18:12'),
+('120200904061826', 1, 307, 0, '2020-09-04 06:18:26', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061826', 0, NULL, 0, '0', '', 0, '2020-09-29 23:18:26'),
+('120200904061831', 1, 1, 0, '2020-09-04 06:18:31', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061831', 0, NULL, 0, '0', '', 0, '2020-09-20 23:18:31'),
+('120200904061839', 1, 306, 0, '2020-09-04 06:18:39', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061839', 0, NULL, 0, '0', '', 0, '2020-09-15 23:18:39');
 
 -- --------------------------------------------------------
 
@@ -375,8 +387,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`, `cv`, `um`, `um_des`, `cc2`, `vc2`) VALUES
-(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, -7, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00'),
-(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1493, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66'),
+(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, -9, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00'),
+(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1488, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66'),
 (64, '15151515', '151515151', '15', 12, 33, '51', '51', '', '', '', '', '', 0, 51, 5, 15, '15', 51, 51, 51, '5151', '51', '51', '51.00', '51.00');
 
 -- --------------------------------------------------------
@@ -409,8 +421,20 @@ CREATE TABLE `product_pedido` (
   `precio` float NOT NULL,
   `p_generico` varchar(254) DEFAULT NULL,
   `ancho` decimal(64,2) NOT NULL DEFAULT 0.00,
-  `alto` decimal(64,2) NOT NULL DEFAULT 0.00
+  `alto` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `completado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `product_pedido`
+--
+
+INSERT INTO `product_pedido` (`id`, `folio_venta`, `product`, `unidades`, `precio`, `p_generico`, `ancho`, `alto`, `completado`) VALUES
+(5, '120200831081907', 63, 1, 541.5, NULL, '5.00', '5.00', 0),
+(6, '120200904044221', 47, 1, 2800, NULL, '0.00', '0.00', 0),
+(7, '120200904044221', 63, 1, 541.5, NULL, '5.00', '5.00', 0),
+(8, '120200904044221', 64, 1, 11475, NULL, '15.00', '15.00', 0),
+(9, '120200904061831', 63, 1, 0, NULL, '0.00', '0.00', 0);
 
 -- --------------------------------------------------------
 
@@ -438,7 +462,14 @@ INSERT INTO `product_venta` (`id`, `folio_venta`, `product`, `unidades`, `precio
 (1480, '120200828073304', 63, 1, 91513.5, NULL, NULL, '65.00', '65.00'),
 (1481, '120200828073304', 47, 3, 2800, NULL, NULL, '0.00', '0.00'),
 (1487, '120200828080631', 63, 2, 4873.5, NULL, NULL, '15.00', '15.00'),
-(1488, '120200828080631', 47, 2, 2800, NULL, NULL, '0.00', '0.00');
+(1488, '120200828080631', 47, 2, 2800, NULL, NULL, '0.00', '0.00'),
+(1490, '120200831075830', 63, 2, 8122.5, NULL, NULL, '15.00', '25.00'),
+(1493, '120200831082425', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
+(1494, '120200904044020', 63, 1, 4873.5, NULL, NULL, '15.00', '15.00'),
+(1495, '120200904044020', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
+(1496, '120200904044154', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
+(1497, '120200904044154', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
+(1498, '120200904044440', 63, 1, 541.5, NULL, NULL, '5.00', '5.00');
 
 -- --------------------------------------------------------
 
@@ -551,7 +582,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `nombre`, `imagen`, `product_add`, `product_gest`, `gen_orden_compra`, `client_add`, `client_guest`, `almacen_add`, `almacen_guest`, `depa_add`, `depa_guest`, `propiedades`, `usuarios`, `finanzas`, `descripcion`, `sucursal`, `change_suc`, `sucursal_gest`, `caja`, `super_pedidos`, `comision`, `sueldo`, `vtd_pg`) VALUES
-(1, 'root', '6990149e5865432c7061b4b1376b7283', 'ISC. FRANCISCO E. ASCENCIO DOMINGUEZ', 'users/usuario20200624223146.jpg', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'CEO', 10, 1, 1, 1, 1, 5, 1800, 1);
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'ISC. FRANCISCO E. ASCENCIO DOMINGUEZ', 'users/usuario20200624223146.jpg', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'CEO', 10, 1, 1, 1, 1, 5, 1800, 1);
 
 --
 -- Índices para tablas volcadas
@@ -700,7 +731,7 @@ ALTER TABLE `annuities`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=306;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=308;
 
 --
 -- AUTO_INCREMENT de la tabla `credits`
@@ -742,13 +773,13 @@ ALTER TABLE `productos_sub`
 -- AUTO_INCREMENT de la tabla `product_pedido`
 --
 ALTER TABLE `product_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `product_venta`
 --
 ALTER TABLE `product_venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1489;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1499;
 
 --
 -- AUTO_INCREMENT de la tabla `soporte`
