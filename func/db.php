@@ -7455,7 +7455,7 @@
 
 	function table_orders()
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id order by c.nombre desc, f.f_entrega asc");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega, DATEDIFF(f.f_entrega, NOW()) as dias FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id order by f.f_entrega ASC");
 		$body = '
 		<form class="header-search-box" action="orders.php">
 			<div>
@@ -7471,7 +7471,7 @@
 					<th class="table-head th-name uppercase">cliente</th>
 					<th class="table-head th-name uppercase">entregar</th>
 					<th class="table-head th-name uppercase">ESTADO</th>
-					<th class="table-head th-name uppercase">opciones</th>
+					<th class="table-head th-name uppercase">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>';
@@ -7479,10 +7479,27 @@
 
 		while($row = mysqli_fetch_array($data))
 	    {
+			$color = "";
+
+			if ($row[4] <= 1)
+			{
+				$color = 'style="color:red !important;"';
+			}
+
+			if ($row[4] >= 3)
+			{
+				$color = 'style="color:green !important;"';
+			}
+
+			if ($row[4] == 2)
+			{
+				$color = 'style="color:orange !important;"';
+			}
+
 			$body = $body.'
-			<tr>
-			<td class="item-des"><a href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
-			<td class="item-des"><p>'.$row[1].'</p></td>
+			<tr '.$color.'>
+			<td class="item-des"><a '.$color.' href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
+			<td class="item-des"><p '.$color.'>'.$row[1].'</p></td>
 			<td class="item-des">'.$row[2].'</td>
 			<td class="item-des">'.GetFechaText($row[3]).'</td>
 			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
@@ -7490,13 +7507,17 @@
 			<td class="item-des">
 				<div class="col-md-12">
 					
-					<div class="col-md-6">
+				<div class="col-md-4">
+					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#check'.$row[0].'" ><span>*</span></a>
+				</div>
+				
+				<div class="col-md-4">
 						<a href="/sale_order.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><span> Ver</span></a>
 					</div>
 
-					<div class="col-md-6">
+				<div class="col-md-4">
 					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#edit'.$row[0].'" ><span> +</span></a>
-					</div>
+				</div>
 					
 				</div>
 			</td>
@@ -7786,7 +7807,7 @@
 	
 	function table_orders_search($txt)
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and f.folio like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and c.nombre like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and u.nombre like '%$txt%' order by c.nombre desc, f.f_entrega asc");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega, DATEDIFF(f.f_entrega, NOW()) as dias FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and f.folio like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and c.nombre like '%$txt%' or f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and u.nombre like '%$txt%' order by f.f_entrega ASC");
 		$body = '
 		<form class="header-search-box" action="orders.php">
 			<div>
@@ -7802,7 +7823,7 @@
 							<th class="table-head th-name uppercase">cliente</th>
 							<th class="table-head th-name uppercase">ENTREGAR</th>
 							<th class="table-head th-name uppercase">ESTADO</th>
-							<th class="table-head th-name uppercase">opciones</th>
+							<th class="table-head th-name uppercase">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>';
@@ -7810,25 +7831,47 @@
 
 		while($row = mysqli_fetch_array($data))
 	    {
+			
+			$color = "";
+
+			if ($row[4] <= 1)
+			{
+				$color = 'style="color:red !important;"';
+			}
+
+			if ($row[4] >= 3)
+			{
+				$color = 'style="color:green !important;"';
+			}
+
+			if ($row[4] == 2)
+			{
+				$color = 'style="color:orange !important;"';
+			}
+
 			$body = $body.'
-			<tr>
-			<td class="item-des"><a href="/sale_finaly_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
-			<td class="item-des"><p>'.$row[1].'</p></td>
-			<td class="item-des">'.$row[2].'</td>
+			<tr '.$color.'>
+			<td class="item-des"><a '.$color.' href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
+			<td class="item-des"><p '.$color.'>'.$row[1].'</p></td>
+			<td class="item-des"><p '.$color.'>'.$row[2].'</p></td>
 			<td class="item-des">'.GetFechaText($row[3]).'</td>
 			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
 			<td class="item-des">
 				<div class="col-md-12">
-					
-					<div class="col-md-6">
-						<a href="/sale_order.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><span> Ver</span></a>
+						
+					<div class="col-md-4">
+						<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#check'.$row[0].'" ><span>*</span></a>
 					</div>
+					
+					<div class="col-md-4">
+							<a href="/sale_order.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><span> Ver</span></a>
+						</div>
 
-					<div class="col-md-6">
-					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#edit'.$row[0].'" ><span> +</span></a>
+					<div class="col-md-4">
+						<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#edit'.$row[0].'" ><span> +</span></a>
 					</div>
 					
-				</div>
+				</div>		
 			</td>
 			</tr>
 			';
@@ -11331,9 +11374,11 @@
 
 	function table_orders_modal ()
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
 		
-		$select_con = mysqli_query(db_conectar(),"SELECT id, nombre FROM clients ORDER by nombre asc");
+		$con  = db_conectar();
+
+		$select_con = mysqli_query($con,"SELECT id, nombre FROM clients ORDER by nombre asc");
 		$select = "<option value='0'>CLIENTE</option>";
 		while($row = mysqli_fetch_array($select_con))
 		{
@@ -11353,6 +11398,19 @@
 				$eliminar = '';
 			}
 			
+			$items = "";
+
+			$p_pedido = mysqli_query($con,'SELECT r.id, p.nombre FROM product_pedido r, productos p WHERE r.completado = 0 and r.product = p.id and folio_venta = '.$row[0].' ;');
+			
+			while($p_exist = mysqli_fetch_array($p_pedido))
+			{
+				$items .= '<li>'.$p_exist[1].' <a href="/func/check_complet.php?id='.$p_exist[0].'&folio='.$row[0].'"> <b>[ Marcar Completado ]</b></a></li>';
+			}
+			
+			if (empty($items))
+			{
+				$items = '<li>Ninguno</li>';
+			}
 
 			$body = $body.'
 			<div class="modal fade" id="edit'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -11472,6 +11530,47 @@
 						'.$eliminar.'
 					</form>
 					
+				</div>
+				</div>
+			</div>
+			</div>
+
+
+			<div class="modal fade" id="check'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">STATUS DE PEDIDO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<ol>
+							'.$items.'
+						</ol>
+					</div>
+					<br><center>
+						<h5 class="modal-title" id="exampleModalLabel"><b>FECHA DE ENTREGA</b></h5>
+						<h4 class="modal-title" id="exampleModalLabel">'.GetFechaText($row[11]).'</h4>
+						<br>
+						<h5 class="modal-title" id="exampleModalLabel"><b>ACTUALIZAR</b></h5>
+						
+						<form action="func/update_f_entrega_pedido.php" autocomplete="off" method="post">
+							<input id="folio" name="folio" type="hidden" value="'.$row[0].'">
+							<input type="date" id="fecha" name="fecha" value="'.date("Y-m-d", strtotime($row[11])).'" style="text-align: center; height:40px; border: 2px solid #D9D7D7;">
+							<br><br>
+							<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, Se actualiza su nueva fecha de entrega:  %f_entrega%</textarea>
+								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
+							<br><br>
+							<button type="sumbit" class="btn btn-success" onclick="javascript:this.form.submit(); this.disabled= true;">Actualizar</button>
+						<form>
+
+					</center>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">CERRAR</button>	
 				</div>
 				</div>
 			</div>

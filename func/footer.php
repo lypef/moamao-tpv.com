@@ -1265,6 +1265,28 @@
         document.getElementById("message").innerHTML = body;
     }
 
+    if (getUrlVars()["proceso_yes"])
+    {
+        var body = "<div class='alert alert-success alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>HECHO! </strong> Proceso Exitoso.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
+    }
+
+    if (getUrlVars()["proceso_no"])
+    {
+        var body = "<div class='alert alert-danger alert-dismissible show' role='alert'>";
+        body +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+        body +="<span aria-hidden='true'>&times;</span>";
+        body +="</button>";
+        body +="<strong>Error!</strong>Error en el proceso.";
+        body +="</div>";
+        document.getElementById("message").innerHTML = body;
+    }
+
     function hideMenuVarMobile() 
     {
         jQuery('.mean-nav ul:first').slideUp();
