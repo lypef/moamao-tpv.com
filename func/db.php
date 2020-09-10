@@ -19,7 +19,7 @@
 	
 	function GetDominio ()
 	{
-		return 'http://localhost';
+		return 'https://moamao-tpv.com/';
 	}
 	
 	function GetNumberDecimales ()
@@ -29,7 +29,7 @@
 	
 	function static_empresa_nombre ()
 	{
-		return "Grupo Ascgar";
+		return "Promarco";
 	}
 
 	function static_empresa_email()
@@ -11861,7 +11861,7 @@
 							<div class="col-md-12">
 								<br>
 								<label>CABECERA</label>
-								<input type="text" name="header" id="header" placeholder="..."  value="VENTAS CLTA | GRUPO ASCGAR">
+								<input type="text" name="header" id="header" placeholder="..."  value="'.static_empresa_nombre().'">
 							</div>
 							
 							<input id="body" name="body" type="hidden" value="APRECIABLE <b>'.$row[2].'</b>. SE ADJUNTA <b>COTIZACION VIGENTE </b>%cot_cot%">

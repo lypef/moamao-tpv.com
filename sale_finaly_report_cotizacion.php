@@ -2,8 +2,6 @@
     require_once 'func/db.php';
     require_once 'barcode.php';
     
-    
-
     // Dompdf php 7
     require_once 'dompdf_php7.1/autoload.inc.php';
     use Dompdf\Dompdf;

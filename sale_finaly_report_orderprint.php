@@ -300,13 +300,13 @@
     
     $codigoHTML .= FooterPageReport();
 
-    echo $codigoHTML;
+    //echo $codigoHTML;
     
-    /*$codigoHTML = mb_convert_encoding($codigoHTML, 'HTML-ENTITIES', 'UTF-8');
+    $codigoHTML = mb_convert_encoding($codigoHTML, 'HTML-ENTITIES', 'UTF-8');
     $dompdf=new DOMPDF();
     $dompdf->set_paper('letter');
     $dompdf->load_html($codigoHTML);
     ini_set("memory_limit","128M");
     $dompdf->render();
-    $dompdf->stream("pedido".$_GET["folio_sale"].".pdf");*/
+    $dompdf->stream("pedido".$_GET["folio_sale"].".pdf");
 ?>
