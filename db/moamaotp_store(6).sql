@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-09-2020 a las 07:07:19
+-- Tiempo de generación: 10-09-2020 a las 07:10:21
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -57,24 +57,6 @@ CREATE TABLE `annuities` (
   `date_last` datetime NOT NULL DEFAULT current_timestamp(),
   `active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `annuities`
---
-
-INSERT INTO `annuities` (`id`, `client`, `concepto`, `price`, `date_ini`, `date_last`, `active`) VALUES
-(4, 210, 'Anualidad CFDI', 1800, '2018-11-01 12:00:00', '2019-11-01 09:38:02', 1),
-(6, 212, 'Anualidad CFDI', 1900, '2019-03-29 12:00:00', '2020-06-30 14:40:36', 1),
-(7, 213, 'Anualidad CFDI', 1900, '2019-04-17 12:00:00', '2020-05-13 10:40:01', 1),
-(8, 214, 'Anualidad CFDI', 1700, '2019-05-30 12:00:00', '2019-05-30 12:00:00', 0),
-(9, 215, 'Anualidad CFDI', 1900, '2019-09-01 12:00:00', '2019-09-01 12:00:00', 0),
-(10, 199, 'Anualidad CFDI', 1900, '2019-10-30 14:37:47', '2019-10-30 14:37:47', 1),
-(12, 154, 'Anualidad SendMAil', 100, '2019-11-14 09:45:02', '2019-11-14 09:45:02', 1),
-(13, 277, 'Anualidad CFDI , CABB891111CL8', 1900, '2020-02-21 11:02:15', '2020-02-21 11:02:15', 1),
-(14, 154, 'Anualidad SendMAil. fol 120200223223835', 100, '2020-02-24 14:11:01', '2020-02-24 14:11:01', 1),
-(15, 282, 'moamao-tpv.com + certificado digital, anualidad. ', 1300, '2020-04-04 16:04:02', '2020-04-04 16:04:02', 1),
-(16, 290, 'anualidad rfc GIA100728216 , GIC040830321', 1900, '2020-06-01 12:25:48', '2020-06-01 12:25:48', 1),
-(17, 154, 'eNVIOS DE CORREO ELECTRONICA', 100, '2020-07-17 12:13:41', '2020-07-17 12:13:41', 1);
 
 -- --------------------------------------------------------
 
@@ -735,7 +717,7 @@ ALTER TABLE `almacen`
 -- AUTO_INCREMENT de la tabla `annuities`
 --
 ALTER TABLE `annuities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `clients`
