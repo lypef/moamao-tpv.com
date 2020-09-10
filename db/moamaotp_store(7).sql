@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-09-2020 a las 07:10:21
+-- Tiempo de generación: 10-09-2020 a las 07:11:58
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -102,25 +102,6 @@ CREATE TABLE `credits` (
   `sucursal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `credits`
---
-
-INSERT INTO `credits` (`id`, `client`, `f_registro`, `factura`, `adeudo`, `abono`, `dias_credit`, `pay`, `sucursal`) VALUES
-(1, 213, '2020-06-15 15:57:33', '120200615120441', '186.7600', '0.0000', 3, 1, 10),
-(8, 1, '2020-06-19 18:49:44', '120200619184843', '219.2400', '219.2400', 7, 1, 10),
-(9, 295, '2020-06-20 16:20:35', '120200620161732', '90.0000', '90.0000', 7, 1, 10),
-(10, 296, '2020-06-20 16:20:39', '120200620161632', '620.0000', '620.0000', 7, 1, 10),
-(11, 1, '2020-06-20 16:33:00', '120200620163250', '10.0000', '10.0000', 7, 1, 10),
-(14, 296, '2020-06-27 15:00:28', '120200627145955', '90.0000', '0.0000', 7, 1, 10),
-(20, 298, '2020-07-01 16:17:53', '120200701161718', '672.8000', '0.0000', 7, 0, 10),
-(23, 295, '2020-07-04 22:26:30', '120200704194345', '270.0000', '270.0000', 7, 1, 10),
-(24, 296, '2020-07-04 22:26:33', '120200704194244', '90.0000', '90.0000', 7, 1, 10),
-(26, 296, '2020-07-11 12:04:29', '120200711120307', '180.0000', '0.0000', 7, 1, 10),
-(27, 295, '2020-07-11 12:06:16', '120200711120531', '180.0000', '180.0000', 7, 1, 10),
-(32, 294, '2020-07-20 13:54:00', '120200720134513', '280.0000', '0.0000', 7, 0, 10),
-(33, 306, '2020-09-09 02:34:11', '5151515', '1.0000', '0.0000', 0, 0, 12);
-
 -- --------------------------------------------------------
 
 --
@@ -213,76 +194,6 @@ CREATE TABLE `facturas` (
   `cliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `facturas`
---
-
-INSERT INTO `facturas` (`serie`, `folio`, `estatus`, `cliente`) VALUES
-('A', '120190819143328', 'Vigente', 154),
-('A', '120190819153303', 'Proceso cancelar', 1),
-('A', '120190819153435', 'Proceso cancelar', 1),
-('A', '120190820121431', 'Vigente', 155),
-('A', '120190913132203', 'Proceso cancelar', 1),
-('A', '120190916221358', 'Vigente', 180),
-('A', '120190925093148', 'Vigente', 184),
-('A', '120190927195056', 'Vigente', 187),
-('A', '120190930201754', 'Vigente', 1),
-('A', '120190930202456', 'Vigente', 1),
-('A', '120191004195727', 'Vigente', 198),
-('A', '120191011135643', 'Vigente', 199),
-('A', '120191014113426', 'Vigente', 184),
-('A', '120191014165302', 'Vigente', 200),
-('A', '120191029181000', 'Vigente', 208),
-('A', '120191122200257', 'Vigente', 198),
-('A', '120191123103040', 'Vigente', 228),
-('A', '120191128191557', 'Vigente', 198),
-('A', '120191211172238', 'Vigente', 240),
-('A', '120191212203154', 'Vigente', 198),
-('A', '120191219190531', 'Vigente', 198),
-('A', '120191223121908', 'Vigente', 244),
-('A', '120191223191852', 'Vigente', 245),
-('A', '120191231095013', 'Vigente', 240),
-('A', '120200103144631', 'Vigente', 252),
-('A', '120200105121047', 'Vigente', 253),
-('A', '120200105140748', 'Vigente', 254),
-('A', '120200111110951', 'Vigente', 198),
-('A', '120200114134955', 'Vigente', 155),
-('A', '120200124105728', 'Vigente', 263),
-('A', '120200205122840', 'Vigente', 270),
-('A', '120200211003703', 'Vigente', 273),
-('B', '120200214191541', 'Vigente', 275),
-('A', '120200219111106', 'Vigente', 278),
-('A', '120200219164131', 'Vigente', 200),
-('A', '120200223223835', 'Vigente', 154),
-('A', '120200228101706', 'Vigente', 270),
-('A', '120200301183321', 'Vigente', 282),
-('A', '120200311102623', 'Vigente', 285),
-('A', '120200314104810', 'Vigente', 198),
-('A', '120200325181657', 'Vigente', 198),
-('A', '120200404153703', 'Vigente', 282),
-('A', '120200404160402', 'Vigente', 282),
-('A', '120200422094312', 'Vigente', 289),
-('B', '120200430141134', 'Vigente', 290),
-('A', '120200513104001', 'Vigente', 213),
-('A', '120200514232903', 'Vigente', 293),
-('A', '120200521115213', 'Vigente', 198),
-('A', '120200525125754', 'Vigente', 290),
-('A', '120200526153134', 'Vigente', 290),
-('A', '120200526153239', 'Vigente', 290),
-('A', '120200527092213', 'Vigente', 290),
-('A', '120200527092332', 'Vigente', 290),
-('A', '120200527092511', 'Vigente', 290),
-('A', '120200527092727', 'Vigente', 290),
-('A', '120200602141246', 'Vigente', 294),
-('A', '120200603154543', 'Vigente', 213),
-('B', '120200622193924', 'Vigente', 282),
-('B', '120200630124124', 'Vigente', 244),
-('B', '120200630144036', 'Vigente', 212),
-('B', '120200705162232', 'Vigente', 301),
-('A', '120200708192655', 'Vigente', 302),
-('B', '3620200115190647', 'Vigente', 258),
-('A', '3720191023123718', 'Proceso cancelar', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -313,25 +224,6 @@ CREATE TABLE `folio_venta` (
   `cancelado` tinyint(1) NOT NULL DEFAULT 0,
   `f_entrega` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `folio_venta`
---
-
-INSERT INTO `folio_venta` (`folio`, `vendedor`, `client`, `descuento`, `fecha`, `open`, `cobrado`, `fecha_venta`, `cut`, `sucursal`, `cut_global`, `iva`, `t_pago`, `pedido`, `folio_venta_ini`, `cotizacion`, `concepto`, `comision_pagada`, `oxxo_pay`, `titulo`, `cancelado`, `f_entrega`) VALUES
-('120200831082425', 1, 1, 0, '2020-08-31 08:24:25', 1, 1, '2020-09-03 22:08:48', 0, 10, 0, 16, 'transferencia', 1, '120200831082425', 0, 'CANCELADA', 0, '0', '', 1, '2020-09-17 00:00:00'),
-('120200904044020', 1, 1, 0, '2020-09-04 04:40:20', 0, 0, '2020-09-03 04:40:51', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 1, '2020-09-01 23:15:06'),
-('120200904044154', 1, 1, 0, '2020-09-04 04:41:54', 0, 0, '2020-09-03 04:42:11', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 1, '2020-09-15 23:15:06'),
-('120200904044221', 1, 1, 0, '2020-09-04 04:42:21', 1, 0, '2020-09-03 22:08:51', 0, 10, 0, 16, 'efectivo', 1, '120200904044221', 0, NULL, 0, '0', '', 0, '2020-09-10 01:21:51'),
-('120200904044440', 1, 1, 0, '2020-09-04 04:44:40', 0, 541.5, '2020-09-03 04:44:55', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 0, '2020-09-09 23:15:06'),
-('120200904055453', 1, 1, 0, '2020-08-31 08:24:25', 0, 1500, '2020-09-03 05:54:53', 0, 10, 0, 16, 'efectivo', 1, '120200831082425', 0, NULL, 0, '0', '', 0, '2020-09-17 23:15:06'),
-('120200904061812', 1, 306, 0, '2020-09-04 06:18:12', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061812', 0, NULL, 0, '0', '', 0, '2020-09-01 23:18:12'),
-('120200904061826', 1, 307, 0, '2020-09-04 06:18:26', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061826', 0, NULL, 0, '0', '', 0, '2020-09-01 00:00:00'),
-('120200904061831', 1, 1, 0, '2020-09-04 06:18:31', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061831', 0, NULL, 0, '0', '', 0, '2020-09-11 00:00:00'),
-('120200904061839', 1, 306, 0, '2020-09-04 06:18:39', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200904061839', 0, NULL, 0, '0', '', 0, '2020-09-30 00:00:00'),
-('120200909093317', 1, 1, 0, '2020-09-09 09:33:17', 1, 0, NULL, 0, 10, 0, 16, 'transferencia', 0, '120200909093317', 1, NULL, 0, '0', '', 0, '2020-09-09 02:33:17'),
-('120200909182853', 1, 1, 0, '2020-09-09 18:28:53', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200909182853', 0, NULL, 0, '0', '', 0, '2020-09-30 00:00:00'),
-('120200910061006', 1, 1, 5, '2020-09-10 06:10:06', 0, 1204940, '2020-09-10 06:10:37', 0, 10, 0, 16, 'efectivo', 0, NULL, 0, NULL, 0, '0', '', 0, '2020-09-09 23:10:06');
 
 -- --------------------------------------------------------
 
@@ -411,16 +303,6 @@ CREATE TABLE `product_pedido` (
   `completado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `product_pedido`
---
-
-INSERT INTO `product_pedido` (`id`, `folio_venta`, `product`, `unidades`, `precio`, `p_generico`, `ancho`, `alto`, `completado`) VALUES
-(6, '120200904044221', 47, 1, 2800, NULL, '0.00', '0.00', 0),
-(7, '120200904044221', 63, 1, 541.5, NULL, '5.00', '5.00', 0),
-(8, '120200904044221', 64, 1, 11475, NULL, '15.00', '15.00', 0),
-(9, '120200904061831', 63, 1, 0, NULL, '0.00', '0.00', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -439,30 +321,6 @@ CREATE TABLE `product_venta` (
   `alto` decimal(64,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `product_venta`
---
-
-INSERT INTO `product_venta` (`id`, `folio_venta`, `product`, `unidades`, `precio`, `product_sub`, `p_generico`, `ancho`, `alto`) VALUES
-(1480, '120200828073304', 63, 1, 91513.5, NULL, NULL, '65.00', '65.00'),
-(1481, '120200828073304', 47, 3, 2800, NULL, NULL, '0.00', '0.00'),
-(1487, '120200828080631', 63, 2, 4873.5, NULL, NULL, '15.00', '15.00'),
-(1488, '120200828080631', 47, 2, 2800, NULL, NULL, '0.00', '0.00'),
-(1490, '120200831075830', 63, 2, 8122.5, NULL, NULL, '15.00', '25.00'),
-(1493, '120200831082425', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
-(1494, '120200904044020', 63, 1, 4873.5, NULL, NULL, '15.00', '15.00'),
-(1495, '120200904044020', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
-(1496, '120200904044154', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
-(1497, '120200904044154', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
-(1498, '120200904044440', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
-(1499, '120200910061006', 63, 1, 541.5, NULL, NULL, '5.00', '5.00'),
-(1500, '120200910061006', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
-(1501, '120200910061006', NULL, 555, 2165, NULL, '5', '0.00', '0.00'),
-(1502, '120200910061006', NULL, 5, 5, NULL, '5', '0.00', '0.00'),
-(1503, '120200909093317', 63, 2, 541.5, NULL, NULL, '5.00', '5.00'),
-(1504, '120200909093317', 47, 1, 2800, NULL, NULL, '0.00', '0.00'),
-(1505, '120200909093317', 63, 1, 14079, NULL, NULL, '25.00', '26.00');
-
 -- --------------------------------------------------------
 
 --
@@ -474,23 +332,6 @@ CREATE TABLE `soporte` (
   `descripcion` varchar(254) NOT NULL,
   `costo` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `soporte`
---
-
-INSERT INTO `soporte` (`id`, `descripcion`, `costo`) VALUES
-(1, 'REINSTALACION SISTEMA SIN RESPALDO', 150),
-(2, 'REINSTALACION DE SISTEMA CON RESPALDO', 400),
-(3, 'CONFIGURACION DE WINDOWS PARA TRABAJO EN RED', 400),
-(4, 'AGREGAR COMPUTADORA ADICIONAL', 100),
-(5, 'INSTALACION Y CONFIGURACION DE IMPRESORAS', 150),
-(6, 'RECUPERACION DE CONTRASEÑA', 350),
-(7, 'ERROR EN CONFIGURACION DE SISTEMA', 180),
-(8, 'ERROR EN CONFIGURACION DE SISTEMA OPERATIVO', 220),
-(9, 'OPTIMIZACION DE SISTEMA OPERATIVO', 250),
-(10, 'LIMPIEZA DE VIRUS Y AMENAZAS DIGITALES', 201),
-(11, 'ACTUALIZACION DE SISTEMAS', 580);
 
 -- --------------------------------------------------------
 
@@ -729,7 +570,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT de la tabla `credits`
 --
 ALTER TABLE `credits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `credit_pay`
@@ -765,19 +606,19 @@ ALTER TABLE `productos_sub`
 -- AUTO_INCREMENT de la tabla `product_pedido`
 --
 ALTER TABLE `product_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `product_venta`
 --
 ALTER TABLE `product_venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1506;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `soporte`
 --
 ALTER TABLE `soporte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `sucursales`
