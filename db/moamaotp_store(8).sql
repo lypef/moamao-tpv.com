@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-09-2020 a las 07:11:58
+-- Tiempo de generación: 10-09-2020 a las 07:12:59
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -114,15 +114,6 @@ CREATE TABLE `credit_pay` (
   `monto` decimal(65,4) NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `credit_pay`
---
-
-INSERT INTO `credit_pay` (`id`, `credito`, `monto`, `fecha`) VALUES
-(10, 14, '90.0000', '2020-06-27 18:30:46'),
-(11, 1, '186.7600', '2020-07-08 12:34:05'),
-(12, 26, '180.0000', '2020-07-11 12:54:45');
 
 -- --------------------------------------------------------
 
@@ -576,7 +567,7 @@ ALTER TABLE `credits`
 -- AUTO_INCREMENT de la tabla `credit_pay`
 --
 ALTER TABLE `credit_pay`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
