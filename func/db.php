@@ -19,7 +19,7 @@
 	
 	function GetDominio ()
 	{
-		return 'http://www.url.mx';
+		return 'http://localhost';
 	}
 	
 	function GetNumberDecimales ()
@@ -315,7 +315,7 @@
 
 	function ReturnImgLogo ()
 	{
-		return 'images/logolola.jpg';
+		return 'images/logolola.png';
 	}
 	
 	function db_sessionValidarYES ()
@@ -11374,7 +11374,7 @@
 
 	function table_orders_modal ()
 	{
-		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id, f.f_entrega FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id, f.f_entrega, c.correo FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
 		
 		$con  = db_conectar();
 
@@ -11540,10 +11540,12 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">STATUS DE PEDIDO</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
+				
+				<center>
+					<h5 class="modal-title" id="exampleModalLabel"><b>FECHA DE ENTREGA</b></h5>
+					<h4 class="modal-title" id="exampleModalLabel">'.GetFechaText($row[11]).'</h4>
+				</center>
+
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -11552,19 +11554,18 @@
 						</ol>
 					</div>
 					<br><center>
-						<h5 class="modal-title" id="exampleModalLabel"><b>FECHA DE ENTREGA</b></h5>
-						<h4 class="modal-title" id="exampleModalLabel">'.GetFechaText($row[11]).'</h4>
-						<br>
-						<h5 class="modal-title" id="exampleModalLabel"><b>ACTUALIZAR</b></h5>
+						
+						<h5 class="modal-title" id="exampleModalLabel"><b>ACTUALIZAR FECHA DE ENTREGA Y NOTIFICAR</b></h5>
 						
 						<form action="func/update_f_entrega_pedido.php" autocomplete="off" method="post">
 							<input id="folio" name="folio" type="hidden" value="'.$row[0].'">
+							<input id="email" name="email" type="hidden" value="'.$row[12].'">
 							<input type="date" id="fecha" name="fecha" value="'.date("Y-m-d", strtotime($row[11])).'" style="text-align: center; height:40px; border: 2px solid #D9D7D7;">
 							<br><br>
-							<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, Se actualiza su nueva fecha de entrega:  %f_entrega%</textarea>
+							<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, Se actualiza su nueva fecha de entrega para:  %f_entrega%, para su pedido con folio: %f_pedido%</textarea>
 								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
-							<br><br>
-							<button type="sumbit" class="btn btn-success" onclick="javascript:this.form.submit(); this.disabled= true;">Actualizar</button>
+							<br>
+							<button type="sumbit" class="btn btn-success btn-lg btn-block" onclick="javascript:this.form.submit(); this.disabled= true;">Actualizar</button>
 						<form>
 
 					</center>
@@ -13320,6 +13321,10 @@
                 	</select>
 				</div>
 				'.$select_.'
+				<div class="col-md-12">
+					<br><label>Fecha estimada de entrega</label>
+					<input type="date" id="fecha" name="fecha" value="'.date("Y-m-d").'" style="text-align: left; height:40px; border: 2px solid #D9D7D7;">
+				</div>
 			</div>
       
 				</div>

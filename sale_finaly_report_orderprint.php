@@ -31,7 +31,7 @@
         $tel = $row[8];
         $iva = $row[9];
         $bodysucursal = $row[7] . '
-        <br><span style="font-size: 14px;">RESPONSABLE: ' . $vendedor . '</span>';
+        <br><span style="font-size: 14px;">ELABORADO POR: ' . $vendedor . '</span>';
         $r_social = $row[10];
         $cliente_direccion = $row[11];
     }
@@ -299,11 +299,14 @@
     
     
     $codigoHTML .= FooterPageReport();
-    $codigoHTML = mb_convert_encoding($codigoHTML, 'HTML-ENTITIES', 'UTF-8');
+
+    echo $codigoHTML;
+    
+    /*$codigoHTML = mb_convert_encoding($codigoHTML, 'HTML-ENTITIES', 'UTF-8');
     $dompdf=new DOMPDF();
     $dompdf->set_paper('letter');
     $dompdf->load_html($codigoHTML);
     ini_set("memory_limit","128M");
     $dompdf->render();
-    $dompdf->stream("pedido".$_GET["folio_sale"].".pdf");
+    $dompdf->stream("pedido".$_GET["folio_sale"].".pdf");*/
 ?>
