@@ -1297,6 +1297,174 @@
     </script>
 
 <script>
+    function ancho_cm_pulg_lineal() 
+    {
+        document.getElementById("pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
+        
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        
+        var ancho = new Number(document.getElementById("cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("cm_alto"+arguments[0]).value);
+        
+        
+        var c5 = document.getElementById("l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_cm_pulg_lineal() 
+    {
+        document.getElementById("pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("cm_alto"+arguments[0]).value);
+        
+        var c5 = document.getElementById("l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function ancho_pulg_cm_lineal() 
+    {
+        document.getElementById("cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
+        
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("cm_alto"+arguments[0]).value);
+        
+        var c5 = document.getElementById("l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+    
+    function alto_pulg_cm_lineal() 
+    {
+        document.getElementById("cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("cm_alto"+arguments[0]).value);
+        
+
+        var c5 = document.getElementById("l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function ancho_cm_pulg_hijos_lineal() 
+    {
+        document.getElementById("hijos_pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("hijos_cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("hijos_cm_alto"+arguments[0]).value);
+        
+
+        var c5 = document.getElementById("hijos_l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("hijos_p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_cm_pulg_hijos_lineal() 
+    {
+        document.getElementById("hijos_pul_alto"+arguments[0]).value = (arguments[1] / 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("hijos_cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("hijos_cm_alto"+arguments[0]).value);
+        
+
+        var c5 = document.getElementById("hijos_l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("hijos_p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function ancho_pulg_cm_hijos_lineal() 
+    {
+        document.getElementById("hijos_cm_ancho"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("hijos_cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("hijos_cm_alto"+arguments[0]).value);
+        
+
+        var c5 = document.getElementById("hijos_l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("hijos_p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    function alto_pulg_cm_hijos_lineal() 
+    {
+        document.getElementById("hijos_cm_alto"+arguments[0]).value = (arguments[1] * 2.54)
+
+        var span = document.getElementById("precio"+arguments[0]);
+        while( span.firstChild ) {
+            span.removeChild( span.firstChild );
+        }
+
+        var ancho = new Number(document.getElementById("hijos_cm_ancho"+arguments[0]).value);
+        var alto = new Number(document.getElementById("hijos_cm_alto"+arguments[0]).value);
+        
+
+        var c5 = document.getElementById("hijos_l_ancho_moldura"+arguments[0]).value;
+        var e5 = document.getElementById("hijos_p_cm_lineal"+arguments[0]).value;
+        
+        var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
+        
+        span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+    }
+
+    //Articulo por area
     function ancho_cm_pulg() 
     {
         document.getElementById("pul_ancho"+arguments[0]).value = (arguments[1] / 2.54)

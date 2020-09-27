@@ -5,6 +5,7 @@
         echo '<script>location.href = "products.php?pagina=1"</script>';
     }
 ?>
+
 <!--Contenido-->
 <!-- Start page content -->
 <div class="col-md-12">
@@ -32,36 +33,83 @@
               </div>
               
               
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>U. medida</label>
                 <input type="text" name="um" id="um" placeholder="U. Medida sat">
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>U. Descripcion</label>
                 <input type="text" name="um_des" id="um_des" placeholder="U. Medida des sat">
               </div>
               
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>Stock minimo <span class="required">*</span> </label>
                 <input type="text" name="stock_minimo" id="stock_minimo" value="0" required>
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>Stock maximo <span class="required">*</span> </label>
                 <input type="text" name="stock_maximo" id="stock_maximo" value="0" required>
               </div>
               
-              <div class="col-md-2">
-                <label>Costo CM2</label>
-                <input type="text" name="cc2" id="cc2" value="0.0" required>
-              </div>
-              
-              <div class="col-md-2">
-                <label>Venta CM2</label>
-                <input type="text" name="vc2" id="vc2" value="0.0" required>
-              </div>
 
+              <div class="col-md-12">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        ↵ PRODUCTO VENTA POR AREA
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="col-md-6">
+                            <label>Costo CM2</label>
+                            <input type="text" name="cc2" id="cc2" value="0.0" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label>Venta CM2</label>
+                            <input type="text" name="vc2" id="vc2" value="0.0" required>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+              <div class="col-md-12">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo" aria-expanded="true" aria-controls="collapseOne">
+                        ↵ PRODUCTO VENTA LINEAL
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapsetwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="col-md-3">
+                            <label>Medida de la moldura (Longitud)</label>
+                            <input type="text" name="l_medida_moldura" id="l_medida_moldura" value="0.0" required>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label>Ancho de la moldura</label>
+                            <input type="text" name="l_ancho_moldura" id="l_ancho_moldura" value="0.0" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Costo CM Lineal</label>
+                            <input type="text" name="c_cm_lineal" id="c_cm_lineal" value="0.0" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>P. Venta CM Lineal</label>
+                            <input type="text" name="p_cm_lineal" id="p_cm_lineal" value="0.0" required>
+                        </div>
+                    </div>
+                </div>
+
+            
               
               <div class="col-md-6">
                 <label>Precio normal<span class="required">*</span></label>

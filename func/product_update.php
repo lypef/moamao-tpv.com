@@ -76,6 +76,10 @@
         $um_des = $_POST['um_des'];
         $cc2 = $_POST['cc2'];
         $vc2 = $_POST['vc2'];
+        $l_medida_moldura = $_POST['l_medida_moldura'];
+        $l_ancho_moldura = $_POST['l_ancho_moldura'];
+        $c_cm_lineal = $_POST['c_cm_lineal'];
+        $p_cm_lineal = $_POST['p_cm_lineal'];
 
         $name_img = date("YmdHis").".jpg";
 
@@ -132,7 +136,7 @@
             }
         }
 
-        mysqli_query($con,"UPDATE `productos` SET `no. De parte` = '$parte', `nombre` = '$nombre', `descripcion` = '$descripcion', `almacen` = '$almacen', `departamento` = '$departamento', `loc_almacen` = '$ubicacion', `marca` = '$marca', `proveedor` = '$proveedor', `oferta` = '$use_oferta', `precio_normal` = '$precio', `precio_oferta` = '$p_oferta', `stock` = '$stock', `tiempo de entrega` = '$t_entrega', `stock_min` = '$stock_min', `stock_max` = '$stock_max', `precio_costo` = '$precio_costo', `cv` = '$cv', `um` = '$um', `um_des` = '$um_des', `cc2` = '$cc2', `vc2` = '$vc2' WHERE `productos`.`id` = $id;");
+        mysqli_query($con,"UPDATE `productos` SET `no. De parte` = '$parte', `nombre` = '$nombre', `descripcion` = '$descripcion', `almacen` = '$almacen', `departamento` = '$departamento', `loc_almacen` = '$ubicacion', `marca` = '$marca', `proveedor` = '$proveedor', `oferta` = '$use_oferta', `precio_normal` = '$precio', `precio_oferta` = '$p_oferta', `stock` = '$stock', `tiempo de entrega` = '$t_entrega', `stock_min` = '$stock_min', `stock_max` = '$stock_max', `precio_costo` = '$precio_costo', `cv` = '$cv', `um` = '$um', `um_des` = '$um_des', `cc2` = '$cc2', `vc2` = '$vc2',`l_medida_moldura` = '$l_medida_moldura',`l_ancho_moldura` = '$l_ancho_moldura',`c_cm_lineal` = '$c_cm_lineal',`p_cm_lineal` = '$p_cm_lineal' WHERE `productos`.`id` = $id;");
 
         if (!mysqli_error($con))
         {

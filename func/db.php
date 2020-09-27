@@ -2519,7 +2519,7 @@
 		
 		$con = db_conectar();
 
-		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des, cc2, vc2 FROM productos where id = $id ");
+		$data = mysqli_query($con,"SELECT `no. De parte`, nombre, precio_normal, precio_oferta, stock, `tiempo de entrega`, descripcion, almacen, departamento, loc_almacen, marca, proveedor, oferta, id, foto0, foto1, foto2, foto3, stock_min, stock_max, precio_costo, cv, um, um_des, cc2, vc2, l_medida_moldura, l_ancho_moldura, c_cm_lineal, p_cm_lineal FROM productos where id = $id ");
 
 		while($row = mysqli_fetch_array($data))
 	    {
@@ -2550,35 +2550,89 @@
 	                <input type="text" name="cv" id="cv" placeholder="Clave del producto" value="'.$row[21].'">
 	              </div>
 	              
-	              <div class="col-md-2">
+	              <div class="col-md-3">
 	                <label>U. Medida</label>
 	                <input type="text" name="um" id="um" placeholder="U. Medida sat" value="'.$row[22].'">
 				  </div>
 
-				  <div class="col-md-2">
+				  <div class="col-md-3">
 	                <label>U. Descripcion</label>
 	                <input type="text" name="um_des" id="um_des" placeholder="U. Medida sat" value="'.$row[23].'">
 				  </div>
                   
-                  <div class="col-md-2">
+                  <div class="col-md-3">
 	                <label>Stock minimo<span class="required">*</span></label>
 	                <input type="text" name="stock_minimo" id="stock_minimo" placeholder="Stock minimo" value="'.$row[18].'">
 				  </div>
 				  
-				  <div class="col-md-2">
+				  <div class="col-md-3">
 				  <label>Stock maximo<span class="required">*</span></label>
 				  <input type="text" name="stock_maximo" id="stock_maximo" placeholder="Stock minimo" value="'.$row[19].'">
 				 </div>
 				
-				 <div class="col-md-2">
-					<label>Costo CM2</label>
-					<input type="text" name="cc2" id="cc2" value="'.$row[24].'" required>
-				</div>
-				
-				<div class="col-md-2">
-					<label>Venta CM2</label>
-					<input type="text" name="vc2" id="vc2" value="'.$row[25].'" required>
-				</div>
+				 
+				 
+
+
+				 <div class="col-md-12">
+				 <div class="panel-heading" role="tab" id="headingOne">
+					 <h4 class="panel-title">
+						 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						 ↵ PRODUCTO VENTA POR AREA
+						 </a>
+					 </h4>
+				 </div>
+				 <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+					 <div class="col-md-6">
+							 <label>Costo CM2</label>
+							 <input type="text" name="cc2" id="cc2" value="'.$row[24].'" required>
+						 </div>
+						 
+						 <div class="col-md-6">
+							 <label>Venta CM2</label>
+							 <input type="text" name="vc2" id="vc2" value="'.$row[25].'" required>
+						 </div>
+					 </div>
+				 </div>
+ 
+ 
+ 
+ 
+			   <div class="col-md-12">
+				 <div class="panel-heading" role="tab" id="headingTwo">
+					 <h4 class="panel-title">
+						 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo" aria-expanded="true" aria-controls="collapseOne">
+						 ↵ PRODUCTO VENTA LINEAL
+						 </a>
+					 </h4>
+				 </div>
+				 <div id="collapsetwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingTwo">
+					 <div class="col-md-3">
+							 <label>Medida de la moldura (Longitud)</label>
+							 <input type="text" name="l_medida_moldura" id="l_medida_moldura" value="'.$row[26].'" required>
+						 </div>
+						 
+						 <div class="col-md-3">
+							 <label>Ancho de la moldura</label>
+							 <input type="text" name="l_ancho_moldura" id="l_ancho_moldura" value="'.$row[27].'" required>
+						 </div>
+ 
+						 <div class="col-md-3">
+							 <label>Costo CM Lineal</label>
+							 <input type="text" name="c_cm_lineal" id="c_cm_lineal" value="'.$row[28].'" required>
+						 </div>
+ 
+						 <div class="col-md-3">
+							 <label>P. Venta CM Lineal</label>
+							 <input type="text" name="p_cm_lineal" id="p_cm_lineal" value="'.$row[29].'" required>
+						 </div>
+					 </div>
+				 </div>
+
+
+
+
+
 			  
 				<div class="col-md-6">
 	                <label>Precio normal<span class="required">*</span></label>
@@ -3114,7 +3168,7 @@
 		}
 		
 		
-		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2 FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
+		$data = mysqli_query(db_conectar(),"SELECT p.nombre, p.stock, p.oferta, p.precio_normal, p.precio_oferta, p.foto0, p.foto1, p.foto2, p.foto3, p.id, p.descripcion, p.`tiempo de entrega`, p.`no. De parte`, a.nombre, d.nombre, p.marca, p.loc_almacen, p.cc2, p.vc2, p.l_medida_moldura, p.l_ancho_moldura, p.c_cm_lineal, p.p_cm_lineal FROM productos p, almacen a, departamentos d where p.almacen = a.id and p.departamento = d.id order by p.id asc LIMIT $inicio, $TAMANO_PAGINA");
 		$con_hijos  = db_conectar();
 
 		$body = "";
@@ -3211,6 +3265,60 @@
 			</tr>
 			';
 
+			$exist_cm_lineal = '
+			<tr>
+				<form action="func/producst_add_sale.php" autocomplete="off" method="post">
+					<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+					<input type="hidden" id="product" name="product" value="'.$row[9].'">
+					<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
+					<input type="hidden" id="folio" name="folio" value="'.$folio.'">
+					<input type="hidden" id="hijo" name="hijo" value="0">
+				
+					<input type="hidden" id="l_ancho_moldura'.$row[9].'" name="l_ancho_moldura'.$row[9].'" value ="'.$row[20].'">
+					<input type="hidden" id="p_cm_lineal'.$row[9].'" name="p_cm_lineal'.$row[9].'" value ="'.$row[22].'">
+
+					<td class="item-des"><br><p>'.$row[13].' ('.$row[1].' UDS)</p></td>
+					
+					<td>
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<center><span>Ancho</span></center>
+								<input type="text" id="cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg_lineal('.$row[9].', this.value)">
+							</div>
+
+							<div class="col-md-6">
+								<center><span>Alto</span></center>
+								<input type="text" id="cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg_lineal('.$row[9].', this.value)">
+							</div>
+						</div>
+					</td>
+					
+					<td>
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<center><span>Ancho</span></center>
+								<input type="text" id="pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm_lineal('.$row[9].', this.value)">
+							</div>
+
+							<div class="col-md-6">
+								<center><span>Alto</span></center>
+								<input type="text" id="pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm_lineal('.$row[9].', this.value)">
+							</div>
+						</div>
+					</td>
+					
+					<td>
+						<center><span>Uds</span></center>
+						<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
+					</td>
+
+					<td>
+						<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
+					</td>
+				</form>
+			</tr>
+			';
+
 			$hijos = mysqli_query($con_hijos,"SELECT s.id, s.padre, a.nombre, s.stock FROM productos_sub s, almacen a where s.almacen = a.id and padre = '$row[9]' ");
 			
 			while($item = mysqli_fetch_array($hijos))
@@ -3279,6 +3387,60 @@
 								<div class="col-md-6">
 									<center><span>Alto</span></center>
 									<input type="text" id="hijos_pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm_hijos('.$row[9].', this.value, '.$row[18].')" />
+								</div>
+							</div>
+						</td>
+						
+						<td>
+							<center><span>Uds</span></center>
+							<input type="number" id="unidades" name="unidades" placeholder="0" value ="1" min="1" />
+						</td>
+
+						<td>
+							<center><br><button type="submit" class="btn btn-primary">Agregar</button></center>
+						</td>
+					</form>
+				</tr>
+				';
+
+				$exist_cm_lineal .= '
+				<tr>
+					<form action="func/producst_add_sale.php" autocomplete="off" method="post">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						<input type="hidden" id="product" name="product" value="'.$row[9].'">
+						<input type="hidden" id="costo" name="costo" value="'.$precio_.'">
+						<input type="hidden" id="folio" name="folio" value="'.$folio.'">
+						<input type="hidden" id="hijo" name="hijo" value="'.$item[0].'">
+					
+						<td class="item-des"><br><p>'.$item[2].' ('.$item[3].' UDS)</p></td>
+						
+						<input type="hidden" id="hijos_l_ancho_moldura'.$row[9].'" name="l_ancho_moldura'.$row[9].'" value ="'.$row[20].'">
+						<input type="hidden" id="hijos_p_cm_lineal'.$row[9].'" name="p_cm_lineal'.$row[9].'" value ="'.$row[22].'">
+
+						<td>
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<center><span>Ancho</span></center>
+									<input type="text" id="hijos_cm_ancho'.$row[9].'" name="cm_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_cm_pulg_hijos_lineal('.$row[9].', this.value)" >
+								</div>
+
+								<div class="col-md-6">
+									<center><span>Alto</span></center>
+									<input type="text" id="hijos_cm_alto'.$row[9].'" name="cm_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_cm_pulg_hijos_lineal('.$row[9].', this.value)" >
+								</div>
+							</div>
+						</td>
+						
+						<td>
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<center><span>Ancho</span></center>
+									<input type="text" id="hijos_pul_ancho'.$row[9].'" name="pul_ancho'.$row[9].'" placeholder="0" value ="0" min="0" oninput="ancho_pulg_cm_hijos_lineal('.$row[9].', this.value)">
+								</div>
+
+								<div class="col-md-6">
+									<center><span>Alto</span></center>
+									<input type="text" id="hijos_pul_alto'.$row[9].'" name="pul_alto'.$row[9].'" placeholder="0" value ="0" min="0" oninput="alto_pulg_cm_hijos_lineal('.$row[9].', this.value)">
 								</div>
 							</div>
 						</td>
@@ -3381,7 +3543,100 @@
 						</div>
 					</div>';
 					
-					if ($row[17] <= 0)
+					if ($row[17] > 0)
+					{
+						$body .= 
+						'
+						<!--Agregar producto a venta-->
+						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+										<div class="col-md-12">
+											<div class="section-title-2 text-uppercase mb-40 text-center">
+												<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN (PRODUCTO POR AREA)</span>
+											</div>
+										</div>
+										
+										<table class="cart table">
+										<thead>
+											<tr>
+												<th class="table-head th-name uppercase text-center">INFO</th>
+												<th class="table-head th-name uppercase text-center">CM</th>
+												<th class="table-head th-name uppercase text-center">PULGADAS</th>
+												<th class="table-head th-name uppercase text-center">AGREGAR</th>
+												<th class="table-head th-name uppercase"></th>
+											</tr>
+										</thead>
+										<tbody>
+											'.$exist_cm.'
+										</tbody>
+										</table>
+										</div>
+										</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+										</div>
+									</div>
+									</div>
+									</div>
+						';
+					}
+					else if ($row[19] > 0)
+					{
+						// PRODUCTO LINEAL
+						$body .= 
+						'
+						<!--Agregar producto a venta-->
+						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+										<div class="col-md-12">
+											<div class="section-title-2 text-uppercase mb-40 text-center">
+												<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN (PRODUCTO LINEAL)</span>
+											</div>
+										</div>
+										
+										<table class="cart table">
+										<thead>
+											<tr>
+												<th class="table-head th-name uppercase text-center">INFO</th>
+												<th class="table-head th-name uppercase text-center">CM</th>
+												<th class="table-head th-name uppercase text-center">PULGADAS</th>
+												<th class="table-head th-name uppercase text-center">AGREGAR</th>
+												<th class="table-head th-name uppercase"></th>
+											</tr>
+										</thead>
+										<tbody>
+											'.$exist_cm_lineal.'
+										</tbody>
+										</table>
+										</div>
+										</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+										</div>
+									</div>
+									</div>
+									</div>
+						';
+					}
+					else
 					{
 						$body .= 
 						'
@@ -3419,51 +3674,6 @@
 										</thead>
 										<tbody>
 											'.$exist.'
-										</tbody>
-										</table>
-										</div>
-										</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
-										</div>
-									</div>
-									</div>
-									</div>
-						';
-					}else
-					{
-						$body .= 
-						'
-						<!--Agregar producto a venta-->
-						<div class="modal fade" id="add_car'.$row[9].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">AGREGAR: '.$row[0].'</h5>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-										<div class="col-md-12">
-											<div class="section-title-2 text-uppercase mb-40 text-center">
-												<span class="new-price" id="precio'.$row[9].'">Precio: $ '.$row[3].' MXN</span>
-											</div>
-										</div>
-										
-										<table class="cart table">
-										<thead>
-											<tr>
-												<th class="table-head th-name uppercase text-center">INFO</th>
-												<th class="table-head th-name uppercase text-center">CM</th>
-												<th class="table-head th-name uppercase text-center">PULGADAS</th>
-												<th class="table-head th-name uppercase text-center">AGREGAR</th>
-												<th class="table-head th-name uppercase"></th>
-											</tr>
-										</thead>
-										<tbody>
-											'.$exist_cm.'
 										</tbody>
 										</table>
 										</div>

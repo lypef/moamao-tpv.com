@@ -21,6 +21,10 @@
     $um_des = $_POST['um_des'];
     $cc2 = $_POST['cc2'];
     $vc2 = $_POST['vc2'];
+    $l_medida_moldura = $_POST['l_medida_moldura'];
+    $l_ancho_moldura = $_POST['l_ancho_moldura'];
+    $c_cm_lineal = $_POST['c_cm_lineal'];
+    $p_cm_lineal = $_POST['p_cm_lineal'];
 
     if (empty($cv))
     {
@@ -100,7 +104,7 @@
 
     
         $con = db_conectar();  
-        mysqli_query($con,"INSERT INTO `productos` (`no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`,`cv`,`um`,`um_des`,`cc2`,`vc2`) VALUES ('$Parte', '$Nombre', '$Descripcion', '$Almacen', '$Departamento', '$Ubicacion', '$Marca', '$Proveedor', '$img0', '$img1', '$img2', '$img3', '$user_oferta', '$Precio', '$Precio_oferta', '$Stock', '$TiempoEntrega', '$stock_min', '$stock_max', '$precio_costo', '$cv', '$um', '$um_des', '$cc2', '$vc2');");
+        mysqli_query($con,"INSERT INTO `productos` (`no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`,`cv`,`um`,`um_des`,`cc2`,`vc2`,`l_medida_moldura`,`l_ancho_moldura`,`c_cm_lineal`,`p_cm_lineal`) VALUES ('$Parte', '$Nombre', '$Descripcion', '$Almacen', '$Departamento', '$Ubicacion', '$Marca', '$Proveedor', '$img0', '$img1', '$img2', '$img3', '$user_oferta', '$Precio', '$Precio_oferta', '$Stock', '$TiempoEntrega', '$stock_min', '$stock_max', '$precio_costo', '$cv', '$um', '$um_des', '$cc2', '$vc2','$l_medida_moldura','$l_ancho_moldura','$c_cm_lineal','$p_cm_lineal');");
 
         if (!mysqli_error($con))
         {
