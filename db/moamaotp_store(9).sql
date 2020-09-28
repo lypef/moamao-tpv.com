@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-09-2020 a las 07:12:59
+-- Tiempo de generación: 28-09-2020 a las 08:26:34
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -216,6 +216,15 @@ CREATE TABLE `folio_venta` (
   `f_entrega` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `folio_venta`
+--
+
+INSERT INTO `folio_venta` (`folio`, `vendedor`, `client`, `descuento`, `fecha`, `open`, `cobrado`, `fecha_venta`, `cut`, `sucursal`, `cut_global`, `iva`, `t_pago`, `pedido`, `folio_venta_ini`, `cotizacion`, `concepto`, `comision_pagada`, `oxxo_pay`, `titulo`, `cancelado`, `f_entrega`) VALUES
+('120200913191544', 1, 1, 0, '2020-09-13 19:15:44', 1, 0, NULL, 0, 10, 0, 16, 'transferencia', 0, '120200913191544', 1, NULL, 0, '0', '', 0, '2020-09-13 12:15:44'),
+('120200913202004', 1, 1, 0, '2020-09-13 20:20:04', 0, 0, '2020-09-28 07:48:06', 0, 10, 0, 16, 'transferencia', 0, '120200913202004', 0, NULL, 0, '0', '', 1, '2020-09-13 13:20:04'),
+('120200928080924', 1, 1, 0, '2020-09-28 08:09:24', 1, 0, NULL, 0, 10, 0, 16, 'efectivo', 1, '120200928080924', 0, NULL, 0, '0', '', 0, '2020-09-30 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -247,18 +256,23 @@ CREATE TABLE `productos` (
   `cv` varchar(254) NOT NULL DEFAULT '01010101',
   `um` varchar(254) NOT NULL DEFAULT 'H87',
   `um_des` varchar(254) NOT NULL DEFAULT 'NA',
-  `cc2` decimal(64,2) NOT NULL,
-  `vc2` decimal(64,2) NOT NULL
+  `cc2` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `vc2` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `l_medida_moldura` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `l_ancho_moldura` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `c_cm_lineal` decimal(64,2) NOT NULL DEFAULT 0.00,
+  `p_cm_lineal` decimal(64,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`, `cv`, `um`, `um_des`, `cc2`, `vc2`) VALUES
-(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, -10, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00'),
-(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1487, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66'),
-(64, '15151515', '151515151', '15', 12, 33, '51', '51', '', '', '', '', '', 0, 51, 5, 15, '15', 51, 51, 51, '5151', '51', '51', '51.00', '51.00');
+INSERT INTO `productos` (`id`, `no. De parte`, `nombre`, `descripcion`, `almacen`, `departamento`, `loc_almacen`, `marca`, `proveedor`, `foto0`, `foto1`, `foto2`, `foto3`, `oferta`, `precio_normal`, `precio_oferta`, `stock`, `tiempo de entrega`, `stock_min`, `stock_max`, `precio_costo`, `cv`, `um`, `um_des`, `cc2`, `vc2`, `l_medida_moldura`, `l_ancho_moldura`, `c_cm_lineal`, `p_cm_lineal`) VALUES
+(47, 'mag-350', 'IMAN MAGNETICO PARA PUERTA', '', 3, 33, 'RSELL', 'VARIOS', 'DESCONOCIDO', 'product/product_img120200305095158.jpg', '', '', '', 0, 2800, 2700, -10, '1 DIA HABIL', 1, 1, 1600, '01010101', 'H87', 'NA', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00'),
+(63, '615454545', 'jjjhj', '', 3, 33, '', 'GENERICO', 'GENERICO', '', '', '', '', 0, 100, 10, 1487, '1', 44, 4444, 100, '44444', '44444', '444', '16.55', '21.66', '0.00', '0.00', '0.00', '0.00'),
+(64, '15151515', '151515151', '15', 12, 33, '51', '51', '', '', '', '', '', 0, 51, 5, 15, '15', 51, 51, 51, '5151', '51', '51', '51.00', '51.00', '0.00', '0.00', '0.00', '0.00'),
+(65, '15151a5151', 'lineal', '', 3, 33, 'aa', 'GENERICO', 'GENERICO', '', '', '', '', 0, 3, 15, 1500, '1', 1, 1, 15, '1515151', '515151', '1', '0.00', '0.00', '290.00', '5.00', '1.50', '3.00');
 
 -- --------------------------------------------------------
 
@@ -275,6 +289,15 @@ CREATE TABLE `productos_sub` (
   `max` int(11) NOT NULL DEFAULT 0,
   `min` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `productos_sub`
+--
+
+INSERT INTO `productos_sub` (`id`, `padre`, `almacen`, `stock`, `ubicacion`, `max`, `min`) VALUES
+(28, 63, 12, 1, '', 1, 1),
+(29, 47, 12, 1, '', 1, 1),
+(30, 65, 12, 0, '', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -311,6 +334,13 @@ CREATE TABLE `product_venta` (
   `ancho` decimal(64,2) NOT NULL DEFAULT 0.00,
   `alto` decimal(64,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `product_venta`
+--
+
+INSERT INTO `product_venta` (`id`, `folio_venta`, `product`, `unidades`, `precio`, `product_sub`, `p_generico`, `ancho`, `alto`) VALUES
+(28, '120200913202004', 65, 1, 683.88, 30, NULL, '43.18', '50.80');
 
 -- --------------------------------------------------------
 
@@ -585,25 +615,25 @@ ALTER TABLE `empresa`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_sub`
 --
 ALTER TABLE `productos_sub`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `product_pedido`
 --
 ALTER TABLE `product_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `product_venta`
 --
 ALTER TABLE `product_venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `soporte`
