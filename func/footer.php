@@ -1316,7 +1316,10 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
+        
     }
 
     function alto_cm_pulg_lineal() 
@@ -1336,6 +1339,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 
@@ -1356,6 +1361,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
     
@@ -1377,6 +1384,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 
@@ -1398,6 +1407,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo_hijo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 
@@ -1419,6 +1430,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo_hijo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 
@@ -1440,6 +1453,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo_hijo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 
@@ -1461,6 +1476,8 @@
         
         var total = ( (c5 * 8) + ( (ancho+alto) * 2) ) * e5;
         
+        document.getElementById("costo_hijo"+arguments[0]).value = total;
+
         span.appendChild( document.createTextNode("Precio: $ "+total.toFixed(2) + " MXN"));
     }
 

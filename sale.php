@@ -50,7 +50,7 @@
                         <?php 
                             if ($_GET["search"])
                             {
-                                echo _getProducts_saleSearch($_GET["search"], $_GET["folio"]);
+                                echo _getProducts_saleSearch($_GET["search"], $_GET["folio"],$_GET["pagina"]);
                             }
                             else
                             {
