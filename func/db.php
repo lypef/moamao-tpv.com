@@ -12374,7 +12374,38 @@
 				</div>
 			</div>
 			</div>
+			
+			
+			
+			<div class="modal fade" id="credit'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">CREDITO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<center><span>Enviar esta cotizacion a credito para: <b>'.$row[2].'</b></span></center>
+					</div>
+				</div>
+				<div class="modal-footer">
+					
+					<form action="func/create_credit_cotizacion.php" autocomplete="off" method="post">
+						<input type="hidden" id="folio" name="folio" value="'.$row[0].'">
+						<input type="hidden" id="url" name="url" value="'.$_SERVER['REQUEST_URI'].'">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+						<button type="sumbit" class="btn btn-success">Aceptar</button>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+			
 			';
+			
 			
 			//Se envia email
 			$body = $body.'
