@@ -549,10 +549,17 @@
                                                       <li>
                                                       <li><a href="create_order.php?pagina=1">Crear pedido</a></li>
                                                       <li><a href="orders.php">Ver pedidos</a></li>
+                                                      <li><a href="orders_select_client.php?pagina=1">Mostrar por cliente</a></li>
+                                                      <li></li>
+                                                  </ul>
+                                                  <ul class="single-mega-item">
+                                                      <li><h2 class="mega-menu-title mb-15"></h2></li>
+                                                      <li></li>
                                                       <li></li>
                                                       <li></li>
                                                   </ul>
                                                   <ul class="single-mega-item">
+                                                      <br>
                                                       <li><h2 class="mega-menu-title mb-15">Ventas / Abiertas</h2></li>
                                                       <?php
                                                           if ($_SESSION['vtd_pg'] == 1)

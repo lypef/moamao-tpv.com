@@ -6,13 +6,7 @@
 
 <div class="col-md-12">
     <?php 
-        if ($_GET["search"])
-        {
-            echo table_orders_search($_GET["search"]); 
-        }else
-        {
-            echo table_orders(); 
-        }
+        echo table_orders_client($_GET["id"]); 
     ?>
 </div>  
 <br>

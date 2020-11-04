@@ -20,7 +20,7 @@
                                 <?php
                                     if ($_GET["folio"])
                                     {
-                                        echo table_sale_products_finaly_order($_GET["folio"]); 
+                                        echo table_sale_products_finaly_order($_GET["folio"]);
                                     }
                                 ?> 
                                 </div>
@@ -235,7 +235,8 @@
             <div class="col-md-8">
             <input type="hidden" id="url" name="url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <label>Ingrese monto a abonar<span class="required">*</span> </label>
-            <input type="text" name="abono" id="abono" placeholder="0.0" required>
+            <input type="number" step="0.01"  name="abono" id="abono" placeholder="0.0" value= "<?php echo GetPedidoAdeudo($_GET["folio"]) ?>" max= "<?php echo GetPedidoAdeudo($_GET["folio"]) ?>" required >
+            
             </div>
             <br>
             <div class="col-md-8">

@@ -39,7 +39,7 @@
 	
 	function ColorBarrReport ()
 	{
-		return "#9c0003 ";
+		return "#b1afae ";
 	}
 
 	function DesglosarReportIva ()
@@ -6612,6 +6612,138 @@
 		';
 		return $body;
 	}
+	
+	function GetPedidoAdeudo ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT v.unidades, if (v.ancho > 0, concat(_p.nombre,' ', ROUND(v.ancho / 2.54, 2 ), ' X ', ROUND(v.alto / 2.54, 2 ), ' PULG'), _p.nombre) as nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_pedido v, productos _p WHERE v.product = _p.id and  v.folio_venta = '$folio' ");
+		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
+		$genericos = mysqli_query(db_conectar(),"SELECT unidades, p_generico, precio, id FROM product_pedido v WHERE p_generico != '' and folio_venta = '$folio'");
+		$abonos = mysqli_query(db_conectar(),"SELECT folio, cobrado, fecha_venta FROM folio_venta WHERE folio_venta_ini = '$folio'");
+
+		
+		$total = 0;
+		$total_productos = 0;
+		$total_abono = 0;
+		$vendedor = "";
+		$cliente = "";
+		$descuento = 0;
+		$fecha = "";
+
+		while($row = mysqli_fetch_array($data_))
+		{
+			$vendedor = $row[0];
+			$cliente = $row[1];
+			$descuento = $row[2];
+			$fecha = $row[3];
+			$iva = $row[4];
+		}
+
+		while($row = mysqli_fetch_array($abonos))
+		{
+			$total_abono = $total_abono + $row[1];
+		}
+
+		
+		while($row = mysqli_fetch_array($data))
+	    {
+			$total = $total + ($row[2] * $row[0]);
+			$total_productos = $total_productos + $row[0];
+		}
+
+		//Genericos
+		while($row = mysqli_fetch_array($genericos))
+	    {
+			$total = $total + ($row[0] * $row[2]);
+			$total_productos = $total_productos + $row[0];
+		}
+		
+		$ivac = '0.'.$iva;
+
+		$total_ = number_format($total,2,".",",");
+
+		$pagar = $total * ($descuento / 100);
+
+		$total_desc = $pagar;
+
+		$pagar = $total - $pagar;
+
+		$tt = $pagar - $total_abono;
+
+		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+
+		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		
+		$pagar = number_format($pagar,2,".",",");
+		
+		//$tt = number_format($tt,2,".",",");
+		return $tt;
+	}
+
+	function GetPedidoTotal ($folio)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT v.unidades, if (v.ancho > 0, concat(_p.nombre,' ', ROUND(v.ancho / 2.54, 2 ), ' X ', ROUND(v.alto / 2.54, 2 ), ' PULG'), _p.nombre) as nombre, v.precio, v.id, _p.descripcion, _p.foto0, _p.id, _p.`no. De parte`, _p.marca, _p.stock FROM product_pedido v, productos _p WHERE v.product = _p.id and  v.folio_venta = '$folio' ");
+		$data_ = mysqli_query(db_conectar(),"SELECT v.nombre, c.nombre, f.descuento, f.fecha, f.iva FROM folio_venta f, users v, clients c WHERE f.vendedor = v.id and f.client = c.id and f.folio = '$folio' ");
+		$genericos = mysqli_query(db_conectar(),"SELECT unidades, p_generico, precio, id FROM product_pedido v WHERE p_generico != '' and folio_venta = '$folio'");
+		$abonos = mysqli_query(db_conectar(),"SELECT folio, cobrado, fecha_venta FROM folio_venta WHERE folio_venta_ini = '$folio'");
+
+		
+		$total = 0;
+		$total_productos = 0;
+		$total_abono = 0;
+		$vendedor = "";
+		$cliente = "";
+		$descuento = 0;
+		$fecha = "";
+
+		while($row = mysqli_fetch_array($data_))
+		{
+			$vendedor = $row[0];
+			$cliente = $row[1];
+			$descuento = $row[2];
+			$fecha = $row[3];
+			$iva = $row[4];
+		}
+
+		while($row = mysqli_fetch_array($abonos))
+		{
+			$total_abono = $total_abono + $row[1];
+		}
+
+		
+		while($row = mysqli_fetch_array($data))
+	    {
+			$total = $total + ($row[2] * $row[0]);
+			$total_productos = $total_productos + $row[0];
+		}
+
+		//Genericos
+		while($row = mysqli_fetch_array($genericos))
+	    {
+			$total = $total + ($row[0] * $row[2]);
+			$total_productos = $total_productos + $row[0];
+		}
+		
+		$ivac = '0.'.$iva;
+
+		$total_ = number_format($total,2,".",",");
+
+		$pagar = $total * ($descuento / 100);
+
+		$total_desc = $pagar;
+
+		$pagar = $total - $pagar;
+
+		$tt = $pagar - $total_abono;
+
+		$subtotal = number_format(($pagar / 1.160000),2,".",",");
+
+		$iva_ = number_format($pagar - ($pagar / 1.160000),2,".",",");
+		
+		//$pagar = number_format($pagar,2,".",",");
+		
+		//$tt = number_format($tt,2,".",",");
+		return $pagar;
+	}
 
     function table_sale_products_finaly_order_cfdi ($folio)
 	{
@@ -8039,7 +8171,7 @@
 			<td class="item-des"><a '.$color.' href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p '.$color.'>'.$row[1].'</p></td>
 			<td class="item-des">'.$row[2].'</td>
-			<td class="item-des">'.GetFechaText($row[3]).'</td>
+			<td class="item-des">'.str_replace("0:00:00", "", GetFechaText($row[3])).'</td>
 			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
 			
 			<td class="item-des">
@@ -8071,6 +8203,123 @@
 		</tbody>
 			</table>
 		</div>';
+
+		$body = $body . $pagination;
+		return $body;
+	}
+
+	function table_orders_client($id_client)
+	{
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.f_entrega, DATEDIFF(f.f_entrega, NOW()) as dias , s.nombre, f.t_pago FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id and f.client = $id_client order by f.f_entrega ASC");
+		
+		$body = '
+		<h4><center><b>CLIENTE:</b> '.Return_NombreClient($id_client).'</center></h4>
+		<div class=" compare-wraper mt-30">
+		<table class="cart table">
+			<thead>
+				<tr>
+					<th class="table-head th-name uppercase">FOLIO</th>
+					<th class="table-head th-name uppercase">vendedor</th>
+					<th class="table-head th-name uppercase">sucursal</th>
+					<th class="table-head th-name uppercase">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fecha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<th class="table-head th-name uppercase">total</th>
+					<th class="table-head th-name uppercase">abonos</th>
+					<th class="table-head th-name uppercase">adeudo</th>
+					<th class="table-head th-name uppercase">m.&nbsp;pago</th>
+					<th class="table-head th-name uppercase">ESTADO</th>
+					<th class="table-head th-name uppercase">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>';
+		$body = $body . $pagination;
+		$cont = 0;
+		$total_ingresos = 0;
+		$total_adeudo = 0;
+
+		while($row = mysqli_fetch_array($data))
+	    {
+			$color = "";
+
+			if ($row[4] <= 1)
+			{
+				$color = 'style="color:red !important;"';
+			}
+
+			if ($row[4] >= 3)
+			{
+				$color = 'style="color:green !important;"';
+			}
+
+			if ($row[4] == 2)
+			{
+				$color = 'style="color:orange !important;"';
+			}
+
+			$total = GetPedidoTotal($row[0]);
+			$adeudo = GetPedidoAdeudo($row[0]);
+			$abono = $total - $adeudo;
+			
+			$total_ingresos = $total_ingresos + $total;
+			$total_adeudo = $total_adeudo + $adeudo;
+
+			$body = $body.'
+			<tr '.$color.'>
+			<td class="item-des"><a '.$color.' href="/sale_finaly_report_orderprint.php?folio_sale='.$row[0].'">'.$row[0].'</a></td>
+			<td class="item-des"><p '.$color.'>'.$row[1].'</p></td>
+			<td class="item-des">'.$row[5].'</td>
+			<td class="item-des">'.str_replace("0:00:00", "", GetFechaText($row[3])).'</td>
+			<td class="item-des"><center>'.number_format($total,GetNumberDecimales()).'</center></td>
+			<td class="item-des"><center>'.number_format($abono,GetNumberDecimales()).'</center></td>
+			<td class="item-des"><center>'.number_format($adeudo,GetNumberDecimales()).'</center></td>
+			<td class="item-des"><center>'.$row[6].'</center></td>
+			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
+			
+			<td class="item-des">
+				<div class="col-md-12">
+					
+				<div class="col-md-4">
+					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#check'.$row[0].'" ><span>*</span></a>
+				</div>
+				
+				<div class="col-md-4">
+						<a href="/sale_order.php?folio='.$row[0].'" class="button extra-small button-black mb-20" ><span> Ver</span></a>
+					</div>
+
+				<div class="col-md-4">
+					<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#edit'.$row[0].'" ><span> +</span></a>
+				</div>
+					
+				</div>
+			</td>
+			</tr>
+			';
+			/*
+			<div class="col-md-12">
+				<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#edit'.$row[0].'" ><span> Opciones</span></a>
+			</div>
+			*/
+			$cont ++;
+		}
+		$body = $body . '
+		</tbody>
+			</table>
+		</div>
+
+		<table style="width: 100%;">
+		<tbody>
+		<tr>
+		<td style="text-align: center;"><strong>NUMERO DE VENTAS</strong></td>
+		<td style="text-align: center;"><strong>TOTAL DE VENTAS</strong></td>
+		<td style="text-align: center;"><strong>TOTAL ADEUDADO</strong></td>
+		</tr>
+		<tr>
+		<td style="text-align: center;">'.$cont.'</td>
+		<td style="text-align: center;">$ '.number_format($total_ingresos,GetNumberDecimales()).' MXN</td>
+		<td style="text-align: center;">$ '.number_format($total_adeudo,GetNumberDecimales()).' MXN</td>
+		</tr>
+		</tbody>
+		</table>
+';
 
 		$body = $body . $pagination;
 		return $body;
@@ -8392,7 +8641,7 @@
 			<td class="item-des"><a '.$color.' href="/sale_order.php?folio='.$row[0].'">'.$row[0].'</a></td>
 			<td class="item-des"><p '.$color.'>'.$row[1].'</p></td>
 			<td class="item-des"><p '.$color.'>'.$row[2].'</p></td>
-			<td class="item-des">'.GetFechaText($row[3]).'</td>
+			<td class="item-des">'.str_replace("0:00:00", "", GetFechaText($row[3])).'</td>
 			<td class="item-des">'.GetStatusPedido($row[0]).'</td>
 			<td class="item-des">
 				<div class="col-md-12">
@@ -9930,6 +10179,7 @@
 		return $body;
 	}
 
+	
 	function create_sale_SelectClient_ChangeClient ($pagina, $folio, $cotizacion, $pedido, $vtd)
 	{
 		$TAMANO_PAGINA = 5;
@@ -10235,6 +10485,131 @@
 			
 			<div class="col-md-12">
 			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#select_client_sale'.$row[0].'" ><span> Seleccionar</span> </a>
+			</div>
+			
+			</td>
+			</tr>
+			';
+		}
+		$body = $body . '
+		</tbody>
+			</table>
+		</div>';
+
+		$body = $body . $pagination;
+		return $body;
+	}
+
+	function select_client_orders ($pagina)
+	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM clients");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+									
+		$body = '
+		<div class="compare-wraper mt-30">
+				<form class="header-search-box" action="orders_select_client.php">
+					<div>
+						<input type="hidden" name="pagina" id="pagina" value="1">
+						<input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
+				  width: 100%;
+                  padding: 24px 20px;
+                  margin: 8px 0;
+                  display: inline-block;
+                  border: 3px solid #4A4A4A;
+                  border-radius: 4px;
+                  box-sizing: border-box;
+				   ">
+					</div>
+				</form>
+				<table class="cart table">
+					<thead>
+						<tr>
+							<th class="table-head th-nam">CLIENTE</th>
+							<th class="table-head item-nam">RAZON SOCIAL</th>
+							<th class="table-head item-nam">% DESCUENTO</th>
+							<th class="table-head item-nam">OPCIONES</th>
+						</tr>
+					</thead>
+					<tbody>';
+		$body = $body . $pagination;
+		
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $body.'
+			<tr>
+			<td class="item-des"><p>'.$row[1].'</p></td>
+			<td class="item-des"><p>'.$row[2].'</p></td>
+			<td class="item-des"><p>'.$row[3].' %</p></td>
+			<td class="item-des">
+			
+			<div class="col-md-12">
+				<a href="/orders_client.php?id='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
 			</div>
 			
 			</td>
@@ -10714,6 +11089,131 @@
 			
 			<div class="col-md-12">
 			<a class="button extra-small button-black mb-20" data-toggle="modal" data-target="#select_client_sale'.$row[0].'" ><span> Seleccionar</span> </a>
+			</div>
+			
+			</td>
+			</tr>
+			';
+		}
+		$body = $body . '
+		</tbody>
+			</table>
+		</div>';
+
+		$body = $body . $pagination;
+		return $body;
+	}
+
+	function select_client_orders_search ($txt, $pagina)
+	{
+		$TAMANO_PAGINA = 5;
+
+		if (!$pagina) {
+			$inicio = 0;
+			$pagina = 1;
+		}
+		else {
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+
+		$data = mysqli_query(db_conectar(),"SELECT id, nombre, IF(razon_social = '', 'RAZON SOCIAL DESCONOCIDA', razon_social) as razon_social, descuento FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%' ORDER by id desc LIMIT $inicio, $TAMANO_PAGINA");
+		$datatmp = mysqli_query(db_conectar(),"SELECT id FROM `clients` where `nombre` like '%$txt%' or `rfc` like '%$txt%' or `razon_social` like '%$txt%' or `correo` like '%$txt%'");
+
+		$pagination = '<div class="row">
+						<div class="col-md-12">
+						<div class="shop-pagination p-10 text-center">
+							<ul>';
+
+		
+		$num_total_registros = mysqli_num_rows($datatmp);
+		$total_paginas = ceil($num_total_registros / $TAMANO_PAGINA);
+
+		if ($pagina > 1)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina - 1 ).'" ><i class="zmdi zmdi-chevron-left"></i></a></li>';
+		}
+		
+		
+		if ($total_paginas > 1) {
+
+			if ($pagina <= 8)
+			{
+				for ($i=1; $i<$pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}else
+			{
+				for ($i= ($pagina - 7); $i < $pagina; $i++) {
+				
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';	
+				}
+			}
+			
+		}
+		
+		$Pag_Max = $pagina + 8;
+		
+		if ($total_paginas > 1) {
+
+			for ($i=$pagina;$i<=$total_paginas;$i++) {
+				
+				if ( $i == $pagina)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'"><b>'.$i.'</b></a></li>';
+				elseif ( $i < $Pag_Max)
+					$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.$i.'">'.$i.'</a></li>';
+			}
+		}
+
+		if ($pagina < $total_paginas)
+		{
+			$pagination = $pagination . '<li><a href="?search='.$txt.'&pagina='.($pagina + 1 ).'" ><i class="zmdi zmdi-chevron-right"></i></a></li>';
+		}
+		
+		$pagination = $pagination . '</ul>
+									</div>
+									</div>
+									</div><p>';
+
+		$body = '
+		<div class="compare-wraper mt-30">
+				<form class="header-search-box" action="orders_select_client.php">
+					<div>
+				  <input type="hidden" id="pagina" name="pagina" value="1">
+				  <input type="text" placeholder="Buscar" name="search" autocomplete="off" style="
+				  width: 100%;
+                  padding: 24px 20px;
+                  margin: 8px 0;
+                  display: inline-block;
+                  border: 3px solid #4A4A4A;
+                  border-radius: 4px;
+				  box-sizing: border-box;" value = "'.$txt.'">
+					</div>
+				</form>
+				<p>
+				'.$pagination.'
+				<table class="cart table">
+					<thead>
+						<tr>
+							<th class="table-head th-nam">CLIENTE</th>
+							<th class="table-head item-nam">RAZON SOCIAL</th>
+							<th class="table-head item-nam">% DESCUENTO</th>
+							<th class="table-head item-nam">OPCIONES</th>
+						</tr>
+					</thead>
+					<tbody>';
+		
+		while($row = mysqli_fetch_array($data))
+	    {
+			$body = $body.'
+			<tr>
+			<td class="item-des"><p>'.$row[1].'</p></td>
+			<td class="item-des"><p>'.$row[2].'</p></td>
+			<td class="item-des"><p>'.$row[3].' %</p></td>
+			<td class="item-des">
+			
+			<div class="col-md-12">
+				<a href="/orders_client.php?id='.$row[0].'" class="button extra-small button-black mb-20"><span> Seleccionar</span> </a>
 			</div>
 			
 			</td>
@@ -11910,6 +12410,94 @@
 		return $body;
 	}
 
+	function table_orders_modal_two ()
+	{
+		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id, f.f_entrega, c.correo FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
+		
+		$con  = db_conectar();
+
+		$select_con = mysqli_query($con,"SELECT id, nombre FROM clients ORDER by nombre asc");
+		$select = "<option value='0'>CLIENTE</option>";
+		while($row = mysqli_fetch_array($select_con))
+		{
+			$select = $select.'<option value='.$row[0].'>'.$row[1].'</option>';
+		}
+
+		$select_pago = Metodo_Pago_ListBox();
+
+		$body = "";
+		while($row = mysqli_fetch_array($data))
+	    {
+			if ($_SESSION['super_pedidos'] == 1)
+			{
+				$eliminar = '<button type="sumbit" class="btn btn-danger">Eliminar</button>';
+			}else
+			{
+				$eliminar = '';
+			}
+			
+			$items = "";
+
+			$p_pedido = mysqli_query($con,'SELECT r.id, p.nombre FROM product_pedido r, productos p WHERE r.completado = 0 and r.product = p.id and folio_venta = '.$row[0].' ;');
+			
+			while($p_exist = mysqli_fetch_array($p_pedido))
+			{
+				$items .= '<li>'.$p_exist[1].' <a href="/func/check_complet.php?id='.$p_exist[0].'&folio='.$row[0].'"> <b>[ Marcar Completado ]</b></a></li>';
+			}
+			
+			if (empty($items))
+			{
+				$items = '<li>Ninguno</li>';
+			}
+
+			$body = $body.'
+			
+			<div class="modal fade" id="check'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+				
+				<center>
+					<h5 class="modal-title" id="exampleModalLabel"><b>FECHA DE ENTREGA</b></h5>
+					<h4 class="modal-title" id="exampleModalLabel">'.GetFechaText($row[11]).'</h4>
+				</center>
+
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<ol>
+							'.$items.'
+						</ol>
+					</div>
+					<br><center>
+						
+						<h5 class="modal-title" id="exampleModalLabel"><b>ACTUALIZAR FECHA DE ENTREGA Y NOTIFICAR</b></h5>
+						
+						<form action="func/update_f_entrega_pedido.php" autocomplete="off" method="post">
+							<input id="folio" name="folio" type="hidden" value="'.$row[0].'">
+							<input id="email" name="email" type="hidden" value="'.$row[12].'">
+							<input type="date" id="fecha" name="fecha" value="'.date("Y-m-d", strtotime($row[11])).'" style="text-align: center; height:40px; border: 2px solid #D9D7D7;">
+							<br><br>
+							<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, Se actualiza su nueva fecha de entrega para:  %f_entrega%, para su pedido con folio: %f_pedido%</textarea>
+								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
+							<br>
+							<button type="sumbit" class="btn btn-success btn-lg btn-block" onclick="javascript:this.form.submit(); this.disabled= true;">Actualizar</button>
+						<form>
+
+					</center>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">CERRAR</button>	
+				</div>
+				</div>
+			</div>
+			</div>
+			';
+		}
+		
+		return $body;
+	}
+
 	function table_orders_modal ()
 	{
 		$data = mysqli_query(db_conectar(),"SELECT f.folio, u.nombre, c.nombre, f.descuento, f.fecha, f.cobrado, f.fecha_venta, s.nombre, f.iva, f.t_pago, c.id, f.f_entrega, c.correo FROM folio_venta f, users u, clients c, sucursales s WHERE f.open = 1 and f.pedido = 1 and f.vendedor = u.id and f.client = c.id and f.sucursal = s.id");
@@ -12019,6 +12607,7 @@
 								</select>
 							</div>
 							</div>
+							
 							<script>
 								document.getElementById("cliente'.$row[0].'").value = "'.$row[10].'";
 							</script>
@@ -12068,48 +12657,6 @@
 						'.$eliminar.'
 					</form>
 					
-				</div>
-				</div>
-			</div>
-			</div>
-
-
-			<div class="modal fade" id="check'.$row[0].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-				<div class="modal-header">
-				
-				<center>
-					<h5 class="modal-title" id="exampleModalLabel"><b>FECHA DE ENTREGA</b></h5>
-					<h4 class="modal-title" id="exampleModalLabel">'.GetFechaText($row[11]).'</h4>
-				</center>
-
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<ol>
-							'.$items.'
-						</ol>
-					</div>
-					<br><center>
-						
-						<h5 class="modal-title" id="exampleModalLabel"><b>ACTUALIZAR FECHA DE ENTREGA Y NOTIFICAR</b></h5>
-						
-						<form action="func/update_f_entrega_pedido.php" autocomplete="off" method="post">
-							<input id="folio" name="folio" type="hidden" value="'.$row[0].'">
-							<input id="email" name="email" type="hidden" value="'.$row[12].'">
-							<input type="date" id="fecha" name="fecha" value="'.date("Y-m-d", strtotime($row[11])).'" style="text-align: center; height:40px; border: 2px solid #D9D7D7;">
-							<br><br>
-							<textarea name="body_msg" id="body_msg'.$row[0].'">HOLA ! <b>'.$row[1].'</b>, Se actualiza su nueva fecha de entrega para:  %f_entrega%, para su pedido con folio: %f_pedido%</textarea>
-								<script>CKEDITOR.replace( body_msg'.$row[0].' );</script>
-							<br>
-							<button type="sumbit" class="btn btn-success btn-lg btn-block" onclick="javascript:this.form.submit(); this.disabled= true;">Actualizar</button>
-						<form>
-
-					</center>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-info" data-dismiss="modal">CERRAR</button>	
 				</div>
 				</div>
 			</div>

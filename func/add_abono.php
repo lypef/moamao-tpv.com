@@ -3,13 +3,14 @@
     db_sessionValidarNO();
     session_start();
     
-    if ($_SESSION['token'] == GetToken())
+    $url = $_POST['url'];
+    $url = str_replace("&abono=true", "", $url);
+    $url = str_replace("&noabono=true", "", $url);
+    $url = str_replace("&nopay=true", "", $url);
+
+    if ($_SESSION['token'] == GetToken() && $_POST['abono'] <= GetPedidoAdeudo($_POST['folio_a']))
     {
-        $url = $_POST['url'];
-        $url = str_replace("&abono=true", "", $url);
-        $url = str_replace("&noabono=true", "", $url);
-        $url = str_replace("&nopay=true", "", $url);
-    
+        
         $folio_a = $_POST['folio_a'];
         $vendedor = $_SESSION['users_id'];
         $folio = $vendedor . date("YmdHis");
@@ -39,5 +40,7 @@
         {
             echo '<script>location.href = "'.$url.'&noabono=true"</script>';
         }
+    }else{
+        echo '<script>location.href = "'.$url.'&noabono=true"</script>';
     }
 ?>
